@@ -6,6 +6,15 @@ from .serializers import AccountSerializer
 
 # Create your views here.
 
+#To get a Home page html text
+# add path('', home)
+from django.http import HttpResponse
+def home(request):
+    return HttpResponse("Home Page")
+def room(request):
+    return HttpResponse("ROOM")
+
+
 # Can add in GET, POST, PUT, DELETE
 @api_view(['GET'])
 
