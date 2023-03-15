@@ -1,57 +1,22 @@
-import comparePricingContent from "../../data/comparePricing";
+import GlobalFilterCompare from "../common/GlobalFilterForCompare";
 
-const ComparePricing = () => {
-  return (
-    <>
-      {comparePricingContent.map((item) => (
-        <li className="list-inline-item" key={item.id}>
-          <ul className="mc_child_list two text-center">
-            <li>
-              <div className="membership_header">
-                <div className="thumb">
-                  <a href="#">
-                    <span className="flaticon-close"></span>
-                  </a>
-                  <img className="img-fluid w100" src={item.img} alt="1.jpg" />
-                  <div className="price">
-                    ${item.price}
-                    <span className="mnth">/mo</span>
-                  </div>
+const comparingPrices = ({ className = "" }) => {
+    return (
+        <div className={`home_adv_srch_opt ${className}`}>
+            
+
+            <div className="tab-content home1_adsrchfrm" id="pills-tabContent">
+                <div
+                    className="tab-pane fade show active"
+                    id="pills-home"
+                    role="tabpanel"
+                    aria-labelledby="pills-home-tab"
+                >
+                    <GlobalFilterCompare />
                 </div>
-                <div className="details">
-                  <h4>{item.propertyName}</h4>
-                  <p>{item.propertyType}</p>
-                </div>
-              </div>
-            </li>
-            <li>
-              <a href="#">{item.city}</a>
-            </li>
-            <li>
-              <a href="#">{item.beds}</a>
-            </li>
-            <li>
-              <a href="#">{item.rooms}</a>
-            </li>
-            <li>
-              <a href="#">{item.garage}</a>
-            </li>
-            <li>
-              <a href="#">{item.buildYear}</a>
-            </li>
-            <li>
-              <a href="#">{item.laundryRoom}</a>
-            </li>
-            <li>
-              <a className="btn pricing_btn" href="#">
-                {item.status}
-              </a>
-            </li>
-          </ul>
-        </li>
-      ))}
-    </>
-  );
+            </div>
+        </div>
+    );
 };
 
-export default ComparePricing;
+export default comparingPrices;
