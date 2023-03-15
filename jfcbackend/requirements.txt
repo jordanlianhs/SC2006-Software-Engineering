@@ -7,3 +7,4 @@ django-recaptcha
 pillow
 six
 djangorestframework
+requests
