@@ -14,21 +14,7 @@ const GlobalHeroFilter = ({ className = "" }) => {
                         aria-controls="pills-home"
                         aria-selected="true"
                     >
-                        Buy
-                    </a>
-                </li>
-
-                <li className="nav-item">
-                    <a
-                        className="nav-link"
-                        id="pills-profile-tab"
-                        data-bs-toggle="pill"
-                        href="#pills-profile"
-                        role="tab"
-                        aria-controls="pills-profile"
-                        aria-selected="false"
-                    >
-                        Rent
+                        Search
                     </a>
                 </li>
             </ul>
@@ -40,14 +26,6 @@ const GlobalHeroFilter = ({ className = "" }) => {
                     id="pills-home"
                     role="tabpanel"
                     aria-labelledby="pills-home-tab"
-                >
-                    <GlobalFilter />
-                </div>
-                <div
-                    className="tab-pane fade"
-                    id="pills-profile"
-                    role="tabpanel"
-                    aria-labelledby="pills-profile-tab"
                 >
                     <GlobalFilter />
                 </div>

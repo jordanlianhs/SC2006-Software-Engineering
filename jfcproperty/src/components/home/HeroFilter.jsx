@@ -4,9 +4,9 @@ const HeroFilter = () => {
     return (
         <div className="home_content">
             <div className="home-text text-center">
-                <h2 className="fz55">Search Resale Flats</h2>
+                <h2 className="fz55">Resale Flats Prediction</h2>
                 <p className="fz18 color-white">
-                    Accurate Live Prediction & API Data For Home Hunting
+                    Essential Tool for Home Hunting
                 </p>
             </div>
             {/* End .home-text */}
