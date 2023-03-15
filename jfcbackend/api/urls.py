@@ -1,12 +1,19 @@
 from django.urls import path
-from . import views
-# This is for a specific app
+from django.http import HttpResponse
 
+
+from . import views
+
+def home(request):
+    return HttpResponse('Home Page')
 
 urlpatterns = [
-    path('', views.getRoutes, name = "routes"),
+    path('login/', views.loginPage, name='login'),
+    path('logout/', views.logoutUser, name='logout'),
+    path('register/', views.registerPage, name='register'),
+
+    path('', views.home, name='home'),
+    #path('', views.getRoutes, name = "routes"),
     path('accounts/', views.getAccounts, name = 'accounts'),
     path('accounts/<str:primary_key>/', views.getAccount, name = 'account'),
-    path('home/',views.home, name = "home" ),
-    path('room/', views.room, name = "room"),
 ]
