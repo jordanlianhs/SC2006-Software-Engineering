@@ -6,29 +6,57 @@ import {
 } from "../../features/properties/propertiesSlice";
 import { useEffect, useState } from "react";
 
-const GlobalFilter = ({ className = "" }) => {
-  const [flatType, setFlatType] = useState([]);
-  const [streetName, setStreetName] = useState([]);
-  const [blockNumber, setBlockNumber] = useState([]);
+const GlobalFilterForCompare = ({ className = "" }) => {
+  const [flatType, setFlatType] = useState([""]); //default values
+  const [streetName, setStreetName] = useState(['Jurong West St 21', 'Bukit Batok St 11', 'Clementi Ave 3']);//default values
+  const [blockNumber, setBlockNumber] = useState(['101', '202', '303']);//default values
   const [selectedFlatType, setSelectedFlatType] = useState("");
   const [selectedStreetName, setSelectedStreetName] = useState("");
   const [selectedBlockNumber, setSelectedBlockNumber] = useState("");
   
   useEffect(() => {
     // Fetch flat types from API
-    fetch("/api/flatTypes")
+    const fetchData = async () => {
+      try {
+        let allFlatTypes = [];
+        let offset = 0;
+        let hasMoreRecords = true;
+
+        while (hasMoreRecords) {
+          const response = await fetch(`https://data.gov.sg/api/action/datastore_search?resource_id=f1765b54-a209-4718-8d38-a39237f502b3&fields=flat_type&limit=100&offset=${offset}`);
+          const data = await response.json();
+          const flatTypes = data.result.records.map(record => record.flat_type);
+          allFlatTypes = [...allFlatTypes, ...flatTypes];
+          offset += 100;
+          hasMoreRecords = offset<data.result.total;
+        }
+        const uniqueFlatTypes = [...new Set(allFlatTypes)];
+        setFlatType(uniqueFlatTypes);
+      } catch(error){
+        console.error(error);
+      }
+    };
+
+    fetchData();
+    /*fetch("https://data.gov.sg/api/action/datastore_search?resource_id=f1765b54-a209-4718-8d38-a39237f502b3&fields=flat_type")
       .then((response) => response.json())
-      .then((data) => setFlatType(data));
+      .then((data) => {
+        const uniqueFlatTypes = [...new Set(data.result.records.map(record => record.flat_type))];
+        setFlatType(uniqueFlatTypes);
+      })
+      .catch((error) => console.error(error));*/
 
     // Fetch street names from API
     fetch("/api/streetNames")
       .then((response) => response.json())
-      .then((data) => setStreetName(data));
+      .then((data) => setStreetName(data))
+      .catch((error) => console.error(error));
 
     // Fetch block numbers from API
     fetch("/api/blockNumbers")
       .then((response) => response.json())
-      .then((data) => setBlockNumber(data));
+      .then((data) => setBlockNumber(data))
+      .catch((error) => console.error(error));
   }, []);
   // submit handler
   const submitHandler = () => {
@@ -109,4 +137,4 @@ const GlobalFilter = ({ className = "" }) => {
   );
 };
 
-export default GlobalFilter;
+export default GlobalFilterForCompare;
