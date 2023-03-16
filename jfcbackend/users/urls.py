@@ -8,7 +8,7 @@ def home(request):
     return HttpResponse('Home Page')
 
 urlpatterns = [
-    path('login/', views.loginPage, name='login'),
+    path('login/', views.custom_login, name='login'),
     path('logout/', views.logoutUser, name='logout'),
     path('register/', views.registerPage, name='register'),
 

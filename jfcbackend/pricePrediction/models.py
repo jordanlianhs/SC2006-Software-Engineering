@@ -10,7 +10,7 @@ test = requests.get(link).json()
 print(test)
 
 class HousePrices(models.Model):
-    month = models.DateField(_('month'), max_length=255)
+    #month = models.CharField(_('month'), max_length=255)
     town = models.CharField(_('town'), max_length=255)
 
 # with urllib.request.urlopen(link) as url:

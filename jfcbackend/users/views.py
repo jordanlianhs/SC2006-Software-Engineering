@@ -8,6 +8,7 @@ from django.contrib.auth.forms import UserCreationForm
 from django.contrib.auth.models import User
 from django.contrib import messages
 from django.contrib.auth import authenticate, login, logout
+from django.contrib.auth.decorators import login_required
 
 # for email verification
 from django.template.loader import render_to_string
@@ -20,12 +21,12 @@ from django.core.mail import EmailMessage
 from .tokens import account_activation_token
 
 # for registration module
-from .form import UserRegistrationForm
+from .forms import UserRegistrationForm, UserLoginForm
 
 # for user authentication
 from .decorators import user_not_authenticated
 
-from rest_framework.response import Response
+from rest_framework.response import Response 
 from rest_framework.decorators import api_view
 from .models import Account
 from .serializers import AccountSerializer
@@ -97,50 +98,77 @@ def getAccount(request, primary_key):
 def home(request):
     return render(request, 'home.html')
 
-@user_not_authenticated
-def registerPage(request):
-    if request.user.is_authenticated:
-        return redirect('home')
+# @user_not_authenticated
+# def registerPage(request):
+#     if request.user.is_authenticated:
+#         return redirect('home')
 
-    if request.method == 'POST':
-        username = request.POST.get("username")
-        password = request.POST.get("password")
+#     if request.method == 'POST':
+#         username = request.POST.get("username")
+#         password = request.POST.get("password")
 
-        try:
-            user = User.objects.get(username=username)
-        except:
-            messages.error(request, 'User does not exist')
+#         try:
+#             user = User.objects.get(username=username)
+#         except:
+#             messages.error(request, 'User does not exist')
 
-def loginPage(request):
-    page = 'login'
-    if request.method == 'POST':
-        username = request.POST.get("username").lower()
-        password = request.POST.get("password")
+# def loginPage(request):
+#     page = 'login'
+#     if request.method == 'POST':
+#         username = request.POST.get("username").lower()
+#         password = request.POST.get("password")
 
-        try:
-            user = User.objects.get(username=username)
-        except:
-            messages.error(request, 'User does not exist')
+#         try:
+#             user = User.objects.get(username=username)
+#         except:
+#             messages.error(request, 'User does not exist')
 
-        user = authenticate(request, username=username, password=password)
+#         user = authenticate(request, username=username, password=password)
 
-        if user is not None: 
-            login(request, user)
-            messages.success(request, f'Hello {user}! You have successfully logged in.')
+#         if user is not None: 
+#             login(request, user)
+#             messages.success(request, f'Hello {user}! You have successfully logged in.')
 
-            return redirect('home')
+#             return redirect('home')
         
-        else:
-            messages.error(request, 'Username or password does not exist')
+#         else:
+#             messages.error(request, 'Username or password does not exist')
 
-    context = {'page': page}
-    return render(request, 'login_register.html', context)
+#     context = {'page': page}
+#     return render(request, 'login_register.html', context)
 
-#@login_required
+@login_required
 def logoutUser(request):
     logout(request)
     return redirect('home')
 
+
+@user_not_authenticated
+def custom_login(request):
+    if request.method == 'POST':
+        form = UserLoginForm(request=request, data=request.POST)
+        if form.is_valid():
+            user = authenticate(
+                username = form.cleaned_data['username'],
+                password = form.cleaned_data['password'],
+            )
+            if user is not None:
+                login(request, user)
+                messages.success(request, f"Hello {user.username}! You have successfully logged in.")
+                return redirect('home')
+        else:
+            for error in list(form.errors.values()):
+                messages.error(request, error)
+    
+    form = UserLoginForm()
+
+    return render(
+        request=request,
+        template_name='login_register.html',
+        context={'form': form}
+    )
+
+@user_not_authenticated
 def registerPage(request):
     form = UserCreationForm()
 
@@ -157,7 +185,7 @@ def registerPage(request):
                 print(request, error)
     else:
         form = UserRegistrationForm()
-
+ 
     return render(request, 'login_register.html', {'form': form})
 
 @user_not_authenticated

@@ -40,7 +40,7 @@ INSTALLED_APPS = [
 
     'pricePrediction.apps.PricepredictionConfig',
 
-    'api.apps.ApiConfig',
+    'users.apps.ApiConfig',
     'rest_framework',
     'crispy_forms',
     'crispy_bootstrap5',
@@ -129,6 +129,10 @@ STATIC_URL = 'static/'
 
 CRISPY_TEMPLATE_PACK = 'bootstrap5'
 CRISPY_ALLOWED_TEMPLATE_PACKS = 'bootstrap5'
+
+AUTHENTICATION_BACKENDS = [
+    'users.backends.EmailBackend'
+]
 
 # Default primary key field type
 # https://docs.djangoproject.com/en/4.1/ref/settings/#default-auto-field
