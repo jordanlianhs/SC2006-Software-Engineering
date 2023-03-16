@@ -10,6 +10,7 @@ urlpatterns = [
     path('logout/', views.logoutUser, name='logout'),
     path('register/', views.registerPage, name='register'),
     path('profile/<username>', views.profile, name='profile'),
+    path('activate/<uidb64>/<token>', views.activate, name='activate'),
 
     path('', views.home, name='home'),
     #path('', views.getRoutes, name = "routes"),
