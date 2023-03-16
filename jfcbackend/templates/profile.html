@@ -3,25 +3,27 @@
 {% block content %}
 
 <div>
+    <legend class="border-bottom mb-4">Profile Information: </legend>
     <form method="POST" enctype='multipart/form-data'>
         {% csrf_token %}
         <div class="media">
             <div class="media-body">
                 <h2 class="account-heading">
+                    Username: 
                     {{form.instance.username}}
                     <small class="text-muted">
+                        Account status: 
                         {{form.instance.status}}
                     </small>
                 </h2>
-                <p class="text-secondary">{{form.instance.username}}</p>
-                <p class="text-secondary">{{form.instance.email}}</p>
+                <p class="text-secondary">Email: {{form.instance.email}}</p>
             </div>
         </div>
 
         {% if user.username == form.instance.username %}
-            <fieldset class="'form-group">
+            <fieldset class="form-group">
                 <legend class="border-bottom-mb-4">
-                    Edit Prodile Information
+                    Edit Profile Information
                 </legend>
                 <div class="form-group col-md-6 mb-0">
                     {{ form.username|as_crispy_field }}

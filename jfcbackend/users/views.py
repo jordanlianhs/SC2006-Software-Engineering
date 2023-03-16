@@ -204,7 +204,15 @@ def activateEmail(request, user, to_email):
 
 def profile(request, username):
     if request.method == 'POST':
-        pass
+        user = request.user
+        form = UserUpdateProfileForm(request.POST, request.FILES, instance=user)
+        if form.is_valid():
+            user_form = form.save()
+            messages.success(request, f'{user_form.username}, your profile has been updated successfully!')
+            return redirect('profile', user_form.username)
+        else:
+            for error in list(form.errors.values()):
+                print(request, error)
 
     user = get_user_model().objects.filter(username=username).first()
     if user:
