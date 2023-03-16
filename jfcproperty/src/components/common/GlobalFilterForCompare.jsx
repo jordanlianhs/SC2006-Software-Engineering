@@ -16,35 +16,13 @@ const GlobalFilterForCompare = ({ className = "" }) => {
   
   useEffect(() => {
     // Fetch flat types from API
-    const fetchData = async () => {
-      try {
-        let allFlatTypes = [];
-        let offset = 0;
-        let hasMoreRecords = true;
-
-        while (hasMoreRecords) {
-          const response = await fetch(`https://data.gov.sg/api/action/datastore_search?resource_id=f1765b54-a209-4718-8d38-a39237f502b3&fields=flat_type&limit=100&offset=${offset}`);
-          const data = await response.json();
-          const flatTypes = data.result.records.map(record => record.flat_type);
-          allFlatTypes = [...allFlatTypes, ...flatTypes];
-          offset += 100;
-          hasMoreRecords = offset<data.result.total;
-        }
-        const uniqueFlatTypes = [...new Set(allFlatTypes)];
-        setFlatType(uniqueFlatTypes);
-      } catch(error){
-        console.error(error);
-      }
-    };
-
-    fetchData();
-    /*fetch("https://data.gov.sg/api/action/datastore_search?resource_id=f1765b54-a209-4718-8d38-a39237f502b3&fields=flat_type")
+    fetch("https://data.gov.sg/api/action/datastore_search?resource_id=f1765b54-a209-4718-8d38-a39237f502b3&fields=flat_type&limit=148769")
       .then((response) => response.json())
       .then((data) => {
         const uniqueFlatTypes = [...new Set(data.result.records.map(record => record.flat_type))];
         setFlatType(uniqueFlatTypes);
       })
-      .catch((error) => console.error(error));*/
+      .catch((error) => console.error(error));
 
     // Fetch street names from API
     fetch("/api/streetNames")
