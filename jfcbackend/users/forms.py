@@ -23,9 +23,16 @@ class UserLoginForm(AuthenticationForm):
     
     username = forms.CharField(widget=forms.TextInput(
         attrs = {'class': 'form-control', 'placeholder': 'Username or Email'}), 
-        label = 'Username or Email'
+        label = 'Enter username or email'
     )
 
     password = forms.CharField(widget=forms.PasswordInput(
         attrs = {'class': 'form-control', 'placeholder': 'Password'})
     )
+
+class UserUpdateProfileForm(forms.ModelForm):
+    email = forms.EmailField()
+
+    class Meta:
+        model = get_user_model()
+        fields = ['username', 'email']

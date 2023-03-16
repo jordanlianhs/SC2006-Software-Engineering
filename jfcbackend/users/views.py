@@ -7,7 +7,7 @@ from django.contrib.auth.forms import UserCreationForm
 # for login module
 from django.contrib.auth.models import User
 from django.contrib import messages
-from django.contrib.auth import authenticate, login, logout
+from django.contrib.auth import authenticate, login, logout, get_user_model
 from django.contrib.auth.decorators import login_required
 
 # for email verification
@@ -21,14 +21,14 @@ from django.core.mail import EmailMessage
 from .tokens import account_activation_token
 
 # for registration module
-from .forms import UserRegistrationForm, UserLoginForm
+from .forms import UserRegistrationForm, UserLoginForm, UserUpdateProfileForm
 
 # for user authentication
 from .decorators import user_not_authenticated
 
 from rest_framework.response import Response 
 from rest_framework.decorators import api_view
-from .models import Account
+from .models import CustomUser
 from .serializers import AccountSerializer
 
 # Create your views here.
@@ -145,6 +145,7 @@ def logoutUser(request):
 
 @user_not_authenticated
 def custom_login(request):
+    page = 'login'
     if request.method == 'POST':
         form = UserLoginForm(request=request, data=request.POST)
         if form.is_valid():
@@ -162,11 +163,8 @@ def custom_login(request):
     
     form = UserLoginForm()
 
-    return render(
-        request=request,
-        template_name='login_register.html',
-        context={'form': form}
-    )
+    return render(request, 'login_register.html', {'form': form, 'page': page})
+
 
 @user_not_authenticated
 def registerPage(request):
@@ -203,3 +201,18 @@ def activateEmail(request, user, to_email):
         messages.success(request, f'Dear<b>{user}</b>, please go to your email <b>{to_email}</b> inbox and click on received activation link to confirm and complete the registration. <b>Note:</b> Check your spam folder if you do not see it in your inbox.')
     else:
         messages.error(request, f'Error sending email to {to_email}, check if you typed it correctly.')
+
+def profile(request, username):
+    if request.method == 'POST':
+        pass
+
+    user = get_user_model().objects.filter(username=username).first()
+    if user:
+        form = UserUpdateProfileForm(instance=user)
+        return render(
+            request=request,
+            template_name='profile.html',
+            context={'form':form}
+        )
+    
+    return redirect('home')

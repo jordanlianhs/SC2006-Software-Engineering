@@ -1,7 +1,5 @@
 from django.urls import path
 from django.http import HttpResponse
-
-
 from . import views
 
 def home(request):
@@ -11,6 +9,7 @@ urlpatterns = [
     path('login/', views.custom_login, name='login'),
     path('logout/', views.logoutUser, name='logout'),
     path('register/', views.registerPage, name='register'),
+    path('profile/<username>', views.profile, name='profile'),
 
     path('', views.home, name='home'),
     #path('', views.getRoutes, name = "routes"),

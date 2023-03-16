@@ -1,10 +1,10 @@
 from rest_framework.serializers import ModelSerializer
-from .models import Account
+from .models import CustomUser
 
 
 class AccountSerializer(ModelSerializer):
     class Meta:
-        model = Account
+        model = CustomUser
         # serialises all fields: body, updated, created
         # or use a list ['body', 'updated', 'created']
         fields = '__all__'
