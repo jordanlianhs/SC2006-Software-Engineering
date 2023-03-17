@@ -11,6 +11,7 @@ from django.contrib.auth import authenticate, login, logout, get_user_model
 from django.contrib.auth.decorators import login_required
 
 # for email verification
+from django.db.models import Q
 from django.template.loader import render_to_string
 from django.contrib.sites.shortcuts import get_current_site
 from django.utils.http import urlsafe_base64_encode, urlsafe_base64_decode
@@ -21,8 +22,8 @@ from django.core.mail import EmailMessage
 from .tokens import account_activation_token
 
 # for registration module
-from .forms import UserRegistrationForm, UserLoginForm, UserUpdateProfileForm
-
+from .forms import UserRegistrationForm, UserLoginForm, UserUpdateProfileForm, SetPasswordForm, PasswordResetForm
+ 
 # for user authentication
 from .decorators import user_not_authenticated
 
@@ -249,4 +250,88 @@ def profile(request, username):
             context={'form':form}
         )
     
+    return redirect('home')
+
+@login_required
+def password_change(request):
+    user = request.user 
+    if request.method == 'POST':
+        form = SetPasswordForm(user, request.POST)
+        if form.is_valid():
+            form.save()
+            messages.success(request, "Your password has been changed.")
+            return redirect('login')
+        else:
+            for error in list(form.errors.values()):
+                messages.error(request, error)
+
+
+    form = SetPasswordForm(user)
+    return render(request, 'password_reset_confirm.html', {'form': form})
+
+@user_not_authenticated
+def password_reset_request(request):
+    if request.method == 'POST':
+        form = PasswordResetForm(request.POST)
+        if form.is_valid():
+            user_email = form.cleaned_data['email']
+            associated_user = get_user_model().objects.filter(Q(email=user_email)).first()
+            if associated_user:
+                subject = 'JFC Account - Password Reset Request'
+                message = render_to_string('template_reset_password.html', {
+                    'user': associated_user,
+                    'domain': get_current_site(request).domain,
+                    'uid': urlsafe_base64_encode(force_bytes(associated_user.pk)),
+                    'token': account_activation_token.make_token(associated_user),
+                    'protocol': 'https' if request.is_secure() else 'http'
+                })
+                email = EmailMessage(subject, message, to=[associated_user.email])
+                #print(email.from_email)
+                if email.send():
+                    messages.success(request, 
+                        """
+                        Password reset email sent.
+                        We have emailed you instructions for setting your password, if an account exists with the email you entered. 
+                        You should receive them shortly. If you do not receive an email, please make sure you have entered the email 
+                        address you have registered with, and check your spam folder.
+                        """
+                    )
+                else:
+                    messages.error(request, f'Error sending email to {associated_user.email}, SERVER PROBLEM')
+
+        
+    form = PasswordResetForm()
+    return render(request=request, template_name='password_reset.html', context={'form': form})
+
+def passwordResetConfirm(request, uidb64, token):
+    User = get_user_model()
+    try:
+        uid = force_str(urlsafe_base64_decode(uidb64))
+        user = User.objects.get(pk=uid)
+    except Exception as e:
+        print(e)
+        user = None
+
+    print(user,account_activation_token.check_token(user, token))
+    if user is not None and account_activation_token.check_token(user, token):
+        if request.method == 'POST':
+            form = SetPasswordForm(user, request.POST)
+            if form.is_valid():
+                form.save()
+                messages.success(request, 'Your password has been set. You may go ahead and log in now.')
+                return redirect('home')
+            else:
+                for error in list(form.errors.values()):
+                    messages.error(request, error)
+
+        user.is_active = True
+        user.save()
+
+        messages.success(request, 'Thank you for your email confirmation. Now you can login into your account.')
+        form = SetPasswordForm(user)
+        return render(request, 'password_reset_confirm.html', {'form': form})
+    else:
+        messages.error(request, 'Reset password link is expired!')
+
+    messages.error(request, 'Something went wrong, redirecting back to homepage')
     return redirect('home')

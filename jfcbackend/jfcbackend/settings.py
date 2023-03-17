@@ -144,7 +144,8 @@ EMAIL_HOST_PASSWORD = 'jfc-app-password'
 EMAIL_PORT = 587
 EMAIL_USE_TLS = True
 
-PASSWORD_RESET_TIMEOUT = 14400
+# 4 hour time limit for email verification
+PASSWORD_RESET_TIMEOUT = 600
 
 # Default primary key field type
 # https://docs.djangoproject.com/en/4.1/ref/settings/#default-auto-field

@@ -19,6 +19,9 @@
 
     <p> Haven't signed up yet?</p>
     <a href="{% url 'register' %}">Sign up</a>
+    <small class="text-muted">
+        <a href="{% url 'password_reset' %}">Forgot Password?</a>
+    </small>
 
 </div>
 {% else %}
