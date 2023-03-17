@@ -144,6 +144,7 @@ EMAIL_HOST_PASSWORD = 'jfc-app-password'
 EMAIL_PORT = 587
 EMAIL_USE_TLS = True
 
+# 4 hour time limit for email verification
 PASSWORD_RESET_TIMEOUT = 14400
 
 # Default primary key field type
