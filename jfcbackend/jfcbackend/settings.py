@@ -39,8 +39,7 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
 
     'pricePrediction.apps.PricepredictionConfig',
-
-    'users.apps.ApiConfig',
+    'users.apps.UserConfig',
     'rest_framework',
     'crispy_forms',
     'crispy_bootstrap5',

@@ -5,9 +5,9 @@ import requests
 
 #import urllib.request
 
-link = "https://data.gov.sg/api/action/datastore_search?resource_id=f1765b54-a209-4718-8d38-a39237f502b3&limit=5"
-test = requests.get(link).json()
-print(test)
+#link = "https://data.gov.sg/api/action/datastore_search?resource_id=f1765b54-a209-4718-8d38-a39237f502b3&limit=5"
+#test = requests.get(link).json()
+#print(test)
 
 class HousePrices(models.Model):
     #month = models.CharField(_('month'), max_length=255)
