@@ -7,9 +7,9 @@ import {
 import { useEffect, useState } from "react";
 
 const GlobalFilterForCompare = ({ className = "" }) => {
-  const [flatType, setFlatType] = useState([""]); //default values
-  const [streetName, setStreetName] = useState(['Jurong West St 21', 'Bukit Batok St 11', 'Clementi Ave 3']);//default values
-  const [blockNumber, setBlockNumber] = useState(['101', '202', '303']);//default values
+  const [flatType, setFlatType] = useState([]); 
+  const [streetName, setStreetName] = useState([]);
+  const [blockNumber, setBlockNumber] = useState([]);
   const [selectedFlatType, setSelectedFlatType] = useState("");
   const [selectedStreetName, setSelectedStreetName] = useState("");
   const [selectedBlockNumber, setSelectedBlockNumber] = useState("");
@@ -25,15 +25,21 @@ const GlobalFilterForCompare = ({ className = "" }) => {
       .catch((error) => console.error(error));
 
     // Fetch street names from API
-    fetch("/api/streetNames")
+    fetch("https://data.gov.sg/api/action/datastore_search?resource_id=f1765b54-a209-4718-8d38-a39237f502b3&fields=street_name&limit=148769")
       .then((response) => response.json())
-      .then((data) => setStreetName(data))
+      .then((data) => {
+        const uniqueStreetNames = [...new Set(data.result.records.map(record => record.street_name))];
+        setStreetName(uniqueStreetNames);
+      })
       .catch((error) => console.error(error));
 
     // Fetch block numbers from API
-    fetch("/api/blockNumbers")
+    fetch("https://data.gov.sg/api/action/datastore_search?resource_id=f1765b54-a209-4718-8d38-a39237f502b3&fields=block&limit=148769")
       .then((response) => response.json())
-      .then((data) => setBlockNumber(data))
+      .then((data) => {
+        const uniqueBlockNumbers = [...new Set(data.result.records.map(record => record.block))];
+        setBlockNumber(uniqueBlockNumbers);
+      })
       .catch((error) => console.error(error));
   }, []);
   // submit handler
