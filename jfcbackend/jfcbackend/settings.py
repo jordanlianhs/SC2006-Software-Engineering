@@ -47,6 +47,8 @@ INSTALLED_APPS = [
     'fontawesomefree',
 ]
 
+AUTH_USER_MODEL = 'users.CustomUser'
+
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
@@ -133,6 +135,16 @@ CRISPY_ALLOWED_TEMPLATE_PACKS = 'bootstrap5'
 AUTHENTICATION_BACKENDS = [
     'users.backends.EmailBackend'
 ]
+
+EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
+EMAIL_HOST = 'smtp-mail.outlook.com.'
+DEFAULT_FROM_EMAIL = 'jfc-main@outlook.com'
+EMAIL_HOST_USER = 'jfc-main@outlook.com'
+EMAIL_HOST_PASSWORD = 'jfc-app-password'
+EMAIL_PORT = 587
+EMAIL_USE_TLS = True
+
+PASSWORD_RESET_TIMEOUT = 14400
 
 # Default primary key field type
 # https://docs.djangoproject.com/en/4.1/ref/settings/#default-auto-field
