@@ -37,7 +37,7 @@ const index = () => {
               <div className="membership_container">
                 <ul className="mc_parent_list">
                   <ComparePricing />
-                  <ComparePricing />
+                  {/*<ComparePricing />*/}
                 </ul>
                 {/* End .mc_parent_list */}
               </div>
