@@ -1,8 +1,19 @@
+import React, {useState, useEffect} from "react";
 import Link from "next/link";
 import Slider from "react-slick";
 import properties from "../../data/properties";
 
 const FeaturedProperties = () => {
+  const[flats, setFlats] = useState([]);
+
+  useEffect(() => {
+    const fetchData = async () => {
+      const data = await properties();
+      setFlats(data);
+    };
+    fetchData();
+  }, []);
+
   const settings = {
     dots: true,
     arrows: false,
@@ -28,7 +39,7 @@ const FeaturedProperties = () => {
     ],
   };
 
-  let content = properties?.slice(0, 12)?.map((item) => (
+  let content = flats?.slice(0, 12)?.map((item) => (
     <div className="item" key={item.id}>
       <div className="feat_property">
         <div className="thumb">
@@ -46,7 +57,7 @@ const FeaturedProperties = () => {
 
             <Link href={`/listing-details-v1/${item.id}`}>
               <a className="fp_price">
-                ${item.resalePrice}
+                ${item.price}
               </a>
             </Link>
           </div>
@@ -55,15 +66,15 @@ const FeaturedProperties = () => {
 
         <div className="details">
           <div className="tc_content">
-            <p className="text-thm">{item.type}</p>
+            <p className="text-thm">{item.flatType}</p>
             <h4>
               <Link href={`/listing-details-v1/${item.id}`}>
-                <a>{item.blockNumber}</a>
+                <a>BLK {item.blockNumber}</a>
               </Link>
             </h4>
             <p>
               <span className="flaticon-placeholder"></span>
-              {item.StreetName}
+              {item.streetName}
             </p>
 
           </div>
