@@ -19,7 +19,7 @@ class HousePrice(models.Model):
     resale_price = models.FloatField(_("resale_price"), blank=True)
     
     def __str__(self) -> str:
-        return f"{self.id} {self.town} {self.flat_type} {self.block} {self.street_name} {self.storey_range} {self.floor_area_sqm} {self.flat_model} {self.lease_commence_date} {self.remaining_lease} {self.resale_price}"
+        return f"{self.id}"
 
 def get_top5():
     url = "https://data.gov.sg/api/action/datastore_search?resource_id=f1765b54-a209-4718-8d38-a39237f502b3&limit=5"
