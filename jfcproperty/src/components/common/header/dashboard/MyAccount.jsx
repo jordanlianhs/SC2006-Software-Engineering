@@ -5,10 +5,8 @@ import { isSinglePageActive } from "../../../../utils/daynamicNavigation";
 const MyAccount = () => {
   const profileMenuItems = [
     { id: 1, name: "My Profile", ruterPath: "/my-profile" },
-    { id: 2, name: " My Message", ruterPath: "/my-message" },
-    { id: 3, name: " My Favourite", ruterPath: "/my-favourites" },
-    { id: 4, name: " My Package", ruterPath: "/my-package" },
-    { id: 5, name: " Log out", ruterPath: "/login" },
+    { id: 2, name: " My Favourite", ruterPath: "/my-favourites" },
+    { id: 3, name: " Log out", ruterPath: "/login" },
   ];
   const route = useRouter();
   return (
@@ -20,8 +18,8 @@ const MyAccount = () => {
           alt="e1.png"
         />
         <p>
-          Ali Tufan <br />
-          <span className="address">alitufan@gmail.com</span>
+          SMALL SHEEP <br />
+          <span className="address">smallsheep@gmail.com</span>
         </p>
       </div>
       {/* End user_set_header */}

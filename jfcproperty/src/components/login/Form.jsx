@@ -57,11 +57,7 @@ const Form = () => {
       </button>
       {/* login button */}
 
-      <div className="divide">
-        <span className="lf_divider">Or</span>
-        <hr />
-      </div>
-      {/* divider */}
+
 
     </form>
   );

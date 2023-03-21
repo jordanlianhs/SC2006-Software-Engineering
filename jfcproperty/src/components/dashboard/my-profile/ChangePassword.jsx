@@ -9,7 +9,7 @@ const ChangePassword = () => {
               type="text"
               className="form-control"
               id="formGroupExampleOldPass"
-              placeholder="alitfn"
+              placeholder=""
             />
           </div>
         </div>
@@ -44,9 +44,6 @@ const ChangePassword = () => {
         {/* End .col */}
 
         <div className="col-xl-12">
-          <div className="my_profile_setting_input float-start fn-520">
-            <button className="btn btn3 btn-dark">Update Profile</button>
-          </div>
           <div className="my_profile_setting_input float-end fn-520">
             <button className="btn btn2">Update Profile</button>
           </div>
