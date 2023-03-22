@@ -67,8 +67,8 @@ const LoginSignup = () => {
                             <div className="login_thumb">
                                 <img
                                     className="img-fluid w100"
-                                    src="/assets/images/resource/login.jpg"
-                                    alt="login.jpg"
+                                    src="/assets/images/resource/regstr.jpg"
+                                    alt="regstr.jpg"
                                 />
                             </div>
                         </div>
@@ -82,28 +82,7 @@ const LoginSignup = () => {
                                     </div>
                                     {/* End heading */}
 
-                                    <div className="row mt25">
-                                        <div className="col-lg-12">
-                                            <button
-                                                type="submit"
-                                                className="btn btn-fb w-100"
-                                            >
-                                                <i className="fa fa-facebook float-start mt5"></i>{" "}
-                                                Login with Facebook
-                                            </button>
-                                        </div>
-                                        <div className="col-lg-12">
-                                            <button
-                                                type="submit"
-                                                className="btn btn-googl w-100"
-                                            >
-                                                <i className="fa fa-google float-start mt5"></i>{" "}
-                                                Login with Google
-                                            </button>
-                                        </div>
-                                    </div>
-                                    {/* End .row */}
-
+                                    
                                     <hr />
 
                                     <div className="input-group mb-2 mr-sm-2">
@@ -111,7 +90,7 @@ const LoginSignup = () => {
                                             type="text"
                                             className="form-control"
                                             id="inlineFormInputGroupUsername2"
-                                            placeholder="User Name Or Email"
+                                            placeholder="Insert Email Address"
                                         />
                                         <div className="input-group-prepend">
                                             <div className="input-group-text">
@@ -137,19 +116,6 @@ const LoginSignup = () => {
                                     {/* End input-group */}
 
                                     <div className="form-group form-check custom-checkbox mb-3">
-                                        <input
-                                            className="form-check-input"
-                                            type="checkbox"
-                                            value=""
-                                            id="remeberMe"
-                                        />
-                                        <label
-                                            className="form-check-label form-check-label"
-                                            htmlFor="remeberMe"
-                                        >
-                                            Remember me
-                                        </label>
-
                                         <a
                                             className="btn-fpswd float-end"
                                             href="#"
@@ -205,44 +171,9 @@ const LoginSignup = () => {
                                 {/* End .heading */}
 
                                 <form action="#">
-                                    <div className="row ">
-                                        <div className="col-lg-12">
-                                            <button
-                                                type="submit"
-                                                className="btn btn-fb w-100"
-                                            >
-                                                <i className="fa fa-facebook float-start mt5"></i>{" "}
-                                                Login with Facebook
-                                            </button>
-                                        </div>
-                                        <div className="col-lg-12">
-                                            <button
-                                                type="submit"
-                                                className="btn btn-googl w-100"
-                                            >
-                                                <i className="fa fa-google float-start mt5"></i>{" "}
-                                                Login with Google
-                                            </button>
-                                        </div>
-                                    </div>
-                                    {/* End .row */}
 
                                     <hr />
 
-                                    <div className="form-group input-group mb-3">
-                                        <input
-                                            type="text"
-                                            className="form-control"
-                                            id="exampleInputName"
-                                            placeholder="User Name"
-                                        />
-                                        <div className="input-group-prepend">
-                                            <div className="input-group-text">
-                                                <i className="flaticon-user"></i>
-                                            </div>
-                                        </div>
-                                    </div>
-                                    {/* End .row */}
 
                                     <div className="form-group input-group  mb-3">
                                         <input
@@ -289,42 +220,6 @@ const LoginSignup = () => {
                                     </div>
                                     {/* End .row */}
 
-                                    <div className="form-group ui_kit_select_search mb-3">
-                                        <select
-                                            className="form-select"
-                                            data-live-search="true"
-                                            data-width="100%"
-                                        >
-                                            <option data-tokens="SelectRole">
-                                                Single User
-                                            </option>
-                                            <option data-tokens="Agent/Agency">
-                                                Agent
-                                            </option>
-                                            <option data-tokens="SingleUser">
-                                                Multi User
-                                            </option>
-                                        </select>
-                                    </div>
-                                    {/* End from-group */}
-
-                                    <div className="form-group form-check custom-checkbox mb-3">
-                                        <input
-                                            className="form-check-input"
-                                            type="checkbox"
-                                            value=""
-                                            id="terms"
-                                        />
-                                        <label
-                                            className="form-check-label form-check-label"
-                                            htmlFor="terms"
-                                        >
-                                            I have accept the Terms and Privacy
-                                            Policy.
-                                        </label>
-                                    </div>
-                                    {/* End from-group */}
-
                                     <button
                                         type="submit"
                                         className="btn btn-log w-100 btn-thm"
@@ -333,12 +228,6 @@ const LoginSignup = () => {
                                     </button>
                                     {/* End btn */}
 
-                                    <p className="text-center">
-                                        Already have an account?{" "}
-                                        <a className="text-thm" href="#">
-                                            Log In
-                                        </a>
-                                    </p>
                                 </form>
                                 {/* End .form */}
                             </div>

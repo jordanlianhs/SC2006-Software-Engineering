@@ -1,5 +1,5 @@
-import BreadCrumb from "../common/BreadCrumb";
 
+import BreadCrumb from "../common/BreadCrumb";
 const BreadCrumbBanner = () => {
   return (
     <section className="inner_page_breadcrumb">

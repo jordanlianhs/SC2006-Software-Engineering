@@ -1,44 +1,14 @@
-module.exports = [
-  {
-    id: 1,
-    img: "/assets/images/pricing/1.jpg",
-    price: "13,000",
-    propertyName: "Renovated Apartment",
-    propertyType: "Apartment",
-    city: "New York",
-    beds: "4",
-    rooms: "7",
-    garage: "2",
-    buildYear: "2",
-    laundryRoom: "Yes",
-    status: "Active",
-  },
-  {
-    id: 2,
-    img: "/assets/images/pricing/2.jpg",
-    price: "16,000",
-    propertyName: "Luxury Family Home",
-    propertyType: "Apartment",
-    city: "Buffalo",
-    beds: "4",
-    rooms: "7",
-    garage: "2",
-    buildYear: "2",
-    laundryRoom: "Yes",
-    status: "No",
-  },
-  {
-    id: 3,
-    img: "/assets/images/pricing/3.jpg",
-    price: "17,000",
-    propertyName: "Ample Penthouse",
-    propertyType: "Apartment",
-    city: "Yonkers",
-    beds: "4",
-    rooms: "7",
-    garage: "2",
-    buildYear: "2",
-    laundryRoom: "Yes",
-    status: "Active",
-  },
-];
+const getResaleFlats = async () => {
+  const response = await fetch("https://data.gov.sg/api/action/datastore_search?resource_id=f1765b54-a209-4718-8d38-a39237f502b3&limit=5");
+  const data = await response.json();
+  const flats = data.result.records.map((flat, index) => ({
+    id: index + 1,
+    price: flat.resale_price,
+    flatType: flat.flat_type,
+    blockNumber: flat.block,
+    streetName: flat.street_name,
+  }));
+  return flats;
+};
+
+module.exports = getResaleFlats;
