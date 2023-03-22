@@ -1,7 +1,9 @@
 import Link from "next/link";
+import allResaleFlats from "../../../data/properties";
 import featureContent from "../../../data/properties";
 
-const FeaturedListings = () => {
+const FeaturedListings = async () => {
+  const featureContent = await allResaleFlats();
   return (
     <>
       {featureContent.slice(27, 30).map((item) => (
@@ -19,23 +21,15 @@ const FeaturedListings = () => {
           <div className="media-body">
             <h5 className="mt-0 post_title">
               <Link href={`/listing-details/${item.id}`}>
-                <a>{item.title}</a>
+                <a>BLK {item.blockNumber} {item.streetName}</a>
               </Link>
             </h5>
             <Link href={`/listing-details/${item.id}`}>
               <a>
                 {" "}
-                ${item.price}/<small>/mo</small>
+                ${item.price}
               </a>
             </Link>
-
-            <ul className="mb0">
-              {item.itemDetails.map((val, i) => (
-                <li key={i} className="list-inline-item">
-                  {val.name}:{val.number} &nbsp;
-                </li>
-              ))}
-            </ul>
           </div>
         </div>
       ))}
