@@ -1,0 +1,10 @@
+django
+django-tinymce
+fontawesomefree
+django-crispy-forms
+crispy-bootstrap5
+django-recaptcha
+pillow
+six
+djangorestframework
+requests

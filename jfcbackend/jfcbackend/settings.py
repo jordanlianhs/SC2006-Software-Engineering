@@ -14,6 +14,7 @@ from pathlib import Path
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
+REAL_BASE_DIR = Path(__file__).resolve().parent.parent.parent
 
 
 # Quick-start development settings - unsuitable for production
@@ -38,11 +39,15 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
 
-
-    'api.apps.ApiConfig',
-    
+    'pricePrediction.apps.PricepredictionConfig',
+    'users.apps.UserConfig',
     'rest_framework',
+    'crispy_forms',
+    'crispy_bootstrap5',
+    'fontawesomefree',
 ]
+
+AUTH_USER_MODEL = 'users.CustomUser'
 
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
@@ -59,7 +64,10 @@ ROOT_URLCONF = 'jfcbackend.urls'
 TEMPLATES = [
     {
         'BACKEND': 'django.template.backends.django.DjangoTemplates',
-        'DIRS': [],
+        'DIRS': [
+            BASE_DIR / 'templates',
+            REAL_BASE_DIR,
+        ],
         'APP_DIRS': True,
         'OPTIONS': {
             'context_processors': [
@@ -121,6 +129,24 @@ USE_TZ = True
 # https://docs.djangoproject.com/en/4.1/howto/static-files/
 
 STATIC_URL = 'static/'
+
+CRISPY_TEMPLATE_PACK = 'bootstrap5'
+CRISPY_ALLOWED_TEMPLATE_PACKS = 'bootstrap5'
+
+AUTHENTICATION_BACKENDS = [
+    'users.backends.EmailBackend'
+]
+
+EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
+EMAIL_HOST = 'smtp-mail.outlook.com.'
+DEFAULT_FROM_EMAIL = 'jfc-main@outlook.com'
+EMAIL_HOST_USER = 'jfc-main@outlook.com'
+EMAIL_HOST_PASSWORD = 'jfc-app-password'
+EMAIL_PORT = 587
+EMAIL_USE_TLS = True
+
+# 4 hour time limit for email verification
+PASSWORD_RESET_TIMEOUT = 600
 
 # Default primary key field type
 # https://docs.djangoproject.com/en/4.1/ref/settings/#default-auto-field

@@ -15,8 +15,11 @@ Including another URLconf
 """
 from django.contrib import admin
 from django.urls import path, include
+# include here helps to go into api folder and into urls file
+# to match all the urls
 
 urlpatterns = [
     path('admin/', admin.site.urls),
-    path('', include("api.urls")),
+    path('', include("users.urls")),
+    path('', include("pricePrediction.urls")),
 ]

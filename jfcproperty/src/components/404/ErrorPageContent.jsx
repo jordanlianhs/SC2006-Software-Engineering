@@ -9,10 +9,10 @@ const ErrorPageContent = () => {
         src="/assets/images/resource/error.png"
         alt="error.png"
       />
-      <div className="erro_code">
+      <div className="error_code">
         <h1>JFC Property - 404 Page</h1>
       </div>
-      <p>Sorry the page you're looking for doesn't exist!</p>
+      <p>Sorry the page you&apos;re looking for doesn&apos;t exist!</p>
 
       <Form />
       {/* End form */}

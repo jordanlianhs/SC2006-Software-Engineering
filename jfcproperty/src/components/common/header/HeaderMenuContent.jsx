@@ -36,7 +36,6 @@ const HeaderMenuContent = ({ float = "" }) => {
       <li className="dropitem">
         <Link href="/">
           <a
-            href="/"
             className={
               home.some((page) => page.routerPath === route.pathname)
                 ? "ui-active"
