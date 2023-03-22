@@ -8,3 +8,8 @@ pillow
 six
 djangorestframework
 requests
+pandas
+seaborn
+django-matplotlib
+scikit-learn
+tensorflow

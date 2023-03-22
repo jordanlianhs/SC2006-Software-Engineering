@@ -1,0 +1,16 @@
+django
+django-tinymce
+fontawesomefree
+django-crispy-forms
+crispy-bootstrap5
+django-recaptcha
+pillow
+six
+djangorestframework
+requests
+pandas
+seaborn
+django-matplotlib
+scikit-learn
+tensorflow-macos==2.9
+tensorflow-metal==0.5.0
