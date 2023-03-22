@@ -158,7 +158,7 @@ const FeaturedItem = () => {
                 </li>
               </ul>
 
-              <Link href={`/listing-details-v1/${item.id}`}>
+              <Link href={`/listing-details/${item.id}`}>
                 <a className="fp_price">
                   ${item.price}
                   <small>/mo</small>
@@ -170,7 +170,7 @@ const FeaturedItem = () => {
             <div className="tc_content">
               <p className="text-thm">{item.type}</p>
               <h4>
-                <Link href={`/listing-details-v2/${item.id}`}>
+                <Link href={`/listing-details/${item.id}`}>
                   <a>{item.title}</a>
                 </Link>
               </h4>
@@ -202,7 +202,7 @@ const FeaturedItem = () => {
                 </li>
                 <li className="list-inline-item">
                   <Link href="/agent-v1">
-                    <a>{item.posterName}</a>
+                    <a>JFC Property Team</a>
                   </Link>
                 </li>
               </ul>
@@ -213,6 +213,7 @@ const FeaturedItem = () => {
         </div>
       </div>
     ));
+// {item.posterName}
 
   // add length of filter items
   useEffect(() => {

@@ -10,7 +10,7 @@ const Sidebar = () => {
       <div className="sidebar_listing_list">
         <div className="sidebar_advanced_search_widget">
           <div className="sl_creator">
-            <h4 className="mb25">Listed By</h4>
+            <h4 className="mb25">Contact JFC Property</h4>
             <ListingCreator />
           </div>
           {/* End .sl_creator */}
@@ -28,7 +28,8 @@ const Sidebar = () => {
       {/* End .Featured Properties */}
 
       <div className="terms_condition_widget">
-        <h4 className="title">Categories Property</h4>
+        <h4 className="title">Most Viewed Locations
+</h4>
         <div className="widget_list">
           <ul className="list_details">
             <Categorie />
@@ -38,7 +39,7 @@ const Sidebar = () => {
       {/* End .Categories Property */}
 
       <div className="sidebar_feature_listing">
-        <h4 className="title">Recently Viewed</h4>
+        <h4 className="title">Featured Listing</h4>
         <FeaturedListings />
       </div>
       {/* End .Recently Viewed */}
