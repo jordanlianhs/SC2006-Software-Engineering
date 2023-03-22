@@ -2,8 +2,44 @@
 {% block content%}
     
     <h1>House Price</h1>
+    
+</h2> Total number of houses: {{ count }} </h2>
+</br>
+</h2> Page Number: {{ page.number }} </h2>
+</br>
+</br>
 
-{{ house_list }}
+        {% for house in page.object_list %}
+        <strong> {{ house }} </strong>
+        <u1>
+        <li>{{ house.town }}</li>
+        <li>{{ house.flat_type }}</li>
+        <li>{{ house.block }}</li>
+        <li>{{ house.street_name }}</li>
+        <li>{{ house.floor_area_sqm }}</li>
+        <li>{{ house.flat_model }}</li>
+        <li>{{ house.remaining_lease }}</li>
+        <li>{{ house.resale_price }}</li>
+        </u1>
+    </br>
+        {% endfor %}
+        <div class= "page-links">
+            {% if page.has_previous %}
+                <a href="{ url 'index'%} ?page={{ page.previous_page_number }}">Previous Page</a>
+            {% endif %}
 
+            {% for i in page.paginator.page_range %}
+                {% if page.number == i %}
+                    <span class="current">{{ i }}</span>
+                {% else %}
+                    <a href="?page={{ i }}">{{ i }}</a>
+                {% endif %}
+            {% endfor %}
+            
+            {% if page.has_next %}
+                <a href="{ url 'index'%} ?page={{ page.next_page_number }}">Next Page</a>
+            {% endif %}
+        </div>
+    
 
 {% endblock %}
