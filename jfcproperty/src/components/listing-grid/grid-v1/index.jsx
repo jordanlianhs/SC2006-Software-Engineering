@@ -16,7 +16,7 @@ import Link from 'next/link';
 
 
 
-const index = () => {
+const Index = () => {
   const[flats,setFlats] = useState([]);
   const[currentPage,setCurrentPage] = useState(1);
   const[flatsPerPage,setFlatsPerPage] = useState(10);
@@ -132,4 +132,4 @@ const index = () => {
   );
 };
 
-export default index;
+export default Index;
