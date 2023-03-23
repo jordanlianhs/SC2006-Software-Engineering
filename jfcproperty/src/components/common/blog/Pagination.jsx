@@ -1,34 +1,58 @@
-import React, { useState } from 'react';
+import React, { useState } from "react";
 
-const Pagination = ({ totalFlats, flatsPerPage, paginate }) => {
+
+const Pagination = ({ flatsPerPage, totalFlats, paginate }) => {
+  const [startPage, setStartPage] = useState(1);
+
+  const lastPageDisplayed = Math.min(
+    startPage + 19,
+    Math.ceil(totalFlats / flatsPerPage)
+  );
+
   const pageNumbers = [];
-  const [currentPage, setCurrentPage] = useState(1);
-
-  for (let i = 1; i <= Math.ceil(totalFlats / flatsPerPage); i++) {
+  for (let i = startPage; i <= lastPageDisplayed; i++) {
     pageNumbers.push(i);
   }
 
-  const handleClick = (number) => {
-    setCurrentPage(number);
-    paginate(number);
+  const handlePreviousClick = () => {
+    const newStartPage = Math.max(startPage - 20, 1);
+    setStartPage(newStartPage);
+    paginate(newStartPage);
   };
 
   return (
-    <ul className="page_navigation">
-      {pageNumbers.map((number) => (
-        <li
-          className={currentPage === number ? 'page-item active' : 'page-item'}
-          key={number}
-        >
-          <a className="page-link" href="#" onClick={() => handleClick(number)}>
-            {number}
+    <nav>
+      <ul className="pagination">
+        <li className="page-item">
+          <a onClick={handlePreviousClick} className="page-link">
+            Previous
           </a>
         </li>
-      ))}
-    </ul>
+        {pageNumbers.map((number) => (
+          <li key={number} className="page-item">
+            <a onClick={() => paginate(number)} className="page-link">
+              {number}
+            </a>
+          </li>
+        ))}
+        <li className="page-item">
+          <a
+            onClick={() => {
+              setStartPage(startPage + 20);
+              paginate(startPage + 20);
+            }}
+            className="page-link"
+          >
+            Next
+          </a>
+        </li>
+      </ul>
+    </nav>
   );
 };
 
 export default Pagination;
+
+
 
 
