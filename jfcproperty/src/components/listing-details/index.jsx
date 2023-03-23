@@ -26,24 +26,6 @@ const index = () => {
         </div>
       </section>
 
-      {/* <!-- Agent Single Grid View --> */}
-      <section className="our-agent-single bgc-f7 pb30-991">
-        <div className="container">
-          <div className="row">
-            <div className="col-md-12 col-lg-8">
-              <DetailsContent />
-            </div>
-            {/* End details content .col-lg-8 */}
-
-            <div className="col-lg-4 col-xl-4">
-              <Sidebar />
-            </div>
-            {/* End sidebar content .col-lg-4 */}
-          </div>
-          {/* End .row */}
-        </div>
-      </section>
-
       {/* <!-- Our Footer --> */}
       <section className="footer_one">
         <div className="container">
