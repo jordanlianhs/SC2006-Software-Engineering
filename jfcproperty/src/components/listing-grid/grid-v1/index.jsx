@@ -13,21 +13,54 @@ import FeaturedItem from "./FeaturedItem";
 import allResaleFlats from "../../../data/properties"
 import React, { useState,useEffect } from 'react';
 import Link from 'next/link';
+import { useRouter } from 'next/router';
+import { useSelector } from "react-redux";
+import {
+  selectFlatType,
+  selectStreetName,
+  selectBlockNumber,
+  storeFilteredFlats, // Make sure this is imported
+} from "../../../features/properties/propertiesSlice";
 
 
 
 const Index = () => {
+  const selectedFlatType = useSelector(selectFlatType);
+  const selectedStreetName = useSelector(selectStreetName);
+  const selectedBlockNumber = useSelector(selectBlockNumber);
+  const filteredFlats = useSelector(storeFilteredFlats);
+  
   const[flats,setFlats] = useState([]);
   const[currentPage,setCurrentPage] = useState(1);
   const[flatsPerPage,setFlatsPerPage] = useState(10);
+  
+
+//  useEffect(() => {
+//    const fetchFlats = async() => {
+//      const fetchedFlats = await allResaleFlats();
+//      setFlats(fetchedFlats);
+//    };
+//    fetchFlats();
+//  }, []);
 
   useEffect(() => {
-    const fetchFlats = async() => {
-      const fetchedFlats = await allResaleFlats();
-      setFlats(fetchedFlats);
-    };
-    fetchFlats();
-  }, []);
+    if (filteredFlats.length) {
+      setFlats(filteredFlats);
+    } else {
+      const fetchFlats = async () => {
+        const fetchedFlats = await allResaleFlats();
+        const filteredFetchedFlats = fetchedFlats.filter((flat) => {
+          return (
+            (!selectedFlatType || flat.flatType === selectedFlatType) &&
+            (!selectedStreetName || flat.streetName === selectedStreetName) &&
+            (!selectedBlockNumber || flat.blockNumber === selectedBlockNumber)
+          );
+        });
+        setFlats(filteredFetchedFlats);
+      };
+      fetchFlats();
+    }
+  }, [filteredFlats, selectedFlatType, selectedStreetName, selectedBlockNumber]);
 
   const indexOfLastFlat = currentPage * flatsPerPage;
   const indexOfFirstFlat = indexOfLastFlat - flatsPerPage;
