@@ -1,6 +1,5 @@
 // pages/listing-details-v1/[id].js
 import React from "react";
-import { useRouter } from "next/router";
 import allResaleFlats from "../../data/properties";
 import Header from "../../components/common/header/DefaultHeader";
 import Footer from "../../components/common/footer/Footer";

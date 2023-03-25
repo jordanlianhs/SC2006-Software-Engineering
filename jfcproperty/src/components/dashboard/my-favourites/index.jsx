@@ -1,20 +1,13 @@
 import Header from "../../common/header/dashboard/Header";
-import SidebarMenu from "../../common/header/dashboard/SidebarMenu";
-import MobileMenu from "../../common/header/MobileMenu";
 import FavouritProducts from "./FavouritProducts";
-import Filtering from "./Filtering";
 import Pagination from "../../common/blog/Pagination";
-import SearchBox from "./SearchBox";
+
 
 const index = () => {
   return (
     <>
       {/* <!-- Main Header Nav --> */}
       <Header />
-
-      {/* <!--  Mobile Menu --> */}
-      <MobileMenu />
-
 
       {/* <!-- Our Dashbord --> */}
       <section className="our-dashbord dashbord bgc-f7 pb50">

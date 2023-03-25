@@ -1,6 +1,4 @@
 import Header from "../../common/header/dashboard/Header";
-import SidebarMenu from "../../common/header/dashboard/SidebarMenu";
-import MobileMenu from "../../common/header/MobileMenu";
 import ChangePassword from "./ChangePassword";
 import ProfileInfo from "./ProfileInfo";
 
@@ -10,9 +8,6 @@ const index = () => {
     <>
       {/* <!-- Main Header Nav --> */}
       <Header />
-
-      {/* <!--  Mobile Menu --> */}
-      <MobileMenu />
 
       {/* <!-- Our Dashbord --> */}
       <section className="our-dashbord dashbord bgc-f7 pb50">
