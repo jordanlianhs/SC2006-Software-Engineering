@@ -1,7 +1,5 @@
 import React, { useState, useEffect } from "react";
 import Header from "../../common/header/DefaultHeader";
-import Footer from "../../common/footer/Footer";
-import CopyrightFooter from "../../common/footer/CopyrightFooter";
 import Link from 'next/link';
 
 const FavoriteFlats = () => {
@@ -27,7 +25,6 @@ const FavoriteFlats = () => {
       <section className="our-listing bgc-f7 pb30-991 mt85 md-mt0">
         <div className="container">
           <div className="row">
-            <h2>My Favorite Flats</h2>
             {favoriteFlats.map((flat) => (
               <div className="col-md-6 col-lg-6" key={flat.id}>
                 <div className="feat_property home7 style4">
@@ -75,18 +72,6 @@ const FavoriteFlats = () => {
               </div>
             ))}
           </div>
-        </div>
-      </section>
-      <section className="footer_one">
-        <div className="container">
-          <div className="row">
-            <Footer />
-          </div>
-        </div>
-      </section>
-      <section className="footer_middle_area pt40 pb40">
-        <div className="container">
-          <CopyrightFooter />
         </div>
       </section>
     </>
