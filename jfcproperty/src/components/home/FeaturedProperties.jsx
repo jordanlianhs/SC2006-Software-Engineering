@@ -7,15 +7,25 @@ const FeaturedProperties = () => {
   const[flats, setFlats] = useState([]);
   const [favoriteFlats, setFavoriteFlats] = useState([]);
 
+  // Add a function to handle adding/removing favorite flats
   const toggleFavoriteFlat = (flat) => {
     if (favoriteFlats.find((f) => f.id === flat.id)) {
-      setFavoriteFlats(favoriteFlats.filter((f) => f.id !== flat.id));
+      const updatedFavorites = favoriteFlats.filter((f) => f.id !== flat.id);
+      setFavoriteFlats(updatedFavorites);
+      localStorage.setItem('favoriteFlats', JSON.stringify(updatedFavorites));
     } else {
-      setFavoriteFlats([...favoriteFlats, flat]);
+      const updatedFavorites = [...favoriteFlats, flat];
+      setFavoriteFlats(updatedFavorites);
+      localStorage.setItem('favoriteFlats', JSON.stringify(updatedFavorites));
     }
   };
 
   useEffect(() => {
+    const storedFavorites = localStorage.getItem('favoriteFlats');
+    if (storedFavorites) {
+      setFavoriteFlats(JSON.parse(storedFavorites));
+    }
+    
     const fetchData = async () => {
       const data = await properties();
       setFlats(data);
