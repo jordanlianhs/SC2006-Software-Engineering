@@ -33,7 +33,10 @@ import itertools
 
 # Creating a function to return a list of all possible permutations of town, flat_type, flat_model
 def get_all_combinations():
-    town = ['ANG MO KIO', 'BEDOK', 'BISHAN', 'BUKIT BATOK', 'BUKIT MERAH', 'BUKIT PANJANG', 'BUKIT TIMAH', 'CENTRAL AREA', 'CHOA CHU KANG', 'CLEMENTI', 'GEYLANG', 'HOUGANG', 'JURONG EAST', 'JURONG WEST', 'KALLANG/WHAMPOA', 'MARINE PARADE', 'PASIR RIS', 'PUNGGOL', 'QUEENSTOWN', 'SEMBAWANG', 'SENGKANG', 'SERANGOON', 'TAMPINES', 'TOA PAYOH', 'WOODLANDS', 'YISHUN']
+    # Removed 'ANG MO KIO' as updated dataset already
+    # On hold 'BEDOK' got error, to be precise, BEDOK, 2 ROOM, Model A, error at line 142
+    # On hold 'BISHAN' got error, to be precise, BISHAN, 4 ROOM, Improved, error at only 3 predicted prices came out, line 157
+    town = ['ANG MO KIO', 'BEDOK', 'BISHAN' ,'BUKIT BATOK', 'BUKIT MERAH', 'BUKIT PANJANG', 'BUKIT TIMAH', 'CENTRAL AREA', 'CHOA CHU KANG', 'CLEMENTI', 'GEYLANG', 'HOUGANG', 'JURONG EAST', 'JURONG WEST', 'KALLANG/WHAMPOA', 'MARINE PARADE', 'PASIR RIS', 'PUNGGOL', 'QUEENSTOWN', 'SEMBAWANG', 'SENGKANG', 'SERANGOON', 'TAMPINES', 'TOA PAYOH', 'WOODLANDS', 'YISHUN']
     flat_type = ['2 ROOM', '3 ROOM', '4 ROOM', '5 ROOM', 'EXECUTIVE', '1 ROOM', 'MULTI-GENERATION']
     flat_model = ['Improved', 'New Generation', 'DBSS', 'Standard', 'Apartment', 'Simplified', 'Model A', 'Premium Apartment', 'Adjoined flat', 'Model A-Maisonette', 'Maisonette', 'Type S1', 'Type S2', 'Model A2', 'Terrace', 'Improved-Maisonette', 'Premium Maisonette', 'Multi Generation', 'Premium Apartment Loft', '2-room', '3Gen']
     all_variables = [ town, flat_type, flat_model ]
@@ -43,7 +46,11 @@ def get_all_combinations():
 def updating_future_data():
     all_combinations = get_all_combinations()
     for combination in all_combinations:
+        print(combination)
         if HousePrice.objects.filter(town=combination[0], flat_type=combination[1], flat_model=combination[2]).exists():
+
+            #print(HousePrice.objects.filter(town=combination[0], flat_type=combination[1], flat_model=combination[2]).all())
+
             future_prices = prediction_return_prices(combination[0], combination[1], combination[2])
             HousePrice.objects.filter(town=combination[0], flat_type=combination[1], flat_model=combination[2]).update(
                 resale_price_aft1year = future_prices[0],
@@ -100,7 +107,7 @@ def prediction_return_prices(town_name, type_of_flat, model_of_flat):
     x = x[['resale_price', 'year','floor_area_sqm', 'lease_commence_date', 'town', 'flat_type', 'flat_model']]
     #One hot encoding for categorical variables 
     x = pd.get_dummies(x, columns=['town','flat_type','flat_model'])
-     #Filtering only rows that meet selection criteria 
+    #Filtering only rows that meet selection criteria 
     town_header = "town_"
     town_header += town_name
     type_header = "flat_type_"
@@ -108,7 +115,7 @@ def prediction_return_prices(town_name, type_of_flat, model_of_flat):
     model_header = "flat_model_"
     model_header += model_of_flat
     row = x[(x[town_header] == 1) & (x[type_header] == 1) & (x[model_header] == 1)  ].to_numpy()
-    print(row)
+    print("row:", row)
 
     #Scale these rows to prepare for training and prediction
     scaler = StandardScaler() 
@@ -147,7 +154,8 @@ def prediction_return_prices(town_name, type_of_flat, model_of_flat):
     prediction_copies = np.repeat(prediction, x.shape[1], axis=-1)
     #Values were scaled, so must inverse to obtain the actual price predictions 
     y_pred_future = scaler.inverse_transform(prediction_copies)[:,0]
-
+    print("Predicted prices:", y_pred_future)
+    con.close()
     #Return the predicted prices
     return y_pred_future
 
@@ -219,6 +227,7 @@ def prediction(town_name,type_of_flat,model_of_flat):
     y_axis = df_forecast["Price"]
     graph = get_plot(x_axis,y_axis)
     #graph = sns.lineplot(x=df_forecast["Date"], y=df_forecast["Price"])
+    con.close()
     return graph 
 
 

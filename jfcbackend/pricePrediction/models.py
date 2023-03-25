@@ -17,6 +17,11 @@ class HousePrice(models.Model):
     lease_commence_date = models.FloatField(_("lease_commence_date"), blank=True)
     remaining_lease = models.CharField(_("remaining_lease"), max_length=255)
     resale_price = models.FloatField(_("resale_price"), blank=True)
+    resale_price_aft1year = models.FloatField(_("resale_price_aft1year"), blank=True, null=True)
+    resale_price_aft2year = models.FloatField(_("resale_price_aft2year"), blank=True, null=True)
+    resale_price_aft3year = models.FloatField(_("resale_price_aft3year"), blank=True, null=True)
+    resale_price_aft4year = models.FloatField(_("resale_price_aft4year"), blank=True, null=True)
+    resale_price_aft5year = models.FloatField(_("resale_price_aft5year"), blank=True, null=True)
     
     def __str__(self) -> str:
         return f"{self.id}"
