@@ -36,7 +36,7 @@ def get_all_combinations():
     # Removed 'ANG MO KIO' as updated dataset already
     # On hold 'BEDOK' got error, to be precise, BEDOK, 2 ROOM, Model A, error at line 142
     # On hold 'BISHAN' got error, to be precise, BISHAN, 4 ROOM, Improved, error at only 3 predicted prices came out, line 157
-    town = ['BUKIT BATOK', 'BUKIT MERAH', 'BUKIT PANJANG', 'BUKIT TIMAH', 'CENTRAL AREA', 'CHOA CHU KANG', 'CLEMENTI', 'GEYLANG', 'HOUGANG', 'JURONG EAST', 'JURONG WEST', 'KALLANG/WHAMPOA', 'MARINE PARADE', 'PASIR RIS', 'PUNGGOL', 'QUEENSTOWN', 'SEMBAWANG', 'SENGKANG', 'SERANGOON', 'TAMPINES', 'TOA PAYOH', 'WOODLANDS', 'YISHUN']
+    town = ['ANG MO KIO', 'BEDOK', 'BISHAN' ,'BUKIT BATOK', 'BUKIT MERAH', 'BUKIT PANJANG', 'BUKIT TIMAH', 'CENTRAL AREA', 'CHOA CHU KANG', 'CLEMENTI', 'GEYLANG', 'HOUGANG', 'JURONG EAST', 'JURONG WEST', 'KALLANG/WHAMPOA', 'MARINE PARADE', 'PASIR RIS', 'PUNGGOL', 'QUEENSTOWN', 'SEMBAWANG', 'SENGKANG', 'SERANGOON', 'TAMPINES', 'TOA PAYOH', 'WOODLANDS', 'YISHUN']
     flat_type = ['2 ROOM', '3 ROOM', '4 ROOM', '5 ROOM', 'EXECUTIVE', '1 ROOM', 'MULTI-GENERATION']
     flat_model = ['Improved', 'New Generation', 'DBSS', 'Standard', 'Apartment', 'Simplified', 'Model A', 'Premium Apartment', 'Adjoined flat', 'Model A-Maisonette', 'Maisonette', 'Type S1', 'Type S2', 'Model A2', 'Terrace', 'Improved-Maisonette', 'Premium Maisonette', 'Multi Generation', 'Premium Apartment Loft', '2-room', '3Gen']
     all_variables = [ town, flat_type, flat_model ]
@@ -49,7 +49,7 @@ def updating_future_data():
         print(combination)
         if HousePrice.objects.filter(town=combination[0], flat_type=combination[1], flat_model=combination[2]).exists():
 
-            print(HousePrice.objects.filter(town=combination[0], flat_type=combination[1], flat_model=combination[2]).all())
+            #print(HousePrice.objects.filter(town=combination[0], flat_type=combination[1], flat_model=combination[2]).all())
 
             future_prices = prediction_return_prices(combination[0], combination[1], combination[2])
             HousePrice.objects.filter(town=combination[0], flat_type=combination[1], flat_model=combination[2]).update(
