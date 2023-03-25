@@ -97,7 +97,7 @@ def all_house_price(request):
 
 def prediction_return_prices(town_name, type_of_flat, model_of_flat):
     con = sqlite3.connect("db.sqlite3")
-    df = pd.read_sql_query("SELECT * from pricePrediction_houseprice", con)
+    df = pd.read_sql_query("SELECT * from pricePrediction_houseprice ORDER BY month DESC", con)
     #Change the format of dates 
     df['year'] = pd.DatetimeIndex(df['month']).year
     df['month'] = pd.DatetimeIndex(df['month']).month
@@ -163,7 +163,7 @@ def prediction_return_prices(town_name, type_of_flat, model_of_flat):
 #Price prediction display function 
 def prediction(town_name,type_of_flat,model_of_flat):
     con = sqlite3.connect("db.sqlite3")
-    df = pd.read_sql_query("SELECT * from pricePrediction_houseprice", con)
+    df = pd.read_sql_query("SELECT * from pricePrediction_houseprice ORDER BY month DESC", con)
     #Change the format of dates 
     df['year'] = pd.DatetimeIndex(df['month']).year
     df['month'] = pd.DatetimeIndex(df['month']).month
