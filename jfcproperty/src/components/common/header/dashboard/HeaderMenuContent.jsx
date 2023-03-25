@@ -19,14 +19,6 @@ const HeaderMenuContent = ({ float = "" }) => {
       routerPath: "/compare",
     }
   ]
-  
-  const contact = [
-    {
-      id: 1, 
-      name:"Contact 1",
-      routerPath: "/contact",
-    }
-  ]
 
   return (
     <ul
@@ -59,16 +51,6 @@ const HeaderMenuContent = ({ float = "" }) => {
       </li>
       {/* End .dropitem */}
 
-      <li className="4">
-        <Link href="/contact">
-          <a
-            className={route.pathname === "/contact" ? "ui-active" : undefined}
-          >
-            Contact
-          </a>
-        </Link>
-      </li>
-      {/* End .dropitem */}
 
       <li className="user_setting">
         <div className="dropdown">
