@@ -35,14 +35,6 @@ const Index = () => {
   const[flatsPerPage,setFlatsPerPage] = useState(10);
   
 
-//  useEffect(() => {
-//    const fetchFlats = async() => {
-//      const fetchedFlats = await allResaleFlats();
-//      setFlats(fetchedFlats);
-//    };
-//    fetchFlats();
-//  }, []);
-
   useEffect(() => {
     if (filteredFlats.length) {
       setFlats(filteredFlats);
