@@ -3,7 +3,7 @@ import SidebarMenu from "../../common/header/dashboard/SidebarMenu";
 import MobileMenu from "../../common/header/MobileMenu";
 import FavouritProducts from "./FavouritProducts";
 import Filtering from "./Filtering";
-import Pagination from "./Pagination";
+import Pagination from "../../common/blog/Pagination";
 import SearchBox from "./SearchBox";
 
 const index = () => {
@@ -15,17 +15,6 @@ const index = () => {
       {/* <!--  Mobile Menu --> */}
       <MobileMenu />
 
-      <div className="dashboard_sidebar_menu">
-        <div
-          className="offcanvas offcanvas-dashboard offcanvas-start"
-          tabIndex="-1"
-          id="DashboardOffcanvasMenu"
-          data-bs-scroll="true"
-        >
-          <SidebarMenu />
-        </div>
-      </div>
-      {/* End sidebar_menu */}
 
       {/* <!-- Our Dashbord --> */}
       <section className="our-dashbord dashbord bgc-f7 pb50">
@@ -53,26 +42,6 @@ const index = () => {
                 <div className="col-lg-4 col-xl-4 mb10">
                   <div className="breadcrumb_content style2 mb30-991">
                     <h2 className="breadcrumb_title">My Favorites</h2>
-                    <p>We are glad to see you again!</p>
-                  </div>
-                </div>
-                {/* End .col */}
-
-                <div className="col-lg-8 col-xl-8">
-                  <div className="candidate_revew_select style2 text-end mb30-991">
-                    <ul className="mb0">
-                      <li className="list-inline-item">
-                        <div className="candidate_revew_search_box course fn-520">
-                          <SearchBox />
-                        </div>
-                      </li>
-                      {/* End li */}
-
-                      <li className="list-inline-item">
-                        <Filtering />
-                      </li>
-                      {/* End li */}
-                    </ul>
                   </div>
                 </div>
                 {/* End .col */}
@@ -95,7 +64,7 @@ const index = () => {
               <div className="row mt50">
                 <div className="col-lg-12">
                   <div className="copyright-widget text-center">
-                    <p>© 2020 Find House. Made with love.</p>
+                    <p>© JFC Property</p>
                   </div>
                 </div>
               </div>

@@ -2,18 +2,11 @@ import Pagination from "../../common/blog/Pagination";
 import CopyrightFooter from "../../common/footer/CopyrightFooter";
 import Footer from "../../common/footer/Footer";
 import Header from "../../common/header/DefaultHeader";
-import MobileMenu from "../../common/header/MobileMenu";
-import FilterTopBar from "../../common/listing/FilterTopBar";
-import GridListButton from "../../common/listing/GridListButton";
-import ShowFilter from "../../common/listing/ShowFilter";
-import SidebarListing from "../../common/listing/SidebarListing";
 import PopupSignInUp from "../../common/PopupSignInUp";
 import BreadCrumb2 from "./BreadCrumb2";
-import FeaturedItem from "./FeaturedItem";
 import allResaleFlats from "../../../data/properties"
 import React, { useState,useEffect } from 'react';
 import Link from 'next/link';
-import { useRouter } from 'next/router';
 import { useSelector } from "react-redux";
 import {
   selectFlatType,
@@ -21,7 +14,6 @@ import {
   selectBlockNumber,
   storeFilteredFlats, // Make sure this is imported
 } from "../../../features/properties/propertiesSlice";
-
 
 
 const Index = () => {
@@ -33,9 +25,28 @@ const Index = () => {
   const[flats,setFlats] = useState([]);
   const[currentPage,setCurrentPage] = useState(1);
   const[flatsPerPage,setFlatsPerPage] = useState(10);
-  
+  // Add state for favorite flats
+  const [favoriteFlats, setFavoriteFlats] = useState([]);
+
+  // Add a function to handle adding/removing favorite flats
+  const toggleFavoriteFlat = (flat) => {
+    if (favoriteFlats.find((f) => f.id === flat.id)) {
+      const updatedFavorites = favoriteFlats.filter((f) => f.id !== flat.id);
+      setFavoriteFlats(updatedFavorites);
+      localStorage.setItem('favoriteFlats', JSON.stringify(updatedFavorites));
+    } else {
+      const updatedFavorites = [...favoriteFlats, flat];
+      setFavoriteFlats(updatedFavorites);
+      localStorage.setItem('favoriteFlats', JSON.stringify(updatedFavorites));
+    }
+  };
 
   useEffect(() => {
+    const storedFavorites = localStorage.getItem('favoriteFlats');
+    if (storedFavorites) {
+      setFavoriteFlats(JSON.parse(storedFavorites));
+    }
+    
     if (filteredFlats.length) {
       setFlats(filteredFlats);
     } else {
@@ -93,6 +104,7 @@ const Index = () => {
               </div>
               <div className="row">
                 {currentFlats.map((flat)  => (
+                  
                   <div className="col-md-6 col-lg-6" key={flat.id}>
                     <div className="feat_property home7 style4">
                       <div className="thumb">
@@ -125,6 +137,14 @@ const Index = () => {
                         <div className="fp_footer">
                           <div className="fp_pdate float-end">2023</div>
                         </div>
+                        <button
+                        className={`favorite-button ${
+                          favoriteFlats.find((f) => f.id === flat.id) ? 'favorited' : ''
+                        }`}
+                        onClick={() => toggleFavoriteFlat(flat)}
+                        >
+                          ♥
+                        </button>
                       </div>
                     </div>
                   </div>

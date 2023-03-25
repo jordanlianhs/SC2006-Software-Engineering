@@ -5,6 +5,15 @@ import properties from "../../data/properties";
 
 const FeaturedProperties = () => {
   const[flats, setFlats] = useState([]);
+  const [favoriteFlats, setFavoriteFlats] = useState([]);
+
+  const toggleFavoriteFlat = (flat) => {
+    if (favoriteFlats.find((f) => f.id === flat.id)) {
+      setFavoriteFlats(favoriteFlats.filter((f) => f.id !== flat.id));
+    } else {
+      setFavoriteFlats([...favoriteFlats, flat]);
+    }
+  };
 
   useEffect(() => {
     const fetchData = async () => {
@@ -46,15 +55,6 @@ const FeaturedProperties = () => {
           <img className="img-whp" src={item.img} alt="fp1.jpg" />
           <div className="thmb_cntnt">
 
-            <ul className="icon mb0">
-              <li className="list-inline-item">
-                <a href="#">
-                  <span className="flaticon-heart"></span>
-                </a>
-              </li>
-            </ul>
-            {/* End .icon */}
-
             <Link href={`/listing-details-v1/${item.id}`}>
               <a className="fp_price">
                 ${item.price}
@@ -79,7 +79,14 @@ const FeaturedProperties = () => {
 
           </div>
           {/* End .tc_content */}
- 
+          <button
+            className={`favorite-button ${
+              favoriteFlats.find((f) => f.id === item.id) ? 'favorited' : ''
+            }`}
+            onClick={() => toggleFavoriteFlat(item)}
+          >
+            ♥
+          </button>
         </div>
         {/* End .details */}
       </div>
