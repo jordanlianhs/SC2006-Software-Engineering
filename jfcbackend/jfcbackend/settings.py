@@ -66,7 +66,7 @@ TEMPLATES = [
         'BACKEND': 'django.template.backends.django.DjangoTemplates',
         'DIRS': [
             BASE_DIR / 'templates',
-            REAL_BASE_DIR,
+            REAL_BASE_DIR / 'jfcproperty/src',
         ],
         'APP_DIRS': True,
         'OPTIONS': {

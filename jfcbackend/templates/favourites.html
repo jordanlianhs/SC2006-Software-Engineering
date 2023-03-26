@@ -1,0 +1,27 @@
+{% extends 'main.html' %}
+{% load crispy_forms_tags %}
+{% block content %}
+
+<div>
+    <section>
+        <div>
+            <h1>User saved favourite houses</h1>
+            <p>Here you can remove or view the favourite houses you have added</p>
+        </div>
+    </section>
+    <div>
+        <div>
+            {% for house in new %}
+            <div>
+                <h2>{{house.block}} {{house.street_name}}</h2>
+            </div>
+            <div>
+                <h2>{{house.flat_type}}</h2>
+            </div>
+            <a href="{% url 'users:favourite_add' house.id %}">Remove</a>
+            {% endfor %}
+        </div>
+    </div>
+</div>
+
+{% endblock content %}

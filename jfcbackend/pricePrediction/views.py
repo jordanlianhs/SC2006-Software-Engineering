@@ -7,6 +7,8 @@ import sqlite3
 from .utils import get_plot
 import requests
 
+from users import views
+
 #For price prediction
 #Need to pip install pandas 
 #Need to pip install django-numpy and put in installed apps django_numpy 
