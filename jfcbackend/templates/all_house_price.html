@@ -1,16 +1,57 @@
-{% extends 'main.html' %}
-{% block content%}
-    
-    <h1>House Price</h1>
-    
-</h2> Total number of houses: {{ count }} </h2>
-</br>
-</h2> Page Number: {{ page.number }} </h2>
-</br>
-</br>
-
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="{% static 'bootstrap.min.css' %}">
+    <title>All Post</title>
+</head>
+<body>
+    <div class="container my-4 post-wrapper">
+        <!-- Search Start -->
+        <div class="jumbotron border shadow">
+            <div class="row">
+                <div class="col-md-8 offset-2">
+                    <form>
+                        <div class="input-group">
+                            <input name="q" type="text" placeholder="Search" class="form-control form-control-lg" />
+                            <div class="input-group-append">
+                            <input name="ft" type="text" placeholder="Search" class="form-control form-control-lg" />
+                            <div class="input-group-append">
+                            <input name="fm" type="text" placeholder="Search" class="form-control form-control-lg" />
+                            <div class="input-group-append">
+                                <button class="btn btn-dark btn-lg">Search</button>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+        <!-- End Search -->
+        <h3>All Posts</h3>
+        <p>
+            <a class="btn btn-success" href="/add">Add Data</a>
+        </p>
+        {% block content %}
+            {% if graph %}
+                <img src = "data:image/png;base64, {{graph|safe}}">
+            {% endif %}
+        {% endblock content %}
+    </br>
         {% for house in page.object_list %}
         <strong> {{ house }} </strong>
+
+        {% if request.user.is_authenticated %}
+        <div>
+            <a href="{% url 'users:favourite_add' house.id %}">Add to Favourites</a>
+        </div>
+        {% else %}
+        <div>
+            <a href="{% url 'users:register' %}"> Add to Favourites</a>
+        </div>
+        {% endif %}
+        
         <u1>
         <li>{{ house.town }}</li>
         <li>{{ house.flat_type }}</li>
@@ -21,11 +62,12 @@
         <li>{{ house.remaining_lease }}</li>
         <li>{{ house.resale_price }}</li>
         </u1>
-    </br>
+        </br>
         {% endfor %}
-        <div class= "page-links">
+
+	<div class= "page-links">
             {% if page.has_previous %}
-                <a href="{ url 'index'%} ?page={{ page.previous_page_number }}">Previous Page</a>
+                <a href="?page={{ page.previous_page_number }}">Previous Page</a>
             {% endif %}
 
             {% for i in page.paginator.page_range %}
@@ -37,9 +79,11 @@
             {% endfor %}
             
             {% if page.has_next %}
-                <a href="{ url 'index'%} ?page={{ page.next_page_number }}">Next Page</a>
+                <a href="?page={{ page.next_page_number }}">Next Page</a>
             {% endif %}
+            </div>
         </div>
-    
+</script>   
+</body>
+</html>
 
-{% endblock %}

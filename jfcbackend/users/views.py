@@ -1,5 +1,5 @@
 # for http redirects and renders
-from django.shortcuts import render, redirect
+from django.shortcuts import render, redirect, get_object_or_404
 
 # for user forms
 from django.contrib.auth.forms import UserCreationForm
@@ -32,14 +32,17 @@ from rest_framework.decorators import api_view
 from .models import CustomUser
 from .serializers import AccountSerializer
 
-# frontend pages
-from jfcproperty.src.components.login import index.jsx
+# for favourites module
+from pricePrediction.models import HousePrice
+from django.http import HttpResponseRedirect
 
-# Create your views here.
+# frontend pages
+# from jfcproperty.src.components.login import index.jsx
+
+# OLD VIEWS
 
 # Can add in GET, POST, PUT, DELETE
 @api_view(['GET'])
-
 def getRoutes(request):
     routes = [
         {
@@ -97,6 +100,7 @@ def getAccount(request, primary_key):
     serializer = AccountSerializer(accounts, many=False)
 
     return Response(serializer.data)
+
 
 
 def home(request):
@@ -338,3 +342,17 @@ def passwordResetConfirm(request, uidb64, token):
 
     messages.error(request, 'Something went wrong, redirecting back to homepage')
     return redirect('home')
+
+@login_required
+def favourite_add(request, id):
+    house = get_object_or_404(HousePrice, id=id)
+    if house.favourites.filter(id=request.user.id).exists():
+        house.favourites.remove(request.user)
+    else:
+        house.favourites.add(request.user)
+    return HttpResponseRedirect(request.META['HTTP_REFERER'])
+
+@login_required
+def favourite_list(request, username):
+    new = HousePrice.objects.filter(favourites=request.user)
+    return render(request, 'favourites.html', {'new': new})
