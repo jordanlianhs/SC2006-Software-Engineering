@@ -15,7 +15,6 @@ import os
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
-REAL_BASE_DIR = Path(__file__).resolve().parent.parent.parent
 
 
 # Quick-start development settings - unsuitable for production
@@ -46,6 +45,7 @@ INSTALLED_APPS = [
     'crispy_forms',
     'crispy_bootstrap5',
     'fontawesomefree',
+    'django_nextjs',
 ]
 
 AUTH_USER_MODEL = 'users.CustomUser'
@@ -67,8 +67,6 @@ TEMPLATES = [
         'BACKEND': 'django.template.backends.django.DjangoTemplates',
         'DIRS': [
             BASE_DIR / 'templates',
-            REAL_BASE_DIR / 'jfcproperty/src',
-            os.path.join(REAL_BASE_DIR, 'jfcproperty', 'build')
         ],
         'APP_DIRS': True,
         'OPTIONS': {
@@ -125,6 +123,8 @@ TIME_ZONE = 'UTC'
 USE_I18N = True
 
 USE_TZ = True
+
+APPEND_SLASH = False
 
 
 # Static files (CSS, JavaScript, Images)
