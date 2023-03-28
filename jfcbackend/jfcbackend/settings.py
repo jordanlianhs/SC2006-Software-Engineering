@@ -11,6 +11,7 @@ https://docs.djangoproject.com/en/4.1/ref/settings/
 """
 
 from pathlib import Path
+import os
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
@@ -67,6 +68,7 @@ TEMPLATES = [
         'DIRS': [
             BASE_DIR / 'templates',
             REAL_BASE_DIR / 'jfcproperty/src',
+            os.path.join(REAL_BASE_DIR, 'jfcproperty', 'build')
         ],
         'APP_DIRS': True,
         'OPTIONS': {
