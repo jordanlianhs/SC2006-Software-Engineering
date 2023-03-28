@@ -1,3 +1,4 @@
+import React from "react";
 import Link from "next/link";
 
 const LoginSignup = () => {
@@ -116,12 +117,9 @@ const LoginSignup = () => {
                                     {/* End input-group */}
 
                                     <div className="form-group form-check custom-checkbox mb-3">
-                                        <a
-                                            className="btn-fpswd float-end"
-                                            href="#"
-                                        >
-                                            Lost your password?
-                                        </a>
+                                        <Link href="/forgot-password">
+                                            <a className="btn-fpswd float-end">Lost your password?</a>
+                                        </Link>
                                     </div>
                                     {/* End remember me checkbox */}
 
@@ -132,13 +130,6 @@ const LoginSignup = () => {
                                         Log In
                                     </button>
                                     {/* End submit button */}
-
-                                    <p className="text-center">
-                                        Dont have an account?{" "}
-                                        <a className="text-thm" href="#">
-                                            Register
-                                        </a>
-                                    </p>
                                 </form>
                             </div>
                             {/* End .col .login_form */}

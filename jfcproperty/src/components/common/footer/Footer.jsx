@@ -1,6 +1,5 @@
 import Link from "next/link";
-import Social from "./Social";
-import SubscribeForm from "./SubscribeForm";
+
 
 const Footer = () => {
   return (

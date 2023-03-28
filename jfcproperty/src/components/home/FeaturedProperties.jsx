@@ -5,8 +5,27 @@ import properties from "../../data/properties";
 
 const FeaturedProperties = () => {
   const[flats, setFlats] = useState([]);
+  const [favoriteFlats, setFavoriteFlats] = useState([]);
+
+  // Add a function to handle adding/removing favorite flats
+  const toggleFavoriteFlat = (flat) => {
+    if (favoriteFlats.find((f) => f.id === flat.id)) {
+      const updatedFavorites = favoriteFlats.filter((f) => f.id !== flat.id);
+      setFavoriteFlats(updatedFavorites);
+      localStorage.setItem('favoriteFlats', JSON.stringify(updatedFavorites));
+    } else {
+      const updatedFavorites = [...favoriteFlats, flat];
+      setFavoriteFlats(updatedFavorites);
+      localStorage.setItem('favoriteFlats', JSON.stringify(updatedFavorites));
+    }
+  };
 
   useEffect(() => {
+    const storedFavorites = localStorage.getItem('favoriteFlats');
+    if (storedFavorites) {
+      setFavoriteFlats(JSON.parse(storedFavorites));
+    }
+    
     const fetchData = async () => {
       const data = await properties();
       setFlats(data);
@@ -46,15 +65,6 @@ const FeaturedProperties = () => {
           <img className="img-whp" src={item.img} alt="fp1.jpg" />
           <div className="thmb_cntnt">
 
-            <ul className="icon mb0">
-              <li className="list-inline-item">
-                <a href="#">
-                  <span className="flaticon-heart"></span>
-                </a>
-              </li>
-            </ul>
-            {/* End .icon */}
-
             <Link href={`/listing-details-v1/${item.id}`}>
               <a className="fp_price">
                 ${item.price}
@@ -79,7 +89,14 @@ const FeaturedProperties = () => {
 
           </div>
           {/* End .tc_content */}
- 
+          <button
+            className={`favorite-button ${
+              favoriteFlats.find((f) => f.id === item.id) ? 'favorited' : ''
+            }`}
+            onClick={() => toggleFavoriteFlat(item)}
+          >
+            ♥
+          </button>
         </div>
         {/* End .details */}
       </div>
