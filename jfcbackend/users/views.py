@@ -36,8 +36,6 @@ from .serializers import AccountSerializer
 from pricePrediction.models import HousePrice
 from django.http import HttpResponseRedirect
 
-# frontend pages
-# from jfcproperty.src.components.login import index.jsx
 
 # OLD VIEWS
 
