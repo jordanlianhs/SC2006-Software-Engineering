@@ -32,8 +32,6 @@ from rest_framework.decorators import api_view
 from .models import CustomUser
 from .serializers import AccountSerializer
 
-# frontend pages
-from jfcproperty.src.components.login import index.jsx
 
 # Create your views here.
 
