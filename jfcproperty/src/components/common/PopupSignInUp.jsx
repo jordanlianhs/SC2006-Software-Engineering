@@ -1,5 +1,4 @@
 import LoginSignup from "./user-credentials/LoginSignup";
-
 const PopupSignInUp = () => {
   return (
     <div

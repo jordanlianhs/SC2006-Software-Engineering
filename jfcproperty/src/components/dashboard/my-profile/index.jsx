@@ -1,6 +1,4 @@
 import Header from "../../common/header/dashboard/Header";
-import SidebarMenu from "../../common/header/dashboard/SidebarMenu";
-import MobileMenu from "../../common/header/MobileMenu";
 import ChangePassword from "./ChangePassword";
 import ProfileInfo from "./ProfileInfo";
 
@@ -10,9 +8,6 @@ const index = () => {
     <>
       {/* <!-- Main Header Nav --> */}
       <Header />
-
-      {/* <!--  Mobile Menu --> */}
-      <MobileMenu />
 
       {/* <!-- Our Dashbord --> */}
       <section className="our-dashbord dashbord bgc-f7 pb50">
@@ -60,7 +55,7 @@ const index = () => {
               <div className="row mt50">
                 <div className="col-lg-12">
                   <div className="copyright-widget text-center">
-                    <p>© 2020 Find House. Made with love.</p>
+                    <p>© JFC Property</p>
                   </div>
                 </div>
               </div>

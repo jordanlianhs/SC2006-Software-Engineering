@@ -36,8 +36,11 @@ from .serializers import AccountSerializer
 from pricePrediction.models import HousePrice
 from django.http import HttpResponseRedirect
 
+# for nextjs
+from django_nextjs.render import render_nextjs_page_sync
+
 # frontend pages
-# from jfcproperty.src.components.login import index.jsx
+#from jfcproperty.src.pages import index
 
 # OLD VIEWS
 
@@ -102,10 +105,6 @@ def getAccount(request, primary_key):
     return Response(serializer.data)
 
 
-
-def home(request):
-    return render(request, 'home.html')
-
 # @user_not_authenticated
 # def registerPage(request):
 #     if request.user.is_authenticated:
@@ -145,10 +144,14 @@ def home(request):
 #     context = {'page': page}
 #     return render(request, 'login_register.html', context)
 
+def home(request):
+    return render_nextjs_page_sync(request)
+    #return render(request, 'index.html')
+
 @login_required
 def logoutUser(request):
     logout(request)
-    return redirect('home')
+    return render_nextjs_page_sync(request)
 
 
 @user_not_authenticated
@@ -171,7 +174,8 @@ def custom_login(request):
     
     form = UserLoginForm()
 
-    return render(request, 'login_register.html', {'form': form, 'page': page})
+    return render_nextjs_page_sync(request)
+    #return render(request, 'login_register.html', {'form': form, 'page': page})
 
 
 @user_not_authenticated
@@ -195,8 +199,9 @@ def registerPage(request):
                 print(request, error)
     else:
         form = UserRegistrationForm()
- 
-    return render(request, 'login_register.html', {'form': form})
+    
+    return render_nextjs_page_sync(request)
+    #return render(request, 'login_register.html', {'form': form})
 
 @user_not_authenticated
 def activateEmail(request, user, to_email):
@@ -234,6 +239,7 @@ def activate(request, uidb64, token):
     else:
         messages.error(request, 'Activation link is invalid!')
 
+    #return render_nextjs_page_sync(request)
     return redirect('home')
 
 def profile(request, username):
