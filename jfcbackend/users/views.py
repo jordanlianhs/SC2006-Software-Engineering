@@ -33,7 +33,7 @@ from .models import CustomUser
 from .serializers import AccountSerializer
 
 # frontend pages
-from jfcproperty.src.components.login import index.jsx
+#from jfcproperty.src.components.login import index.jsx
 
 # Create your views here.
 
