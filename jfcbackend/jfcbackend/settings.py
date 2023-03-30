@@ -45,6 +45,7 @@ INSTALLED_APPS = [
     'crispy_forms',
     'crispy_bootstrap5',
     'fontawesomefree',
+    'django_nextjs',
 ]
 
 AUTH_USER_MODEL = 'users.CustomUser'

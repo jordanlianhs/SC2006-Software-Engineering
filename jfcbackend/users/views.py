@@ -37,6 +37,8 @@ from pricePrediction.models import HousePrice
 from django.shortcuts import get_object_or_404
 from django.http import HttpResponseRedirect
 
+from django_nextjs.render import render_nextjs_page_sync 
+
 
 # frontend pages
 #from jfcproperty.src.components.login import index.jsx
