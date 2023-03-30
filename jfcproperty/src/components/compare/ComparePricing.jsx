@@ -1,10 +1,13 @@
 import { useState, useEffect } from "react";
 import getResaleFlats from "../../data/comparePricing";
+import Fuse from "fuse.js";
+import Pagination from "../common/blog/Pagination";
 
 const ComparePricing = () => {
     const [flats, setFlats] = useState([]);
     const [searchQuery, setSearchQuery] = useState("");
     const [selectedFlats, setSelectedFlats] = useState([]);
+    const [currentPage, setCurrentPage] = useState(1);
 
     useEffect(() => {
         const fetchFlats = async () => {
@@ -28,13 +31,20 @@ const ComparePricing = () => {
         const newSelectedFlats = selectedFlats.filter((selectedFlat) => selectedFlat.id !== flat.id);
         setSelectedFlats(newSelectedFlats);
     };
+    const options = {
+        keys: ["streetName", "flatType", "blockNumber"],
+        threshold: 0.3,
+    };
+    
+    const fuse = new Fuse(flats, options);
 
     // Filter flats based on searchQuery and whether the searchQuery is empty or not
-    const filteredFlats = flats.filter((flat) =>
-        flat.streetName.toLowerCase().includes(searchQuery.toLowerCase()) ||
-        flat.flatType.toLowerCase().includes(searchQuery.toLowerCase()) ||
-        flat.blockNumber.toLowerCase().includes(searchQuery.toLowerCase())
-    ).filter((flat) => searchQuery.length > 0);
+    const filteredFlats = searchQuery.length > 0 ? fuse.search(searchQuery).map((result) => result.item) : [];
+
+    const flatsPerPage = 10;
+    const indexOfLastFlat = currentPage * flatsPerPage;
+    const indexOfFirstFlat = indexOfLastFlat - flatsPerPage;
+    const currentFlats = filteredFlats.slice(indexOfFirstFlat, indexOfLastFlat);
 
     return (
         <>
@@ -47,7 +57,7 @@ const ComparePricing = () => {
                 />
             </div>
             <div>
-                {filteredFlats.map((flat) => (
+                {currentFlats.map((flat) => (
                     <li
                         className="list-inline-item"
                         key={flat.id}
@@ -92,6 +102,11 @@ const ComparePricing = () => {
                     ))}
                 </div>
             )}
+            <Pagination
+                flatsPerPage={flatsPerPage}
+                totalFlats={filteredFlats.length}
+                paginate={(pageNumber) => setCurrentPage(pageNumber)}
+            />
         </>
     );
 };

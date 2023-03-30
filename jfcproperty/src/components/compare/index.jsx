@@ -1,8 +1,6 @@
-import CallToAction from "../common/CallToAction";
 import CopyrightFooter from "../common/footer/CopyrightFooter";
 import Footer from "../common/footer/Footer";
 import Header from "../common/header/DefaultHeader";
-import MobileMenu from "../common/header/MobileMenu";
 import PopupSignInUp from "../common/PopupSignInUp";
 import BreadCrumbBanner from "./BreadCrumbBanner";
 import ComparePricing from "./ComparePricing";
@@ -12,9 +10,6 @@ const index = () => {
     <>
       {/* <!-- Main Header Nav --> */}
       <Header />
-
-      {/* <!--  Mobile Menu --> */}
-      <MobileMenu />
 
       {/* <!-- Modal --> */}
       <PopupSignInUp />
