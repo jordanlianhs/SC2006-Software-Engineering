@@ -32,11 +32,14 @@ from rest_framework.decorators import api_view
 from .models import CustomUser
 from .serializers import AccountSerializer
 
+# for favourites
+from pricePrediction.models import HousePrice
+from django.shortcuts import get_object_or_404
+from django.http import HttpResponseRedirect
+
+
 # frontend pages
-<<<<<<< Updated upstream
 #from jfcproperty.src.components.login import index.jsx
-=======
->>>>>>> Stashed changes
 
 # Create your views here.
 
@@ -144,12 +147,13 @@ def home(request):
 #     context = {'page': page}
 #     return render(request, 'login_register.html', context)
 
+# Note: For Django redirect('name'), use app name -> redirect('users:home')
 @login_required
 def logoutUser(request):
     logout(request)
-    return redirect('home')
+    return redirect('users:home')
 
-
+# Note: For Django redirect('name'), use app name -> redirect('users:home')
 @user_not_authenticated
 def custom_login(request):
     page = 'login'
@@ -163,7 +167,7 @@ def custom_login(request):
             if user is not None:
                 login(request, user)
                 messages.success(request, f"Hello {user.username}! You have successfully logged in.")
-                return redirect('home')
+                return redirect('users:home')
         else:
             for error in list(form.errors.values()):
                 messages.error(request, error)
@@ -188,7 +192,7 @@ def registerPage(request):
             activateEmail(request, user, form.cleaned_data.get('email'))
 
             #login(request, user)
-            return redirect('home')
+            return redirect('users:home')
         else:
             for error in list(form.errors.values()):
                 print(request, error)
@@ -229,11 +233,11 @@ def activate(request, uidb64, token):
 
         messages.success(request, 'Thank you for your email confirmation. Now you can login into your account.')
 
-        return redirect('login')
+        return redirect('users:login')
     else:
         messages.error(request, 'Activation link is invalid!')
 
-    return redirect('home')
+    return redirect('users:home')
 
 def profile(request, username):
     if request.method == 'POST':
@@ -242,7 +246,7 @@ def profile(request, username):
         if form.is_valid():
             user_form = form.save()
             messages.success(request, f'{user_form.username}, your profile has been updated successfully!')
-            return redirect('profile', user_form.username)
+            return redirect('users:profile', user_form.username)
         else:
             for error in list(form.errors.values()):
                 print(request, error)
@@ -256,7 +260,7 @@ def profile(request, username):
             context={'form':form}
         )
     
-    return redirect('home')
+    return redirect('users:home')
 
 @login_required
 def password_change(request):
@@ -266,7 +270,7 @@ def password_change(request):
         if form.is_valid():
             form.save()
             messages.success(request, "Your password has been changed.")
-            return redirect('login')
+            return redirect('users:login')
         else:
             for error in list(form.errors.values()):
                 messages.error(request, error)
@@ -325,7 +329,7 @@ def passwordResetConfirm(request, uidb64, token):
             if form.is_valid():
                 form.save()
                 messages.success(request, 'Your password has been set. You may go ahead and log in now.')
-                return redirect('home')
+                return redirect('users:home')
             else:
                 for error in list(form.errors.values()):
                     messages.error(request, error)
@@ -340,4 +344,21 @@ def passwordResetConfirm(request, uidb64, token):
         messages.error(request, 'Reset password link is expired!')
 
     messages.error(request, 'Something went wrong, redirecting back to homepage')
-    return redirect('home')
+    return redirect('users:home')
+
+@login_required
+def favourite_add(request, id):
+    house = get_object_or_404(HousePrice, id=id)
+    # checking to see if the house favourite list contains the user's username
+    # if username in house favourite's list, means user favourited before
+    if house.favourites.filter(id=request.user.id).exists():
+        print("exists when adding to favourotes")
+        house.favourites.remove(request.user)
+    else:
+        house.favourites.add(request.user)
+    return HttpResponseRedirect(request.META['HTTP_REFERER'])
+
+@login_required
+def favourites_list(request, username):
+    new = HousePrice.objects.filter(favourites=request.user)
+    return render(request, "favourites.html", {'new': new})
