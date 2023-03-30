@@ -29,6 +29,9 @@ from sklearn.preprocessing import StandardScaler
 
 import itertools
 
+# for favourites
+from django.shortcuts import get_object_or_404
+
 # Create your views here.
 
 # Creating a function to return a list of all possible permutations of town, flat_type, flat_model
@@ -62,6 +65,7 @@ def updating_future_data():
 
 # Price Prediction View According to Alphabetic Order
 def all_house_price(request):
+
     #Filter for that certain town 
     if ('q' in request.GET) & ('ft' in request.GET) & ('fm' in request.GET): 
         q=request.GET['q']
@@ -72,6 +76,14 @@ def all_house_price(request):
         page_num = request.GET.get('page')
         page = house_paginator.get_page(page_num)
         graph = prediction(q,ft,fm)
+
+        # for house in page.object_list:
+        #     house = get_object_or_404(HousePrice, id=house.id)
+        #     print("house fav list: ", house.favourites)
+        #     if house.favourites.filter(id=request.user.id).exists():
+        #         print("exists")
+        #         fav = True 
+
         context = {
             'count': house_paginator.count,
             'graph': graph,
@@ -89,9 +101,18 @@ def all_house_price(request):
 
         page = house_paginator.get_page(page_num)
 
+
+        # for house in page.object_list:
+        #     house = get_object_or_404(HousePrice, id=house.id)
+        #     if house.id == 2:
+        #         print("request user: ", request.user.id)
+        #         print("house fav list: ", house.favourites)
+        #     if house.favourites.filter(id=request.user.id).exists():
+        #         fav = True 
+
         context = {
             'count': house_paginator.count,
-            'page': page
+            'page': page,
             }
         return render(request, 'all_house_price.html', context)
 

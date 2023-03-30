@@ -1,29 +1,106 @@
+<style>
+    body {
+      background-color: #f8f8f8;
+      font-family: Arial, sans-serif;
+    }
+    form {
+      background-color: #fff;
+      padding: 30px;
+      border-radius: 5px;
+      box-shadow: 0 0 10px rgba(0, 0, 0, 0.2);
+      width: 400px;
+      margin: 50px auto;
+    }
+    h1 {
+      text-align: center;
+      font-size: 28px;
+      margin-bottom: 30px;
+      color: #555;
+    }
+    label {
+      display: block;
+      font-size: 18px;
+      margin-bottom: 10px;
+      color: #777;
+    }
+    input[type="text"],
+    input[type="password"] {
+      width: 100%;
+      padding: 10px;
+      margin-bottom: 20px;
+      border-radius: 3px;
+      border: none;
+      box-shadow: 0 0 5px rgba(0, 0, 0, 0.2);
+      font-size: 16px;
+    }
+    input[type="submit"] {
+      background-color: #ff5a5e;
+      color: #fff;
+      padding: 10px 20px;
+      border: none;
+      border-radius: 3px;
+      font-size: 18px;
+      cursor: pointer;
+      margin-top: 20px;
+      transition: background-color 0.3s ease;
+    }
+    input[type="submit"]:hover {
+      background-color: #ff5a5e;
+    }
+    .forgot-password {
+      display: block;
+      text-align: right;
+      font-size: 16px;
+      margin-top: 10px;
+      color: #555;
+    }
+    .forgot-password a {
+      color: #ff5a5e;
+      text-decoration: none;
+      transition: color 0.3s ease;
+    }
+    .forgot-password a:hover {
+      color: #ff5a5e;
+    }
+    .register {
+      display: block;
+      text-align: center;
+      font-size: 16px;
+      margin-top: 30px;
+      color: #555;
+    }
+    .register a {
+      color: #ff5a5e;
+      text-decoration: none;
+      transition: color 0.3s ease;
+    }
+    .register a:hover {
+      color: #ff5a5e;
+    }
+  </style>
+
 {% extends 'main.html' %}
 {% load crispy_forms_tags %}
 {% block content %}
 
 {% if page == 'login' %}
-<div>
-    <form method="POST" action=''>
-        {% csrf_token %}
+<form method="POST" action=''>
+    {% csrf_token %}
+    <h1>JFC Property Login</h1>
+    <label for="username">Email:</label>
+    <input type="text" id="username" name="username" required>
+    <label for="password">Password:</label>
+    <input type="password" id="password" name="password" required>
+    <input type="submit" value="Login">
+    <span class="forgot-password">
+      <a href="{% url 'users:password_reset' %}">Forgot password?</a>
+    </span>
+    <span class="register">
+      Don't have an account? <a href="{% url 'users:register' %}">Register now</a>
+    </span>
+  </form>
 
-        <label>Username: </label>
-        <input type="text" name="username" placeholder="Enter Username" />
 
-        <label>Password: </label>
-        <input type="password" name="password" placeholder="Enter Password" />
-
-        <input type="submit" value="Login" />
-
-    </form>
-
-    <p> Haven't signed up yet?</p>
-    <a href="{% url 'register' %}">Sign up</a>
-    <small class="text-muted">
-        <a href="{% url 'password_reset' %}">Forgot Password?</a>
-    </small>
-
-</div>
 {% else %}
 <div>
     <form method="POST" action=''>
@@ -33,9 +110,8 @@
 
     </form>
     <p> Already signed up?</p>
-    <a href="{% url 'login' %}">Log in</a>
+    <a href="{% url 'users:login' %}">Log in</a>
 </div>
 {% endif %}
 
 {% endblock content %}
-

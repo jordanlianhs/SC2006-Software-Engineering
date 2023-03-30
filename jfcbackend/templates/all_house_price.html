@@ -41,6 +41,22 @@
     </br>
         {% for house in page.object_list %}
         <strong> {{ house }} </strong>
+        {% if request.user.is_authenticated %}
+        <!-- {% if fav %}
+        <div>
+            <a href="{% url 'users:favourites_list' house.id %}">Remove Favourites</a>
+        </div>
+        {% else %} -->
+        <div>
+            <a href="{% url 'users:favourite_add' house.id %}">Add to Favourites</a> 
+        </div>
+        <!-- {% endif %} -->
+        
+        {% else %}
+        <div>
+            <a href="{% url 'users:register' %}">Add to Favourites (Register first)</a> 
+        </div>
+        {% endif %}
         <u1>
         <li>{{ house.town }}</li>
         <li>{{ house.flat_type }}</li>
