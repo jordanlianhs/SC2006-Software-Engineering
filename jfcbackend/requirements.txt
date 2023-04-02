@@ -13,3 +13,4 @@ seaborn
 django-matplotlib
 scikit-learn
 tensorflow
+django-cors-headers
