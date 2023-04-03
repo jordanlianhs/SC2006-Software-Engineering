@@ -17,6 +17,8 @@ urlpatterns = [
     path('profile/<username>/favourites/', views.favourites_list, name="favourites_list"),
     path('', views.home, name='home'),
 
+    path('get_username/', views.get_username, name='get_username'),
+
     path('accounts/', views.getAccounts, name = 'accounts'),
     path('accounts/<str:primary_key>/', views.getAccount, name = 'account'),
 ]

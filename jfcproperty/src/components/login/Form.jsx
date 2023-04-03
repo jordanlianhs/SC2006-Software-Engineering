@@ -1,8 +1,20 @@
 import Link from "next/link";
+import { useState } from "react";
+import axios from 'axios';
 
 const Form = () => {
+    const [email, setEmail] = useState('');
+    const [password, setPassword] = useState('');
+  
+    const handleSubmit = async (event) => {
+      event.preventDefault();
+      const data = { email, password };
+      const response = await axios.post('http://127.0.0.1:8000/login/', data);
+      console.log(response.data);
+    };
+
   return (
-    <form action="#">
+    <form onSubmit={handleSubmit}>
       <div className="heading text-center">
         <h3>Login to your account</h3>
         <p className="text-center">
@@ -16,7 +28,6 @@ const Form = () => {
 
       <div className="input-group mb-2 mr-sm-2">
         <input
-          type="text"
           className="form-control"
           required
           placeholder="Key in your Email Address"
@@ -56,8 +67,6 @@ const Form = () => {
         Log In
       </button>
       {/* login button */}
-
-
 
     </form>
   );

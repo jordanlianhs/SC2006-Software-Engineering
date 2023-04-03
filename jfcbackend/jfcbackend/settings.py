@@ -10,13 +10,20 @@ For the full list of settings and their values, see
 https://docs.djangoproject.com/en/4.1/ref/settings/
 """
 
+import shutil
+import os
 from pathlib import Path
+
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
 REAL_BASE_DIR = Path(__file__).resolve().parent.parent.parent
 
+# Set the paths to the source and destination directories
+# NEXT_JS_BUILD_DIR = "/../../jfcproperty/.next"
 
+# Copy the .next directory to the Django static directory
+#shutil.copytree(next_js_build_dir, os.path.join(django_static_dir, ".next"))
 # Quick-start development settings - unsuitable for production
 # See https://docs.djangoproject.com/en/4.1/howto/deployment/checklist/
 
@@ -46,11 +53,13 @@ INSTALLED_APPS = [
     'crispy_bootstrap5',
     'fontawesomefree',
     'django_nextjs',
+    'corsheaders',
 ]
 
 AUTH_USER_MODEL = 'users.CustomUser'
 
 MIDDLEWARE = [
+    'corsheaders.middleware.CorsMiddleware',
     'django.middleware.security.SecurityMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
     'django.middleware.common.CommonMiddleware',
@@ -61,6 +70,13 @@ MIDDLEWARE = [
 ]
 
 ROOT_URLCONF = 'jfcbackend.urls'
+
+#CORS_ALLOWED_ORIGINS = ['http://localhost:3000', 'http://127.0.0.1:8000']
+CORS_ALLOW_METHODS = [    'DELETE',    'GET',    'OPTIONS',    'PATCH',    'POST',    'PUT',]
+CORS_ORIGIN_ALLOW_ALL = True
+CORS_ALLOW_CREDENTIALS = True
+#CSRF_COOKIE_DOMAIN = 'localhost'
+
 
 TEMPLATES = [
     {
@@ -130,6 +146,12 @@ USE_TZ = True
 # https://docs.djangoproject.com/en/4.1/howto/static-files/
 
 STATIC_URL = 'static/'
+
+# STATICFILES_DIRS = [
+#     os.path.join(BASE_DIR, 'static'),
+#     '../jfcproperty/.next/static/chunks/pages',
+#     # other static file directories...
+# ]
 
 CRISPY_TEMPLATE_PACK = 'bootstrap5'
 CRISPY_ALLOWED_TEMPLATE_PACKS = 'bootstrap5'

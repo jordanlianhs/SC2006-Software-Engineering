@@ -16,6 +16,7 @@ function App() {
 */
 
 const index = () => {
+  
   return (
     <>
       <Seo pageTitle="Home-1" />

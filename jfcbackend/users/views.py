@@ -158,6 +158,7 @@ def logoutUser(request):
 # Note: For Django redirect('name'), use app name -> redirect('users:home')
 @user_not_authenticated
 def custom_login(request):
+    print("running")
     page = 'login'
     if request.method == 'POST':
         form = UserLoginForm(request=request, data=request.POST)
@@ -169,7 +170,12 @@ def custom_login(request):
             if user is not None:
                 login(request, user)
                 messages.success(request, f"Hello {user.username}! You have successfully logged in.")
-                return redirect('users:home')
+                response = response = HttpResponseRedirect('http://127.0.0.1:3000')
+                response.set_cookie('username', user.username)
+                response.set_cookie('email', user.email)
+                return response
+                #request.session['csrftoken'] = request.COOKIES.get('csrftoken')
+                #return redirect('users:home')
         else:
             for error in list(form.errors.values()):
                 messages.error(request, error)
@@ -177,6 +183,16 @@ def custom_login(request):
     form = UserLoginForm()
 
     return render(request, 'login_register.html', {'form': form, 'page': page})
+
+from django.http import JsonResponse
+
+def get_username(request):
+    username = request.session.get('username')
+    #csrftoken = request.session.get('csrftoken')
+    if username:
+        return JsonResponse({'username': username})
+    else:
+        return JsonResponse({'error': 'User is not logged in.'}, status=401)
 
 
 @user_not_authenticated
