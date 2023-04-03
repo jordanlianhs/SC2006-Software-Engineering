@@ -1,9 +1,24 @@
-import Header from "../../common/header/dashboard/Header";
+import Header from '../../common/header/DefaultHeader'
 import ChangePassword from "./ChangePassword";
 import ProfileInfo from "./ProfileInfo";
+import { useState, useEffect } from "react";
+import Cookies from 'universal-cookie';
 
+const cookies = new Cookies();
 
 const index = () => {
+  const [username, setUsername] = useState('');
+  const [email, setEmail] = useState('');
+
+  useEffect(() => {
+    const usernameCookie = cookies.get('username');
+    const emailCookie = cookies.get('email');
+    if (usernameCookie) {
+      setUsername(usernameCookie);
+      setEmail(emailCookie);
+    }
+  }, []);
+  
   return (
     <>
       {/* <!-- Main Header Nav --> */}

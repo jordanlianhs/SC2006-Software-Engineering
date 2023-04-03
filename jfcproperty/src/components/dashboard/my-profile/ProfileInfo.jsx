@@ -1,6 +1,20 @@
-import { useState } from "react";
-
+import { useState, useEffect } from "react";
+import Cookies from 'universal-cookie';
+const cookies = new Cookies();
 const ProfileInfo = () => {
+
+    const [username, setUsername] = useState('');
+    const [email, setEmail] = useState('');
+
+    useEffect(() => {
+        const usernameCookie = cookies.get('username');
+        const emailCookie = cookies.get('email');
+        if (usernameCookie) {
+            setUsername(usernameCookie);
+            setEmail(emailCookie);
+        }
+    }, []);
+
     const [profile, setProfile] = useState(null);
 
     // upload profile
@@ -18,7 +32,7 @@ const ProfileInfo = () => {
                         type="email"
                         className="form-control"
                         id="formGroupExampleEmail"
-                        placeholder=" "
+                        placeholder={email}
                     />
                 </div>
             </div>
