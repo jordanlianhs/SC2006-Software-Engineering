@@ -68,22 +68,48 @@ def updating_future_data():
                 resale_price_aft5year = future_prices[4])
     print('updated')
 
+class CustomPagination(PageNumberPagination):
+    page_size = 5000
+    page_size_query_param = 'page_size'
+    max_page_size = 5000
+    def get_page_size(self, request):
+        if self.page_size_query_param:
+            try:
+                return int(request.query_params.get(self.page_size_query_param, self.page_size))
+            except (ValueError, TypeError):
+                pass
+
+        if 'limit' in request.query_params:
+            return int(request.query_params['limit'])
+
+        return self.page_size
+    def get_paginated_response(self, data):
+        return Response({
+            'links': {
+                'next': self.get_next_link(),
+                'previous': self.get_previous_link()
+            },
+            'count': self.page.paginator.count,
+            'page_size': self.get_page_size(self.request),
+            'results': data
+        })
 
 @api_view(['GET'])
 def all_house_price(request):
-    house_prices = HousePrice.objects.all()
-    serializer = HousePriceSerializer(house_prices, many = True)
-    return Response(serializer.data)
-
-'''
-Pagination with serialiser up to 100
-paginator = PageNumberPagination()
-paginator.page_size = 100
-house_prices = HousePrice.objects.all()
-result_page = paginator.paginate_queryset(house_prices,request)
-serializer = HousePriceSerializer(result_page, many=True)
-return paginator.get_paginated_response(serializer.data)
-'''
+    limit = request.GET.get('limit')
+    if limit is not None:
+        limit = int(limit)
+        queryset = HousePrice.objects.all()[:limit]
+        paginator = CustomPagination()
+        paginated_queryset = paginator.paginate_queryset(queryset, request)
+        serializer = HousePriceSerializer(paginated_queryset, many = True)
+        return paginator.get_paginated_response(serializer.data)
+    
+    queryset = HousePrice.objects.all()
+    paginator = CustomPagination()
+    paginated_queryset = paginator.paginate_queryset(queryset, request)
+    serializer = HousePriceSerializer(paginated_queryset, many=True)
+    return paginator.get_paginated_response(serializer.data)
 
 '''
 # Price Prediction View According to Alphabetic Order
