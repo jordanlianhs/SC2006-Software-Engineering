@@ -5,22 +5,25 @@
 <div>
     <section>
         <div>
-            <h1>User saved favourite houses</h1>
-            <p>Here you can remove or view the favourite houses you have added</p>
+            <h1>User favourited Houses</h1>
+            <p>Here you can remove or view the favourites posts you have added</p>
         </div>
     </section>
     <div>
         <div>
             {% for house in new %}
             <div>
+                <h2>{{house.id}}</h2>
                 <h2>{{house.block}} {{house.street_name}}</h2>
             </div>
             <div>
                 <h2>{{house.flat_type}}</h2>
             </div>
-            <a href="{% url 'users:favourite_add' house.id %}">Remove</a>
+            <div>
+                <a href="{% url 'users:favourite_add' house.id %}">Remove</a>
+            </div>
             {% endfor %}
-        </div>
+          </div>
     </div>
 </div>
 

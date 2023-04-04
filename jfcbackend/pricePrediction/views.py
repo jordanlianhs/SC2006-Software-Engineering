@@ -1,13 +1,18 @@
 from django.shortcuts import render
 from .models import HousePrice
-from django.core.paginator import Paginator
+from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
 from django.db.models import Q
 from django.contrib import messages  
 import sqlite3
 from .utils import get_plot
 import requests
+import itertools
 
-from users import views
+from rest_framework.pagination import PageNumberPagination
+from rest_framework.response import Response
+from rest_framework.decorators import api_view
+from rest_framework import status
+from .serializers import *
 
 #For price prediction
 #Need to pip install pandas 
@@ -29,7 +34,8 @@ from tensorflow.keras.metrics import RootMeanSquaredError
 from tensorflow.keras.optimizers import Adam 
 from sklearn.preprocessing import StandardScaler 
 
-import itertools
+# for favourites
+from django.shortcuts import get_object_or_404
 
 # Create your views here.
 
@@ -62,6 +68,50 @@ def updating_future_data():
                 resale_price_aft5year = future_prices[4])
     print('updated')
 
+class CustomPagination(PageNumberPagination):
+    page_size = 5000
+    page_size_query_param = 'page_size'
+    max_page_size = 5000
+    def get_page_size(self, request):
+        if self.page_size_query_param:
+            try:
+                return int(request.query_params.get(self.page_size_query_param, self.page_size))
+            except (ValueError, TypeError):
+                pass
+
+        if 'limit' in request.query_params:
+            return int(request.query_params['limit'])
+
+        return self.page_size
+    def get_paginated_response(self, data):
+        return Response({
+            'links': {
+                'next': self.get_next_link(),
+                'previous': self.get_previous_link()
+            },
+            'count': self.page.paginator.count,
+            'page_size': self.get_page_size(self.request),
+            'results': data
+        })
+
+@api_view(['GET'])
+def all_house_price(request):
+    limit = request.GET.get('limit')
+    if limit is not None:
+        limit = int(limit)
+        queryset = HousePrice.objects.all()[:limit]
+        paginator = CustomPagination()
+        paginated_queryset = paginator.paginate_queryset(queryset, request)
+        serializer = HousePriceSerializer(paginated_queryset, many = True)
+        return paginator.get_paginated_response(serializer.data)
+    
+    queryset = HousePrice.objects.all()
+    paginator = CustomPagination()
+    paginated_queryset = paginator.paginate_queryset(queryset, request)
+    serializer = HousePriceSerializer(paginated_queryset, many=True)
+    return paginator.get_paginated_response(serializer.data)
+
+'''
 # Price Prediction View According to Alphabetic Order
 def all_house_price(request):
     #Filter for that certain town 
@@ -73,14 +123,74 @@ def all_house_price(request):
         house_paginator = Paginator(house_list, 100)
         page_num = request.GET.get('page')
         page = house_paginator.get_page(page_num)
+        if(HousePrice.objects.filter(town=q, flat_type=ft, flat_model=fm).exists()):
+            data = HousePrice.objects.filter(town=q, flat_type=ft, flat_model=fm).values('resale_price_aft1year', 'resale_price_aft2year', 'resale_price_aft3year', 'resale_price_aft4year', 'resale_price_aft5year')
+            #print(data)
+            forecast_dates = np.array([2024,2025,2026,2027,2028])
+            df_forecast = pd.DataFrame({'Date': forecast_dates, 'Price': data[0].values()})
+            x_axis = df_forecast["Date"]
+            y_axis = df_forecast["Price"]
+            graph = get_plot(x_axis,y_axis)
+            context = {
+                'count': house_paginator.count,
+                'graph': graph,
+                'page': page
+                }
+            return render(request,'all_house_price.html', context)
+        else:
+            return Response(status=status.HTTP_404_NOT_FOUND)
+
+    #Display for all houses
+    house_list = HousePrice.objects.all()
+
+    house_paginator = Paginator(house_list, 100)
+
+    page_num = request.GET.get('page')
+
+    page = house_paginator.get_page(page_num)
+    context = {
+        'count': house_paginator.count,
+        'page': page,
+        }
+    return render(request, 'all_house_price.html', context)
+'''
+
+@api_view(['GET'])
+def house_price(request, house_id):
+    try:
+        house = HousePrice.objects.get(id=house_id)
+    except HousePrice.DoesNotExist:
+        return Response(status=status.HTTP_404_NOT_FOUND)
+    if request.method == 'GET':
+        serializer = HousePriceSerializer(house)
+        return Response(serializer.data)
+        
+
+
+def all_house_price_prediction(request):
+    #Filter for that certain town 
+    if ('q' in request.GET) & ('ft' in request.GET) & ('fm' in request.GET): 
+        q=request.GET['q']
+        ft=request.GET['ft']
+        fm=request.GET['fm']
+        house_list = HousePrice.objects.filter(Q(town__icontains = q) & Q(flat_type__icontains=ft) & Q(flat_model__icontains = fm))
+        house_paginator = Paginator(house_list, 100)
+        page_num = request.GET.get('page')
+        page = house_paginator.get_page(page_num)
         graph = prediction(q,ft,fm)
+
+        # for house in page.object_list:
+        #     house = get_object_or_404(HousePrice, id=house.id)
+        #     print("house fav list: ", house.favourites)
+        #     if house.favourites.filter(id=request.user.id).exists():
+        #         print("exists")
+        #         fav = True 
         context = {
             'count': house_paginator.count,
             'graph': graph,
             'page': page
             }
         return render(request,'all_house_price.html', context)
-    
     else:
         #Display for all houses
         house_list = HousePrice.objects.all()
@@ -91,9 +201,17 @@ def all_house_price(request):
 
         page = house_paginator.get_page(page_num)
 
+
+        # for house in page.object_list:
+        #     house = get_object_or_404(HousePrice, id=house.id)
+        #     if house.id == 2:
+        #         print("request user: ", request.user.id)
+        #         print("house fav list: ", house.favourites)
+        #     if house.favourites.filter(id=request.user.id).exists():
+        #         fav = True 
         context = {
             'count': house_paginator.count,
-            'page': page
+            'page': page,
             }
         return render(request, 'all_house_price.html', context)
 
@@ -231,7 +349,6 @@ def prediction(town_name,type_of_flat,model_of_flat):
     #graph = sns.lineplot(x=df_forecast["Date"], y=df_forecast["Price"])
     con.close()
     return graph 
-
 
     
 
