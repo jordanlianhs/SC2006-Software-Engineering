@@ -174,8 +174,8 @@ def custom_login(request):
     
     form = UserLoginForm()
 
-    return render_nextjs_page_sync(request)
-    #return render(request, 'login_register.html', {'form': form, 'page': page})
+    #return render_nextjs_page_sync(request)
+    return render(request, 'login_register.html', {'form': form, 'page': page})
 
 
 @user_not_authenticated
@@ -200,8 +200,8 @@ def registerPage(request):
     else:
         form = UserRegistrationForm()
     
-    return render_nextjs_page_sync(request)
-    #return render(request, 'login_register.html', {'form': form})
+    #return render_nextjs_page_sync(request)
+    return render(request, 'login_register.html', {'form': form})
 
 @user_not_authenticated
 def activateEmail(request, user, to_email):
