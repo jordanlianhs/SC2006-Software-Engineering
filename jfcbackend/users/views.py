@@ -38,7 +38,6 @@ from django.http import HttpResponseRedirect
 def home(request):
     return render(request, 'home.html')
 
-
 # Note: For Django redirect('name'), use app name -> redirect('users:home')
 @login_required
 def logoutUser(request):
@@ -72,6 +71,7 @@ def custom_login(request):
     
     form = UserLoginForm()
 
+    #return render_nextjs_page_sync(request)
     return render(request, 'login_register.html', {'form': form, 'page': page})
 
 from django.http import JsonResponse
@@ -106,7 +106,8 @@ def registerPage(request):
                 print(request, error)
     else:
         form = UserRegistrationForm()
- 
+    
+    #return render_nextjs_page_sync(request)
     return render(request, 'login_register.html', {'form': form})
 
 @user_not_authenticated
