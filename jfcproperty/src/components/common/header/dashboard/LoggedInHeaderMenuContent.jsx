@@ -1,9 +1,27 @@
 import Link from "next/link";
 import { useRouter } from "next/router";
 import MyAccount from "./MyAccount";
+import { useState, useEffect } from "react";
+import Cookies from 'universal-cookie';
 
-const HeaderMenuContent = ({ float = "" }) => {
+const cookies = new Cookies();
+
+const LoggedInHeaderMenuContent = ({ float = "" }) => {
   const route = useRouter();
+
+  const [username, setUsername] = useState('');
+  const [email, setEmail] = useState('');
+
+  useEffect(() => {
+    const usernameCookie = cookies.get('username');
+    const emailCookie = cookies.get('email');
+    if (usernameCookie) {
+      setUsername(usernameCookie);
+    }
+    if (emailCookie) {
+      setEmail(emailCookie);
+    }
+  }, []);
 
   const home = [
     {
@@ -55,15 +73,16 @@ const HeaderMenuContent = ({ float = "" }) => {
       <li className="user_setting">
         <div className="dropdown">
           <a className="btn dropdown-toggle" href="#" data-bs-toggle="dropdown">
-            <img
+            {/* <img
               className="rounded-circle"
               src="/assets/images/team/e1.png"
               alt="e1.png"
-            />
-            <span className="dn-1199 ms-1">SMALL SHEEP</span>
+            /> */}
+            <p className="btn flaticon-user"></p>
+            <span className="dn-1199 ms-1">{username}</span>
           </a>
           <div className="dropdown-menu">
-            <MyAccount />
+            <MyAccount username={username} email={email}/>
           </div>
         </div>
       </li>
@@ -72,4 +91,4 @@ const HeaderMenuContent = ({ float = "" }) => {
   ); 
 };
 
-export default HeaderMenuContent;
+export default LoggedInHeaderMenuContent;

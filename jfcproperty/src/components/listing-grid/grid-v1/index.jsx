@@ -29,6 +29,8 @@ const Index = () => {
   const [favoriteFlats, setFavoriteFlats] = useState([]);
 
   // Add a function to handle adding/removing favorite flats
+  // Add save to user favaourites link
+  // Remove 
   const toggleFavoriteFlat = (flat) => {
     if (favoriteFlats.find((f) => f.id === flat.id)) {
       const updatedFavorites = favoriteFlats.filter((f) => f.id !== flat.id);
@@ -145,6 +147,15 @@ const Index = () => {
                         >
                           ♥
                         </button>
+                        {/* <a
+                        href={`http://localhost:8000/favourite_add/${flat.id}`}
+                        className={`favorite-button ${
+                          favoriteFlats.find((f) => f.id === flat.id) ? 'favorited' : ''
+                        }`}
+                        onClick={() => toggleFavoriteFlat(flat)}
+                        >
+                          ♥
+                        </a> */}
                       </div>
                     </div>
                   </div>

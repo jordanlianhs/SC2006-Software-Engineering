@@ -111,9 +111,9 @@ def all_house_price(request):
     serializer = HousePriceSerializer(paginated_queryset, many=True)
     return paginator.get_paginated_response(serializer.data)
 
-'''
+
 # Price Prediction View According to Alphabetic Order
-def all_house_price(request):
+def all_house_price_2(request):
     #Filter for that certain town 
     if ('q' in request.GET) & ('ft' in request.GET) & ('fm' in request.GET): 
         q=request.GET['q']
@@ -153,7 +153,7 @@ def all_house_price(request):
         'page': page,
         }
     return render(request, 'all_house_price.html', context)
-'''
+
 
 @api_view(['GET'])
 def house_price(request, house_id):

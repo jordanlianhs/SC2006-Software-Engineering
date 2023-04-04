@@ -79,8 +79,11 @@ CORS_ALLOWED_ORIGINS = [
 CORS_ALLOWED_ORIGIN_REGEXES = [
     'http://localhost:3030',
 ]
+CSRF_COOKIE_SECURE = False
 
 ROOT_URLCONF = 'jfcbackend.urls'
+
+LOGIN_URL = '/login/'
 
 #CORS_ALLOWED_ORIGINS = ['http://localhost:3000', 'http://127.0.0.1:8000']
 CORS_ALLOW_METHODS = [    'DELETE',    'GET',    'OPTIONS',    'PATCH',    'POST',    'PUT',]

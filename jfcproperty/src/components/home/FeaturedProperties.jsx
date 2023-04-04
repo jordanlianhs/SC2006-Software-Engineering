@@ -3,12 +3,33 @@ import Link from "next/link";
 import Slider from "react-slick";
 import properties from "../../data/properties";
 
+function getCookie(name) {
+  const cookies = document.cookie.split(';');
+  for (let i = 0; i < cookies.length; i++) {
+    const cookie = cookies[i].trim();
+    if (cookie.startsWith(name + '=')) {
+      return cookie.substring(name.length + 1);
+    }
+  }
+  return null;
+}
+
 const FeaturedProperties = () => {
   const[flats, setFlats] = useState([]);
   const [favoriteFlats, setFavoriteFlats] = useState([]);
 
   // Add a function to handle adding/removing favorite flats
   const toggleFavoriteFlat = (flat) => {
+    console.log(getCookie('csrftoken'))
+    // fetch(`http://127.0.0.1:8000/fav/${flat.id}/`, {
+    //   method: 'POST',
+    //   headers: {
+    //     'Content-Type': 'application/json',
+    //     'X-CSRFToken': getCookie('csrftoken'), // Make sure to include CSRF token
+    //   },
+    // })
+      // .then(response => console.log(response))
+      // .catch(error => console.error(error));
     if (favoriteFlats.find((f) => f.id === flat.id)) {
       const updatedFavorites = favoriteFlats.filter((f) => f.id !== flat.id);
       setFavoriteFlats(updatedFavorites);
@@ -89,15 +110,27 @@ const FeaturedProperties = () => {
 
           </div>
           {/* End .tc_content */}
-          <button
+          {/* <button
             className={`favorite-button ${
               favoriteFlats.find((f) => f.id === item.id) ? 'favorited' : ''
             }`}
             onClick={() => toggleFavoriteFlat(item)}
           >
             ♥
-          </button>
+          </button> */}
+          <p>
+            <a
+              //href={`http://127.0.0.1:8000/fav/${item.id}/`}
+              className={`favorite-button ${
+                favoriteFlats.find((f) => f.id === item.id) ? 'favorited' : ''
+              }`}
+              onClick={() => toggleFavoriteFlat(item)}
+              >
+                ♥
+            </a>
+          </p>
         </div>
+        
         {/* End .details */}
       </div>
     </div>

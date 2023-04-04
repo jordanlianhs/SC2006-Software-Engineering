@@ -33,21 +33,25 @@ from .serializers import AccountSerializer
 # for favourites
 from pricePrediction.models import HousePrice
 from django.shortcuts import get_object_or_404
-from django.http import HttpResponseRedirect
+from django.http import HttpResponseRedirect, HttpResponse
+from django.views.decorators.csrf import csrf_exempt
 
 def home(request):
     return render(request, 'home.html')
+
 
 # Note: For Django redirect('name'), use app name -> redirect('users:home')
 @login_required
 def logoutUser(request):
     logout(request)
-    return redirect('users:home')
+    response = HttpResponseRedirect('http://127.0.0.1:3000')
+    response.delete_cookie('username')
+    response.delete_cookie('email')
+    return response
 
 # Note: For Django redirect('name'), use app name -> redirect('users:home')
 @user_not_authenticated
 def custom_login(request):
-    print("running")
     page = 'login'
     if request.method == 'POST':
         form = UserLoginForm(request=request, data=request.POST)
@@ -59,7 +63,7 @@ def custom_login(request):
             if user is not None:
                 login(request, user)
                 messages.success(request, f"Hello {user.username}! You have successfully logged in.")
-                response = response = HttpResponseRedirect('http://127.0.0.1:3000')
+                response = HttpResponseRedirect('http://127.0.0.1:3000')
                 response.set_cookie('username', user.username)
                 response.set_cookie('email', user.email)
                 return response
@@ -98,6 +102,11 @@ def registerPage(request):
             user.save()
 
             activateEmail(request, user, form.cleaned_data.get('email'))
+
+            response = HttpResponseRedirect('http://127.0.0.1:8000/login/')
+            response.set_cookie('username', user.username)
+            response.set_cookie('email', user.email)
+            return response
 
             #login(request, user)
             return redirect('users:home')
@@ -255,6 +264,7 @@ def passwordResetConfirm(request, uidb64, token):
     messages.error(request, 'Something went wrong, redirecting back to homepage')
     return redirect('users:home')
 
+@csrf_exempt
 @login_required
 def favourite_add(request, id):
     house = get_object_or_404(HousePrice, id=id)
@@ -265,6 +275,7 @@ def favourite_add(request, id):
         house.favourites.remove(request.user)
     else:
         house.favourites.add(request.user)
+    #return HttpResponse("success")
     return HttpResponseRedirect(request.META['HTTP_REFERER'])
 
 @login_required

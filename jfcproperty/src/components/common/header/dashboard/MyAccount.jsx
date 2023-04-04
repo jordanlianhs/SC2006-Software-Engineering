@@ -2,11 +2,13 @@ import Link from "next/link";
 import { useRouter } from "next/router";
 import { isSinglePageActive } from "../../../../utils/daynamicNavigation";
 
-const MyAccount = () => {
+const MyAccount = (props) => {
+  const {username, email} = props;
+
   const profileMenuItems = [
-    { id: 1, name: "My Profile", ruterPath: "/my-profile" },
+    { id: 1, name: "My Profile", ruterPath: `http://127.0.0.1:8000/profile/${username}/` },
     { id: 2, name: " My Favourite", ruterPath: "/my-favourites" },
-    { id: 3, name: " Log out", ruterPath: "/login" },
+    { id: 3, name: " Log out", ruterPath: "http://127.0.0.1:8000/logout/" },
   ];
   const route = useRouter();
   return (
@@ -18,8 +20,8 @@ const MyAccount = () => {
           alt="e1.png"
         />
         <p>
-          SMALL SHEEP <br />
-          <span className="address">smallsheep@gmail.com</span>
+          {username}<br />
+          <span className="address">{email}</span>
         </p>
       </div>
       {/* End user_set_header */}
@@ -32,7 +34,7 @@ const MyAccount = () => {
               style={
                 isSinglePageActive(`${item.ruterPath}`, route.pathname)
                   ? { color: "#ff5a5f" }
-                  : undefined
+                  : { color: "black" }
               }
             >
               {item.name}
