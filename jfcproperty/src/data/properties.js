@@ -1,5 +1,5 @@
 const allResaleFlats = async () => {
-  const url = "http://127.0.0.1:8000/all_house_price/?limit=30000";
+  const url = "http://127.0.0.1:8000/all_house_price/?limit=50000";
   let flats = [];
   let nextUrl = url;
 

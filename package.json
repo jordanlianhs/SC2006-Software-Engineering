@@ -1,5 +1,6 @@
 {
   "dependencies": {
+    "chartjs": "^0.3.24",
     "fuse.js": "^6.6.2",
     "node-fetch": "^3.3.1"
   }
