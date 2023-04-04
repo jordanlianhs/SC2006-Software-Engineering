@@ -27,8 +27,6 @@ from .forms import UserRegistrationForm, UserLoginForm, UserUpdateProfileForm, S
 # for user authentication
 from .decorators import user_not_authenticated
 
-from rest_framework.response import Response 
-from rest_framework.decorators import api_view
 from .models import CustomUser
 from .serializers import AccountSerializer
 
@@ -37,117 +35,9 @@ from pricePrediction.models import HousePrice
 from django.shortcuts import get_object_or_404
 from django.http import HttpResponseRedirect
 
-from django_nextjs.render import render_nextjs_page_sync 
-
-
-# frontend pages
-#from jfcproperty.src.components.login import index.jsx
-
-# Create your views here.
-
-# Can add in GET, POST, PUT, DELETE
-@api_view(['GET'])
-
-def getRoutes(request):
-    routes = [
-        {
-            'Endpoint': '/notes/',
-            'method': 'GET',
-            'body': None,
-            'description': 'Returns an array of notes'
-        },
-        {
-            'Endpoint': '/notes/id',
-            'method': 'GET',
-            'body': None,
-            'description': 'Returns a single note object'
-        },
-        {
-            'Endpoint': '/notes/create/',
-            'method': 'POST',
-            'body': {'body': ""},
-            'description': 'Creates new note with data sent in post request'
-        },
-        {
-            'Endpoint': '/notes/id/update/',
-            'method': 'PUT',
-            'body': {'body': ""},
-            'description': 'Creates an existing note with data sent in post request'
-        },
-        {
-            'Endpoint': '/notes/id/delete/',
-            'method': 'DELETE',
-            'body': None,
-            'description': 'Deletes and exiting note'
-        },
-    ]
-    
-    return Response(routes)
-
-
-# Can add in GET, POST, PUT, DELETE
-@api_view(['GET'])
-def getAccounts(request):
-    accounts = Account.objects.all()
-
-    #Pass the data to the serializer
-    serializer = AccountSerializer(accounts, many=True)
-
-    return Response(serializer.data)
-
-
-# Can add in GET, POST, PUT, DELETE
-@api_view(['GET'])
-def getAccount(request, primary_key):
-    accounts = Account.objects.get(id=primary_key)
-
-    #Pass the data to the serializer
-    serializer = AccountSerializer(accounts, many=False)
-
-    return Response(serializer.data)
-
-
 def home(request):
     return render(request, 'home.html')
 
-# @user_not_authenticated
-# def registerPage(request):
-#     if request.user.is_authenticated:
-#         return redirect('home')
-
-#     if request.method == 'POST':
-#         username = request.POST.get("username")
-#         password = request.POST.get("password")
-
-#         try:
-#             user = User.objects.get(username=username)
-#         except:
-#             messages.error(request, 'User does not exist')
-
-# def loginPage(request):
-#     page = 'login'
-#     if request.method == 'POST':
-#         username = request.POST.get("username").lower()
-#         password = request.POST.get("password")
-
-#         try:
-#             user = User.objects.get(username=username)
-#         except:
-#             messages.error(request, 'User does not exist')
-
-#         user = authenticate(request, username=username, password=password)
-
-#         if user is not None: 
-#             login(request, user)
-#             messages.success(request, f'Hello {user}! You have successfully logged in.')
-
-#             return redirect('home')
-        
-#         else:
-#             messages.error(request, 'Username or password does not exist')
-
-#     context = {'page': page}
-#     return render(request, 'login_register.html', context)
 
 # Note: For Django redirect('name'), use app name -> redirect('users:home')
 @login_required

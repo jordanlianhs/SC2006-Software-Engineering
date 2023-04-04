@@ -1,6 +1,7 @@
 import Link from "next/link";
 import { useEffect, useState } from "react";
 import HeaderMenuContent from "../common/header/HeaderMenuContent";
+  
 
 const Header = () => {
   const [navbar, setNavbar] = useState(false);

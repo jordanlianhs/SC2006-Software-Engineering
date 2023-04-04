@@ -72,10 +72,10 @@ const HeaderMenuContent = ({ float = "" }) => {
 
         <li className={`list-inline-item list_s ${float}`}>
           <a
-            href="http://127.0.0.1:3000/my-profile"
+            href="#"
             className="btn flaticon-user"
-            // data-bs-toggle="modal"
-            // data-bs-target=".bd-example-modal-lg"
+            data-bs-toggle="modal"
+            data-bs-target=".bd-example-modal-lg"
           >
             <span className="dn-lg">{username}</span>
           </a>
