@@ -1,5 +1,9 @@
 <style>
     body {
+      background-image: url('/jfcbackend/static/images/1.jpg');
+      background-size: cover;
+      background-position: center;
+      background-repeat: no-repeat;
       background-color: #f8f8f8;
       font-family: Arial, sans-serif;
     }
@@ -23,7 +27,7 @@
       margin-bottom: 10px;
       color: #777;
     }
-    input[type="text"],
+    /*input[type="text"],
     input[type="password"] {
       width: 100%;
       padding: 10px;
@@ -32,7 +36,7 @@
       border: none;
       box-shadow: 0 0 5px rgba(0, 0, 0, 0.2);
       font-size: 16px;
-    }
+    }*/
     input[type="submit"] {
       background-color: #ff5a5e;
       color: #fff;
@@ -77,41 +81,89 @@
     .register a:hover {
       color: #ff5a5e;
     }
+    .home-button {
+      display: block;
+      text-align: center;
+      font-size: 18px;
+      margin-top: 30px;
+      color: #555;
+    }
+    .home-button a {
+      display: inline-block;
+      background-color: #ff5a5e;
+      color: #fff;
+      padding: 10px 20px;
+      border-radius: 3px;
+      font-size: 18px;
+      text-decoration: none;
+      transition: background-color 0.3s ease, color 0.3s ease;
+    }
+    .home-button a:hover {
+      background-color: #ff5a5e;
+      color: #fff;
+    }
+    input[type="text"],
+    input[type="password"],
+    input[type="email"],
+    select {
+      width: 100%;
+      padding: 10px;
+      margin-bottom: 20px;
+      border-radius: 3px;
+      border: none;
+      box-shadow: 0 0 5px rgba(0, 0, 0, 0.2);
+      font-size: 16px;
+    }
+    
   </style>
 
 {% extends 'main.html' %}
 {% load crispy_forms_tags %}
 {% block content %}
-
+{% load static %}
+<style>
+  body {
+    background-image: url('{% static "images/1.jpg" %}');
+    background-size: cover;
+    background-position: center;
+    background-repeat: no-repeat;
+    background-color: #f8f8f8;
+    font-family: Arial, sans-serif;
+  }
+</style>
 {% if page == 'login' %}
 <form method="POST" action=''>
-    {% csrf_token %}
-    <h1>JFC Property Login</h1>
-    <label for="username">Username or Email:</label>
-    <input type="text" id="username" name="username" required>
-    <label for="password">Password:</label>
-    <input type="password" id="password" name="password" required>
-    <input type="submit" value="Login">
-    <span class="forgot-password">
-      <a href="{% url 'users:password_reset' %}">Forgot password?</a>
-    </span>
-    <span class="register">
-      Don't have an account? <a href="{% url 'users:register' %}">Register now</a>
-    </span>
-  </form>
+  {% csrf_token %}
+  <h1>JFC Property Login</h1>
+  <label for="username">Email:</label>
+  <input type="text" id="username" name="username" required>
+  <label for="password">Password:</label>
+  <input type="password" id="password" name="password" required>
+  <input type="submit" value="Login">
+  <span class="forgot-password">
+    <a href="{% url 'users:password_reset' %}">Forgot password?</a>
+  </span>
+  <span class="register">
+    Don't have an account? <a href="{% url 'users:register' %}">Register now</a>
+  </span>
+</form>
 
-
+<span class="home-button">
+  <a href="http://127.0.0.1:3000/">Return to Home Page</a>
+</span>
 {% else %}
 <div>
-    <form method="POST" action=''>
-        {% csrf_token %}
-        {{ form|crispy }}
-        <input type="submit" value="Register" />
-
-    </form>
-    <p> Already signed up?</p>
-    <a href="{% url 'users:login' %}">Log in</a>
+  <form method="POST" action=''>
+    {% csrf_token %}
+    <h1>Register An Account</h1>
+    {{ form|crispy }}
+    <input type="submit" value="Register" />
+  </form>
+  <span class="home-button">
+    <a href="{% url 'users:login' %}">Back to Log in</a>
+  </span>
 </div>
 {% endif %}
+
 
 {% endblock content %}
