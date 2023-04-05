@@ -1,16 +1,43 @@
 import Link from "next/link";
 import { useRouter } from "next/router";
 import { isSinglePageActive } from "../../../../utils/daynamicNavigation";
+import Cookies from 'universal-cookie'
+
+const cookies = new Cookies();
 
 const MyAccount = (props) => {
   const {username, email} = props;
 
   const profileMenuItems = [
-    { id: 1, name: "My Profile", ruterPath: `http://127.0.0.1:8000/profile/${username}/` },
+    { id: 1, name: "My Profile", ruterPath: '/my-profile' },
     { id: 2, name: " My Favourite", ruterPath: "/my-favourites" },
-    { id: 3, name: " Log out", ruterPath: "http://127.0.0.1:8000/logout/" },
+    { id: 3, name: " Log out", ruterPath: "/" },
   ];
   const route = useRouter();
+
+  const handleLogout = () => {
+    console.log("Logout clicked");
+    const csrftoken = cookies.get('csrftoken');
+    fetch('http://127.0.0.1:8000/logout/', {
+      method: 'POST',
+      credentials: 'include',
+      headers: {
+        'X-CSRFToken': csrftoken,
+      },
+    })
+    .then((response) => {
+      if (response.ok) {
+        console.log("redirect");
+        route.push('/'); // Redirect to home page
+      } else {
+        throw new Error('Login failed');
+      }
+    })
+    .catch((error) => {
+      console.error(error);
+    });
+  }
+
   return (
     <>
       <div className="user_set_header">
@@ -36,6 +63,7 @@ const MyAccount = (props) => {
                   ? { color: "#ff5a5f" }
                   : { color: "black" }
               }
+              onClick={item.ruterPath === "/" ? handleLogout : null}
             >
               {item.name}
             </a>
