@@ -1,7 +1,7 @@
 from django.db import models
 from django.utils.translation import gettext as _
 import requests
-from users.models import User
+from users.models import CustomUser
 
 class HousePrice(models.Model):
     #Should create enum for town, flat_type, flat_model
@@ -23,7 +23,7 @@ class HousePrice(models.Model):
     resale_price_aft3year = models.FloatField(_("resale_price_aft3year"), blank=True, null=True)
     resale_price_aft4year = models.FloatField(_("resale_price_aft4year"), blank=True, null=True)
     resale_price_aft5year = models.FloatField(_("resale_price_aft5year"), blank=True, null=True)
-    favourites = models.ManyToManyField(User, related_name='favourite', default=None, blank=True)
+    favourites = models.ManyToManyField(CustomUser, related_name='favourite', default=None, blank=True)
     
     def __str__(self) -> str:
         return f"{self.id}"

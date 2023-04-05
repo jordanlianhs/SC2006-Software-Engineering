@@ -1,46 +1,17 @@
 import Link from "next/link";
-import { useRouter } from 'next/router';
 import { useState } from "react";
-import Cookies from 'universal-cookie'
-
-const cookies = new Cookies();
+import axios from 'axios';
 
 const Form = () => {
-  const router = useRouter();
-
-  const [email, setEmail] = useState('');
-  const [password, setPassword] = useState('');
-  const [error, setError] = useState(null); // Initialize error state to null
+    const [email, setEmail] = useState('');
+    const [password, setPassword] = useState('');
   
-  function handleSubmit(event) {
-    const csrftoken = cookies.get('csrftoken')
-    console.log("csrftoken cookie: ", csrftoken)
-    event.preventDefault();
-    const formData = new FormData();
-    formData.append('email', email);
-    formData.append('password', password);
-    fetch('http://127.0.0.1:8000/login/', {
-      method: 'POST',
-      body: formData,
-      credentials: 'include',
-      headers: {
-        'X-CSRFToken': csrftoken,
-      },
-    })
-      .then((response) => {return response.json();})
-      .then((data) => {
-        if (data.success) {
-          console.log("redirect")
-          router.push('/'); // Redirect to home page
-        } else {
-          throw new Error('Login failed');
-        }
-      })
-      .catch((error) => {
-        console.error(error);
-        setError('Invalid email or password'); // Update error state with an error message
-      });
-  }
+    const handleSubmit = async (event) => {
+      event.preventDefault();
+      const data = { email, password };
+      const response = await axios.post('http://127.0.0.1:8000/login/', data);
+      console.log(response.data);
+    };
 
   return (
     <form onSubmit={handleSubmit}>
@@ -60,10 +31,6 @@ const Form = () => {
           className="form-control"
           required
           placeholder="Key in your Email Address"
-          type="email"
-          id="email"
-          value={email}
-          onChange={(event) => setEmail(event.target.value)}
         />
         <div className="input-group-prepend">
           <div className="input-group-text">
@@ -79,9 +46,6 @@ const Form = () => {
           className="form-control"
           required
           placeholder="Password"
-          id="password"
-          value={password}
-          onChange={(event) => setPassword(event.target.value)}
         />
         <div className="input-group-prepend">
           <div className="input-group-text">
@@ -90,8 +54,6 @@ const Form = () => {
         </div>
       </div>
       {/* End .input-group */}
-
-      {error && <p className="text-danger">{error}</p>} {/* Display error message if error state is not null */}
 
       <div className="form-group form-check custom-checkbox mb-3">
 

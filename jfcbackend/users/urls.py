@@ -4,10 +4,9 @@ from . import views
 app_name = 'users'
 
 urlpatterns = [
-    path('get_csrf_token/', views.get_csrf_token, name='get_csrf_token'),   
-    path('login/', views.login_view, name='login'),   
+    path('login/', views.custom_login, name='login'),   
     path('logout/', views.logoutUser, name='logout'),
-    path('register/', views.register, name='register'),
+    path('register/', views.registerPage, name='register'),
     path('profile/<username>/', views.profile, name='profile'),
     path('activate/<uidb64>/<token>/', views.activate, name='activate'),
     path('password_change/', views.password_change, name='password_change'),
