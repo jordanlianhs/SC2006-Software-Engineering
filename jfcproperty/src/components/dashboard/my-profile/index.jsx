@@ -7,6 +7,18 @@ import Cookies from 'universal-cookie';
 const cookies = new Cookies();
 
 const index = () => {
+  const [username, setUsername] = useState('');
+  const [email, setEmail] = useState('');
+
+  useEffect(() => {
+    const usernameCookie = cookies.get('username');
+    const emailCookie = cookies.get('email');
+    if (usernameCookie) {
+      setUsername(usernameCookie);
+      setEmail(emailCookie);
+    }
+  }, []);
+  
   return (
     <>
       {/* <!-- Main Header Nav --> */}

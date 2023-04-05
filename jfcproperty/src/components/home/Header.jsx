@@ -9,17 +9,14 @@ const cookies = new Cookies();
 const Header = () => {
   const [navbar, setNavbar] = useState(false);
 
-  const username = cookies.get('username')
-  const email = cookies.get('email')
+  const [username, setUsername] = useState('');
 
-  // const [username, setUsername] = useState('');
-
-  // useEffect(() => {
-  //   const usernameCookie = cookies.get('username');
-  //   if (usernameCookie) {
-  //     setUsername(usernameCookie);
-  //   }
-  // }, []);
+  useEffect(() => {
+    const usernameCookie = cookies.get('username');
+    if (usernameCookie) {
+      setUsername(usernameCookie);
+    }
+  }, []);
 
   const changeBackground = () => {
     if (window.scrollY >= 95) {

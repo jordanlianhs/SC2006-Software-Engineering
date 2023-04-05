@@ -7,6 +7,9 @@ import { useRouter } from "next/router";
 // const cookies = new Cookies();
 
 const HeaderMenuContent = ({ float = "" }) => {
+
+  // const [username, setUsername] = useState('');
+
   // useEffect(() => {
   //   const usernameCookie = cookies.get('username');
   //   if (usernameCookie) {
@@ -116,7 +119,7 @@ const HeaderMenuContent = ({ float = "" }) => {
   
         <li className={`list-inline-item list_s ${float}`}>
           <a
-            href="/login"
+            href="http://127.0.0.1:8000/login/"
             className="btn flaticon-user"
             // data-bs-toggle="modal"
             // data-bs-target=".bd-example-modal-lg"
