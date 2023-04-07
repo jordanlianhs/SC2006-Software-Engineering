@@ -12,6 +12,8 @@ import {
   selectFlatType,
   selectStreetName,
   selectBlockNumber,
+  selectTown,
+  selectFlatModel,
   storeFilteredFlats, // Make sure this is imported
 } from "../../../features/properties/propertiesSlice";
 
@@ -20,6 +22,8 @@ const Index = () => {
   const selectedFlatType = useSelector(selectFlatType);
   const selectedStreetName = useSelector(selectStreetName);
   const selectedBlockNumber = useSelector(selectBlockNumber);
+  const selectedTown = useSelector(selectTown);
+  const selectedFlatModel = useSelector(selectFlatModel);
   const filteredFlats = useSelector(storeFilteredFlats);
   
   const[flats,setFlats] = useState([]);
@@ -58,14 +62,16 @@ const Index = () => {
           return (
             (!selectedFlatType || flat.flatType === selectedFlatType) &&
             (!selectedStreetName || flat.streetName === selectedStreetName) &&
-            (!selectedBlockNumber || flat.blockNumber === selectedBlockNumber)
+            (!selectedBlockNumber || flat.blockNumber === selectedBlockNumber) &&
+            (!selectedTown || flat.town == selectedTown) &&
+            (!selectedFlatModel || flat.flatModel == selectedFlatModel)
           );
         });
         setFlats(filteredFetchedFlats);
       };
       fetchFlats();
     }
-  }, [filteredFlats, selectedFlatType, selectedStreetName, selectedBlockNumber]);
+  }, [filteredFlats, selectedFlatType, selectedStreetName, selectedBlockNumber, selectedFlatModel, selectedTown]);
 
   const indexOfLastFlat = currentPage * flatsPerPage;
   const indexOfFirstFlat = indexOfLastFlat - flatsPerPage;
