@@ -58,13 +58,12 @@ const Form = () => {
               query: { successMessage: successMessage },
             }); // Redirect to home page
           } else {
-            throw new Error('Registration failed');
+            if (data.message == 'username_exists')
+              setError('This username has been taken. Please choose another username.');
+            else if (data.message == 'email_exists')
+              setError('This email has been taken. Please choose another email.');
           }
         })
-        .catch((error) => {
-          console.error(error);
-          setError('This username/email has been taken. Please choose another username/email'); // Update error state with an error message
-        });
       }
   }
 

@@ -128,17 +128,17 @@ def register(request):
         username = request.POST.get('username')
         password = request.POST.get('password')
 
-        print(email)
-        print(username)
-        print(password)
-
         username = username.lower()
-        
-        user = User.objects.create_user(email=email, username=username, password=password)
 
-        activateEmail(request, user, email)
-        print("email sent")
-        return JsonResponse({'success': True})
+        if User.objects.filter(username=username).exists():
+            return JsonResponse({'success': False, 'message': 'username_exists'})
+        elif User.objects.filter(email=email).exists():
+            return JsonResponse({'success': False, 'message': 'email_exists'})
+        else:
+            user = User.objects.create_user(email=email, username=username, password=password)
+            activateEmail(request, user, email)
+            print("email sent")
+            return JsonResponse({'success': True})
     return JsonResponse({'success': False})
 
 # @user_not_authenticated
