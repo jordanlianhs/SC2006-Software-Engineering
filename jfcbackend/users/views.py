@@ -41,6 +41,7 @@ from django.views.decorators.csrf import ensure_csrf_cookie
 from django.views.decorators.http import require_POST
 from django.middleware import csrf
 from django.http import JsonResponse
+from django.contrib.auth import update_session_auth_hash
 
 User = get_user_model()
 
@@ -204,10 +205,32 @@ def activate(request, uidb64, token):
 
         print('Thank you for your email confirmation. Now you can login into your account.')
 
-        return HttpResponse({'activate_account': True})
+        return HttpResponse('You have successfully verified your JFC account. You may close this window and login with your new account. Thank You.')
     else:
         print("no user")
-        return HttpResponse({'activate_account': False})
+        return HttpResponse('The verification link you clicked is not valid or has expired. Please check your inbox and click on the latest verification link.')
+
+@require_POST
+@login_required
+def edit_profile(request, username):
+    try:
+        print('running edit profile')
+        if request.method == 'POST':
+            # Get the updated data from the request
+            username = request.POST.get('username')
+            email = request.POST.get('email')
+
+            # Update the user's profile with the new data
+            user = request.user
+            user.username = username
+            user.email = email
+            user.save()
+            print('saved new user details')
+
+            # Return a JSON response indicating success
+            return JsonResponse({'success': True})
+    except Exception as e:
+        return JsonResponse({'success': False})
 
 def profile(request, username):
     if request.method == 'POST':
@@ -232,23 +255,46 @@ def profile(request, username):
     
     return redirect('users:home')
 
+@require_POST
 @login_required
 def password_change(request):
-    user = request.user 
-    if request.method == 'POST':
-        form = SetPasswordForm(user, request.POST)
-        if form.is_valid():
-            form.save()
-            messages.success(request, "Your password has been changed.")
-            return redirect('users:login')
-        else:
-            for error in list(form.errors.values()):
-                messages.error(request, error)
+    try:
+        print('running user is logged in, change pw')
+        if request.method == 'POST':
+            # Get the updated data from the request
+            password = request.POST.get('password')
+
+            # Update the user's profile with the new data
+            user = request.user
+            user.set_password(password)
+            user.save()
+            update_session_auth_hash(request, user)
+            messages.success(request, 'Your password has been successfully updated!')
+
+            # Return a JSON response indicating success
+            return JsonResponse({'success': True})
+    except Exception as e:
+        return JsonResponse({'success': False})
+
+# when user wants to change their password when they are logged in
+# @login_required
+# def password_change(request):
+#     user = request.user 
+#     if request.method == 'POST':
+#         form = SetPasswordForm(user, request.POST)
+#         if form.is_valid():
+#             form.save()
+#             messages.success(request, "Your password has been changed.")
+#             return redirect('users:login')
+#         else:
+#             for error in list(form.errors.values()):
+#                 messages.error(request, error)
 
 
-    form = SetPasswordForm(user)
-    return render(request, 'password_reset_confirm.html', {'form': form})
+#     form = SetPasswordForm(user)
+#     return render(request, 'password_reset_confirm.html', {'form': form})
 
+# when user clicks on forget password, then sends in their email
 @user_not_authenticated
 def password_reset_request(request):
     if request.method == 'POST':
@@ -283,6 +329,7 @@ def password_reset_request(request):
     form = PasswordResetForm()
     return render(request=request, template_name='password_reset.html', context={'form': form})
 
+# when user clicks on password reset link in their email
 def passwordResetConfirm(request, uidb64, token):
     User = get_user_model()
     try:

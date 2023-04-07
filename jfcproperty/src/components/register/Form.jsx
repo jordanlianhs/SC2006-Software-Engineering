@@ -13,7 +13,8 @@ const Form = () => {
   const [password, setPassword] = useState('');
   const [confirmPassword, setConfirmPassword] = useState('');
   const [error, setError] = useState(''); // Initialize error state to null
-  const [success, setSuccess] = useState(); // Initialize error state to null
+  const [passwordRequirement, setPasswordRequirement] = useState('');
+
 
   function handleSubmit(event) {
     const csrftoken = cookies.get('csrftoken')
@@ -26,6 +27,9 @@ const Form = () => {
     if (password !== confirmPassword) {
       setError('Passwords do not match');
       return;
+    }
+    else if (!isPasswordValid(password)) {
+      setError('Password must contain at least 8 characters, including both upper and lower case alphabets and at least 1 special character.');
     }
 
     const formData = new FormData();
@@ -47,9 +51,12 @@ const Form = () => {
       })
       .then((data) => {
         if (data.success) {
-          setSuccess(true);
-          console.log("redirect");
-          router.push('/login'); // Redirect to home page
+          const successMessage = 'Please click the verification link sent to your email to verify your account.';
+          console.log(successMessage);
+          router.push({
+            pathname: '/login',
+            query: { successMessage: successMessage },
+          }); // Redirect to home page
         } else {
           throw new Error('Registration failed');
         }
@@ -58,6 +65,12 @@ const Form = () => {
         console.error(error);
         setError('Registration Failed'); // Update error state with an error message
       });
+  }
+
+  const isPasswordValid = (password) => {
+    // Password must contain at least 8 characters, including both upper and lower case alphabets and at least 1 special character.
+    const passwordRegex = /^(?=.*[a-z])(?=.*[A-Z])(?=.*[@$!%*?&])[A-Za-z@$!%*?&]{8,}$/;
+    return passwordRegex.test(password);
   }
 
   return (
@@ -147,6 +160,15 @@ const Form = () => {
       {/* End .form-group */}
 
       {error && <p className="text-danger">{error}</p>} {/* Display error message if error state is not null */}
+
+      <div className="my_profile_setting_input" style={{ marginBottom: '1.5rem' }}>
+        <p>Please ensure your password:</p>
+        <ul>
+          <li>Contains at least 8 characters</li>
+          <li>Includes both upper and lower case alphabets</li>
+          <li>Has at least 1 special character</li>
+        </ul>
+      </div>
 
       <button type="submit" className="btn btn-log w-100 btn-thm">
         Register

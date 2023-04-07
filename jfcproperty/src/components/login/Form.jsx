@@ -7,6 +7,8 @@ const cookies = new Cookies();
 
 const Form = () => {
   const router = useRouter();
+  const successMessage = router.query.successMessage;
+  console.log(successMessage)
 
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
@@ -43,70 +45,86 @@ const Form = () => {
   }
 
   return (
-    <form onSubmit={handleSubmit}>
-      <div className="heading text-center">
-        <h3>Login to your account</h3>
-        <p className="text-center">
-          Dont have an account?{" "}
-          <Link href="/register">
-            <a className="text-thm">Sign Up!</a>
-          </Link>
-        </p>
-      </div>
-      {/* End .heading */}
+    <> 
+      {successMessage && (
+        <div className="bg-green-100 border border-green-400 text-green-700 px-3 py-1 rounded relative" role="alert">
+        <strong className="font-bold ">Registration Success! </strong>
+        <span className="block sm:inline">{successMessage}</span>
+        <style jsx>{`
+            .bg-green-100 {
+            margin-bottom: 13px;
+            }
+        `}</style>
+        </div>
+      )}
 
-      <div className="input-group mb-2 mr-sm-2">
-        <input
-          className="form-control"
-          required
-          placeholder="Key in your Email Address"
-          type="email"
-          id="email"
-          value={email}
-          onChange={(event) => setEmail(event.target.value)}
-        />
-        <div className="input-group-prepend">
-          <div className="input-group-text">
-            <i className="flaticon-user"></i>
+      <form onSubmit={handleSubmit}>
+        <div className="heading text-center">
+          <h3>Login to your account</h3>
+          <p className="text-center">
+            Dont have an account?{" "}
+            <Link href="/register">
+              <a className="text-thm">Sign Up!</a>
+            </Link>
+          </p>
+        </div>
+        {/* End .heading */}
+
+        <div className="input-group mb-2 mr-sm-2">
+          <input
+            className="form-control"
+            required
+            placeholder="Key in your Username or Email Address"
+            type="text"
+            id="email"
+            value={email}
+            onChange={(event) => setEmail(event.target.value)}
+          />
+          <div className="input-group-prepend">
+            <div className="input-group-text">
+              <i className="flaticon-user"></i>
+            </div>
           </div>
         </div>
-      </div>
-      {/* End .input-group */}
+        {/* End .input-group */}
 
-      <div className="input-group form-group">
-        <input
-          type="password"
-          className="form-control"
-          required
-          placeholder="Password"
-          id="password"
-          value={password}
-          onChange={(event) => setPassword(event.target.value)}
-        />
-        <div className="input-group-prepend">
-          <div className="input-group-text">
-            <i className="flaticon-password"></i>
+        <div className="input-group form-group">
+          <input
+            type="password"
+            className="form-control"
+            required
+            placeholder="Password"
+            id="password"
+            value={password}
+            onChange={(event) => setPassword(event.target.value)}
+          />
+          <div className="input-group-prepend">
+            <div className="input-group-text">
+              <i className="flaticon-password"></i>
+            </div>
           </div>
         </div>
-      </div>
-      {/* End .input-group */}
+        {/* End .input-group */}
 
-      {error && <p className="text-danger">{error}</p>} {/* Display error message if error state is not null */}
+        {error && <p className="text-danger">{error}</p>} {/* Display error message if error state is not null */}
 
-      <div className="form-group form-check custom-checkbox mb-3">
+        <div className="form-group form-check custom-checkbox mb-3">
 
-        <a className="btn-fpswd float-end" href="#">
-          Forgot password?
-        </a>
-      </div>
-      {/* End .form-group */}
+          <a className="btn-fpswd float-end" href="#">
+            Forgot password?
+          </a>
+        </div>
+        {/* End .form-group */}
 
-      <button type="submit" className="btn btn-log w-100 btn-thm">
-        Log In
-      </button>
-      {/* login button */}
+        <button type="submit" className="btn btn-log w-100 btn-thm">
+          Log In
+        </button>
+        {/* login button */}
 
-    </form>
+      </form>
+
+    </>
+    
   );
 };
 
