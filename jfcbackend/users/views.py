@@ -79,34 +79,34 @@ def login_view(request):
     response['X-CSRFToken'] = csrf.get_token(request)
     return response
 
-# Note: For Django redirect('name'), use app name -> redirect('users:home')
-@user_not_authenticated
-def custom_login(request):
-    page = 'login'
-    if request.method == 'POST':
-        form = UserLoginForm(request=request, data=request.POST)
-        if form.is_valid():
-            user = authenticate(
-                username = form.cleaned_data['username'],
-                password = form.cleaned_data['password'],
-            )
-            if user is not None:
-                login(request, user)
-                messages.success(request, f"Hello {user.username}! You have successfully logged in.")
-                response = HttpResponseRedirect('http://127.0.0.1:3000')
-                response.set_cookie('username', user.username)
-                response.set_cookie('email', user.email)
-                return response
-                #request.session['csrftoken'] = request.COOKIES.get('csrftoken')
-                #return redirect('users:home')
-        else:
-            for error in list(form.errors.values()):
-                messages.error(request, error)
+# # Note: For Django redirect('name'), use app name -> redirect('users:home')
+# @user_not_authenticated
+# def custom_login(request):
+#     page = 'login'
+#     if request.method == 'POST':
+#         form = UserLoginForm(request=request, data=request.POST)
+#         if form.is_valid():
+#             user = authenticate(
+#                 username = form.cleaned_data['username'],
+#                 password = form.cleaned_data['password'],
+#             )
+#             if user is not None:
+#                 login(request, user)
+#                 messages.success(request, f"Hello {user.username}! You have successfully logged in.")
+#                 response = HttpResponseRedirect('http://127.0.0.1:3000')
+#                 response.set_cookie('username', user.username)
+#                 response.set_cookie('email', user.email)
+#                 return response
+#                 #request.session['csrftoken'] = request.COOKIES.get('csrftoken')
+#                 #return redirect('users:home')
+#         else:
+#             for error in list(form.errors.values()):
+#                 messages.error(request, error)
     
-    form = UserLoginForm()
+#     form = UserLoginForm()
 
-    #return render_nextjs_page_sync(request)
-    return render(request, 'login_register.html', {'form': form, 'page': page})
+#     #return render_nextjs_page_sync(request)
+#     return render(request, 'login_register.html', {'form': form, 'page': page})
 
 
 
@@ -141,35 +141,35 @@ def register(request):
         return JsonResponse({'success': True})
     return JsonResponse({'success': False})
 
-@user_not_authenticated
-def registerPage(request):
-    form = UserCreationForm()
+# @user_not_authenticated
+# def registerPage(request):
+#     form = UserCreationForm()
 
-    if request.method == 'POST':
-        form = UserRegistrationForm(request.POST)
-        if form.is_valid():
-            user = form.save(commit=False)
-            user.is_active = False 
-            user.username = user.username.lower()
-            user.save()
+#     if request.method == 'POST':
+#         form = UserRegistrationForm(request.POST)
+#         if form.is_valid():
+#             user = form.save(commit=False)
+#             user.is_active = False 
+#             user.username = user.username.lower()
+#             user.save()
 
-            activateEmail(request, user, form.cleaned_data.get('email'))
+#             activateEmail(request, user, form.cleaned_data.get('email'))
 
-            response = HttpResponseRedirect('http://127.0.0.1:8000/login/')
-            response.set_cookie('username', user.username)
-            response.set_cookie('email', user.email)
-            return response
+#             response = HttpResponseRedirect('http://127.0.0.1:8000/login/')
+#             response.set_cookie('username', user.username)
+#             response.set_cookie('email', user.email)
+#             return response
 
-            #login(request, user)
-            return redirect('users:home')
-        else:
-            for error in list(form.errors.values()):
-                print(request, error)
-    else:
-        form = UserRegistrationForm()
+#             #login(request, user)
+#             return redirect('users:home')
+#         else:
+#             for error in list(form.errors.values()):
+#                 print(request, error)
+#     else:
+#         form = UserRegistrationForm()
     
-    #return render_nextjs_page_sync(request)
-    return render(request, 'login_register.html', {'form': form})
+#     #return render_nextjs_page_sync(request)
+#     return render(request, 'login_register.html', {'form': form})
 
 def activateEmail(request, user, to_email):
     mail_subject = 'Activate your JFC account'
@@ -232,28 +232,28 @@ def edit_profile(request, username):
     except Exception as e:
         return JsonResponse({'success': False})
 
-def profile(request, username):
-    if request.method == 'POST':
-        user = request.user
-        form = UserUpdateProfileForm(request.POST, request.FILES, instance=user)
-        if form.is_valid():
-            user_form = form.save()
-            messages.success(request, f'{user_form.username}, your profile has been updated successfully!')
-            return redirect('users:profile', user_form.username)
-        else:
-            for error in list(form.errors.values()):
-                print(request, error)
+# def profile(request, username):
+#     if request.method == 'POST':
+#         user = request.user
+#         form = UserUpdateProfileForm(request.POST, request.FILES, instance=user)
+#         if form.is_valid():
+#             user_form = form.save()
+#             messages.success(request, f'{user_form.username}, your profile has been updated successfully!')
+#             return redirect('users:profile', user_form.username)
+#         else:
+#             for error in list(form.errors.values()):
+#                 print(request, error)
 
-    user = get_user_model().objects.filter(username=username).first()
-    if user:
-        form = UserUpdateProfileForm(instance=user)
-        return render(
-            request=request,
-            template_name='profile.html',
-            context={'form':form}
-        )
+#     user = get_user_model().objects.filter(username=username).first()
+#     if user:
+#         form = UserUpdateProfileForm(instance=user)
+#         return render(
+#             request=request,
+#             template_name='profile.html',
+#             context={'form':form}
+#         )
     
-    return redirect('users:home')
+#     return redirect('users:home')
 
 @require_POST
 @login_required

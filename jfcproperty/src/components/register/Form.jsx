@@ -31,40 +31,41 @@ const Form = () => {
     else if (!isPasswordValid(password)) {
       setError('Password must contain at least 8 characters, including both upper and lower case alphabets and at least 1 special character.');
     }
+    else {
+      const formData = new FormData();
+      formData.append('username', username);
+      formData.append('email', email);
+      formData.append('password', password);
 
-    const formData = new FormData();
-    formData.append('username', username);
-    formData.append('email', email);
-    formData.append('password', password);
-
-    fetch('http://127.0.0.1:8000/register/', {
-      method: 'POST',
-      body: formData,
-      credentials: 'include',
-      headers: {
-        'X-CSRFToken': csrftoken,
-      },
-    })
-      .then((response) => {
-        console.log('Response: ', response)
-        return response.json();
+      fetch('http://127.0.0.1:8000/register/', {
+        method: 'POST',
+        body: formData,
+        credentials: 'include',
+        headers: {
+          'X-CSRFToken': csrftoken,
+        },
       })
-      .then((data) => {
-        if (data.success) {
-          const successMessage = 'Please click the verification link sent to your email to verify your account.';
-          console.log(successMessage);
-          router.push({
-            pathname: '/login',
-            query: { successMessage: successMessage },
-          }); // Redirect to home page
-        } else {
-          throw new Error('Registration failed');
-        }
-      })
-      .catch((error) => {
-        console.error(error);
-        setError('Registration Failed'); // Update error state with an error message
-      });
+        .then((response) => {
+          console.log('Response: ', response)
+          return response.json();
+        })
+        .then((data) => {
+          if (data.success) {
+            const successMessage = 'Please click the verification link sent to your email to verify your account.';
+            console.log(successMessage);
+            router.push({
+              pathname: '/login',
+              query: { successMessage: successMessage },
+            }); // Redirect to home page
+          } else {
+            throw new Error('Registration failed');
+          }
+        })
+        .catch((error) => {
+          console.error(error);
+          setError('This username/email has been taken. Please choose another username/email'); // Update error state with an error message
+        });
+      }
   }
 
   const isPasswordValid = (password) => {
