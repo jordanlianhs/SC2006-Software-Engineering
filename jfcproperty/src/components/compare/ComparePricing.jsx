@@ -2,6 +2,7 @@ import { useState, useEffect } from "react";
 import getResaleFlats from "../../data/comparePricing";
 import Fuse from "fuse.js";
 import Pagination from "../common/blog/Pagination";
+import PredictionChart from "../common/chart/PredictionChart";
 
 const ComparePricing = () => {
     const [flats, setFlats] = useState([]);
@@ -54,6 +55,7 @@ const ComparePricing = () => {
                     value={searchQuery}
                     onChange={handleSearch}
                     placeholder="Search by street name or flat type"
+                    style={{ width: "300px", height: "30px", fontSize: "16px" }}
                 />
             </div>
             <div>
@@ -91,16 +93,22 @@ const ComparePricing = () => {
                 ))}
             </div>
             {searchQuery.length === 0 && selectedFlats.length === 0 ? null : (
-                <div>
-                    {selectedFlats.map((flat) => (
-                        <div key={flat.id}>
-                            <h4>{flat.streetName}</h4>
-                            <p>BLK {flat.blockNumber}</p>
-                            <p>{flat.flatType}</p>
-                            <button onClick={() => handleRemove(flat)}>Remove</button>
-                        </div>
-                    ))}
-                </div>
+                <div style={{ display: "flex", alignItems: "center" , justifyContent:"center" }}>
+                {selectedFlats.map((flat) => (
+                  <div key={flat.id} style={{ display: "flex", alignItems: "center" }}>
+                    <div style={{ marginRight: "20px" }}>
+                      <img className="img-fluid w100" src={flat.img} alt="1.jpg" />
+                      <h4>{flat.streetName}</h4>
+                      <p>BLK {flat.blockNumber}</p>
+                      <p>{flat.flatType}</p>
+                      <button onClick={() => handleRemove(flat)}>Remove</button>
+                    </div>
+                    <div>
+                      <PredictionChart flat={flat} />
+                    </div>
+                  </div>
+                ))}
+              </div>
             )}
             <Pagination
                 flatsPerPage={flatsPerPage}
