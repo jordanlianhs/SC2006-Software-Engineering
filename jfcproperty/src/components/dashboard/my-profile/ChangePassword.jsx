@@ -86,7 +86,7 @@ const ChangePassword = ({ uidb64, token }) => {
 
   const isPasswordValid = (password) => {
     // Password must contain at least 8 characters, including both upper and lower case alphabets and at least 1 special character.
-    const passwordRegex = /^(?=.*[a-z])(?=.*[A-Z])(?=.*[@$!%*?&])[A-Za-z@$!%*?&]{8,}$/;
+    const passwordRegex = /^(?=.*[a-z])(?=.*[A-Z])(?=.*[@$!%*?&])(?=.*\d)[A-Za-z\d@$!%*?&]{8,}$/
     return passwordRegex.test(password);
   }
 
@@ -154,6 +154,7 @@ const ChangePassword = ({ uidb64, token }) => {
           <ul>
             <li>Contains at least 8 characters</li>
             <li>Includes both upper and lower case alphabets</li>
+            <li>Has at least 1 numeric character</li>
             <li>Has at least 1 special character</li>
           </ul>
         </div>

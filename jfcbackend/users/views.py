@@ -445,4 +445,4 @@ def favourite_add(request, id):
 @login_required
 def favourites_list(request, username):
     new = HousePrice.objects.filter(favourites=request.user)
-    return render(request, "favourites.html", {'new': new})
+    return new
