@@ -295,13 +295,15 @@ def password_change(request):
 #     return render(request, 'password_reset_confirm.html', {'form': form})
 
 # when user clicks on forget password, then sends in their email
-@user_not_authenticated
-def password_reset_request(request):
-    if request.method == 'POST':
-        form = PasswordResetForm(request.POST)
-        if form.is_valid():
-            user_email = form.cleaned_data['email']
-            associated_user = get_user_model().objects.filter(Q(email=user_email)).first()
+@require_POST
+def forgot_password_email(request):
+    try:
+        print('running user is logged in, change pw')
+        if request.method == 'POST':
+            # Get the updated data from the request
+            email = request.POST.get('email')
+
+            associated_user = get_user_model().objects.filter(Q(email=email)).first()
             if associated_user:
                 subject = 'JFC Account - Password Reset Request'
                 message = render_to_string('template_reset_password.html', {
@@ -314,6 +316,7 @@ def password_reset_request(request):
                 email = EmailMessage(subject, message, to=[associated_user.email])
                 #print(email.from_email)
                 if email.send():
+                    return JsonResponse({'success': True})
                     messages.success(request, 
                         """
                         Password reset email sent.
@@ -323,14 +326,51 @@ def password_reset_request(request):
                         """
                     )
                 else:
+                    return JsonResponse({'success': False})
                     messages.error(request, f'Error sending email to {associated_user.email}, SERVER PROBLEM')
+            # Return a JSON response indicating success
+            return JsonResponse({'user_dont_exist': False})
+    except Exception as e:
+        return JsonResponse({'success': False})
+
+# @user_not_authenticated
+# def password_reset_request(request):
+#     if request.method == 'POST':
+#         form = PasswordResetForm(request.POST)
+#         if form.is_valid():
+#             user_email = form.cleaned_data['email']
+#             associated_user = get_user_model().objects.filter(Q(email=user_email)).first()
+#             if associated_user:
+#                 subject = 'JFC Account - Password Reset Request'
+#                 message = render_to_string('template_reset_password.html', {
+#                     'user': associated_user,
+#                     'domain': get_current_site(request).domain,
+#                     'uid': urlsafe_base64_encode(force_bytes(associated_user.pk)),
+#                     'token': account_activation_token.make_token(associated_user),
+#                     'protocol': 'https' if request.is_secure() else 'http'
+#                 })
+#                 email = EmailMessage(subject, message, to=[associated_user.email])
+#                 #print(email.from_email)
+#                 if email.send():
+#                     messages.success(request, 
+#                         """
+#                         Password reset email sent.
+#                         We have emailed you instructions for setting your password, if an account exists with the email you entered. 
+#                         You should receive them shortly. If you do not receive an email, please make sure you have entered the email 
+#                         address you have registered with, and check your spam folder.
+#                         """
+#                     )
+#                 else:
+#                     messages.error(request, f'Error sending email to {associated_user.email}, SERVER PROBLEM')
 
         
-    form = PasswordResetForm()
-    return render(request=request, template_name='password_reset.html', context={'form': form})
+#     form = PasswordResetForm()
+#     return render(request=request, template_name='password_reset.html', context={'form': form})
 
-# when user clicks on password reset link in their email
+
 def passwordResetConfirm(request, uidb64, token):
+    print('running password reset confirm')
+    print('test')
     User = get_user_model()
     try:
         uid = force_str(urlsafe_base64_decode(uidb64))
@@ -338,30 +378,55 @@ def passwordResetConfirm(request, uidb64, token):
     except Exception as e:
         print(e)
         user = None
+        return JsonResponse({'success': False})
 
     print(user,account_activation_token.check_token(user, token))
     if user is not None and account_activation_token.check_token(user, token):
         if request.method == 'POST':
-            form = SetPasswordForm(user, request.POST)
-            if form.is_valid():
-                form.save()
-                messages.success(request, 'Your password has been set. You may go ahead and log in now.')
-                return redirect('users:home')
-            else:
-                for error in list(form.errors.values()):
-                    messages.error(request, error)
-
-        user.is_active = True
-        user.save()
-
-        messages.success(request, 'Thank you for your email confirmation. Now you can login into your account.')
-        form = SetPasswordForm(user)
-        return render(request, 'password_reset_confirm.html', {'form': form})
+            password = request.POST.get('password')
+            user.set_password(password)
+            user.is_active = True
+            user.save()
+            print('returned success true, pw reset')
+            return JsonResponse({'success': True})
+        else: 
+            return JsonResponse({'success': False})
     else:
-        messages.error(request, 'Reset password link is expired!')
+        return JsonResponse({'link_expired': True})
 
-    messages.error(request, 'Something went wrong, redirecting back to homepage')
-    return redirect('users:home')
+# # when user clicks on password reset link in their email
+# def passwordResetConfirm(request, uidb64, token):
+#     User = get_user_model()
+#     try:
+#         uid = force_str(urlsafe_base64_decode(uidb64))
+#         user = User.objects.get(pk=uid)
+#     except Exception as e:
+#         print(e)
+#         user = None
+
+#     print(user,account_activation_token.check_token(user, token))
+#     if user is not None and account_activation_token.check_token(user, token):
+#         if request.method == 'POST':
+#             form = SetPasswordForm(user, request.POST)
+#             if form.is_valid():
+#                 form.save()
+#                 messages.success(request, 'Your password has been set. You may go ahead and log in now.')
+#                 return redirect('users:home')
+#             else:
+#                 for error in list(form.errors.values()):
+#                     messages.error(request, error)
+
+#         user.is_active = True
+#         user.save()
+
+#         messages.success(request, 'Thank you for your email confirmation. Now you can login into your account.')
+#         form = SetPasswordForm(user)
+#         return render(request, 'password_reset_confirm.html', {'form': form})
+#     else:
+#         messages.error(request, 'Reset password link is expired!')
+
+#     messages.error(request, 'Something went wrong, redirecting back to homepage')
+#     return redirect('users:home')
 
 @csrf_exempt
 @login_required

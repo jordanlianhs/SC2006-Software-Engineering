@@ -3,48 +3,84 @@ import Cookies from 'universal-cookie';
 
 const cookies = new Cookies();
 
-const ChangePassword = () => {
+const ChangePassword = ({ uidb64, token }) => {
+  const [pwReset, setPwReset] = useState('');
   const [isUpdated, setIsUpdated] = useState(false);
   const [password, setPassword] = useState('');
   const [checkPassword, setCheckPassword] = useState('');
   const [error, setError] = useState('');
-  const [passwordRequirement, setPasswordRequirement] = useState('');
 
   const handleClick = () => {
-    if (password !== checkPassword) {
-      setError('Passwords do not match');
-    } else if (!isPasswordValid(password)) {
-      setError('Password does not fulfill requirements.');
-    } else {
-      const csrftoken = cookies.get('csrftoken')
-      console.log("csrftoken cookie: ", csrftoken)
+    
+      if (password !== checkPassword) {
+        setError('Passwords do not match');
+      } else if (!isPasswordValid(password)) {
+        setError('Password does not fulfill requirements.');
+      } else {
+        const csrftoken = cookies.get('csrftoken')
+        console.log("csrftoken cookie: ", csrftoken)
 
-      event.preventDefault();
+        event.preventDefault();
 
-      const formData = new FormData();
-      formData.append('password', password);
+        const formData = new FormData();
+        formData.append('password', password);
 
-      fetch('http://127.0.0.1:8000/password_change/', {
-        method: 'POST',
-        body: formData,
-        credentials: 'include',
-        headers: {
-          'X-CSRFToken': csrftoken,
-        },
-      })
-      .then((response) => {return response.json();})
-      .then((data) => {
-        if (data.success) {
-          console.log("redirect");
-          setIsUpdated(true);
-        } else {
-          throw new Error('Change password failed');
+        if (uidb64 && token) {
+          formData.append('uid', uidb64);
+          formData.append('token', token);
+
+          console.log('running forgot password')
+          console.log(uidb64, token)
+
+          fetch(`http://127.0.0.1:8000/reset/${uidb64}/${token}/`, {
+            method: 'POST',
+            body: formData,
+            credentials: 'include',
+            headers: {
+              'X-CSRFToken': csrftoken,
+            },
+          })
+          .then((response) => {return response.json();})
+          .then((data) => {
+            if (data.success) {
+              console.log("redirect");
+              console.log('data.link_expired: ', data.link_expired);
+              setError();
+              setPwReset(true);
+            } 
+            else if (!data.success) {
+              setPwReset(false);
+              setError('Something went wrong, redirecting back to homepage');
+            }
+            else {
+              setPwReset(false);
+              setError('Your reset password link has expired. Please reset the password again.');
+            }
+            })
         }
-      })
-      .catch((error) => {
-        console.error(error);
-        setError('Password does not fulfill requirements.'); // Update error state with an error message
-      });
+        else {
+          fetch('http://127.0.0.1:8000/password_change/', {
+            method: 'POST',
+            body: formData,
+            credentials: 'include',
+            headers: {
+              'X-CSRFToken': csrftoken,
+            },
+          })
+          .then((response) => {return response.json();})
+          .then((data) => {
+            if (data.success) {
+              console.log("redirect");
+              setIsUpdated(true);
+            } else {
+              throw new Error('Change password failed');
+            }
+          })
+          .catch((error) => {
+            console.error(error);
+            setError('Password does not fulfill requirements.'); // Update error state with an error message
+          });
+      }
     }
   };
 
@@ -56,6 +92,19 @@ const ChangePassword = () => {
 
   return (
     <>
+      <div>
+          {pwReset && (
+              <div className="bg-green-100 border border-green-400 text-green-700 px-3 py-1 rounded relative" role="alert">
+              <strong className="font-bold ">Success!</strong>
+              <span className="block sm:inline"> Password updated successfully. You can login with your new password now.</span>
+              <style jsx>{`
+                  .bg-green-100 {
+                  margin-bottom: 13px;
+                  }
+              `}</style>
+              </div>
+          )}
+      </div>
       <div>
           {isUpdated && (
               <div className="bg-green-100 border border-green-400 text-green-700 px-3 py-1 rounded relative" role="alert">

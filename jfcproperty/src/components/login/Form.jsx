@@ -110,7 +110,7 @@ const Form = () => {
 
         <div className="form-group form-check custom-checkbox mb-3">
 
-          <a className="btn-fpswd float-end" href="#">
+          <a className="btn-fpswd float-end" href="/forgot-password">
             Forgot password?
           </a>
         </div>

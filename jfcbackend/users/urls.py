@@ -15,8 +15,8 @@ urlpatterns = [
     # path('profile/<username>/', views.profile, name='profile'),
     path('edit-profile/<username>/', views.edit_profile, name='edit_profile'),
     path('password_change/', views.password_change, name='password_change'),
-    
-    path('password_reset/', views.password_reset_request, name='password_reset'),
+
+    path('password_reset/', views.forgot_password_email, name='password_reset'),
     path('reset/<uidb64>/<token>/', views.passwordResetConfirm, name='password_reset_confirm'), 
 
     path('fav/<int:id>/', views.favourite_add, name="favourite_add"),
