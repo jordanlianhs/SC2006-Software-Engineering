@@ -16,6 +16,7 @@ import {
   selectFlatModel,
   storeFilteredFlats, // Make sure this is imported
 } from "../../../features/properties/propertiesSlice";
+
 import Cookies from 'universal-cookie'
 
 const cookies = new Cookies();
