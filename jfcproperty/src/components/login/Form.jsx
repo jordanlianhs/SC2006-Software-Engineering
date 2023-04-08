@@ -34,8 +34,9 @@ const Form = () => {
         if (data.success) {
           console.log("redirect")
           router.push('/'); // Redirect to home page
-        } else {
-          throw new Error('Login failed');
+        } 
+        else if (!data.verified_acct) {
+          setError('Please verify your account with the link sent to your email, before trying to log in.');
         }
       })
       .catch((error) => {
