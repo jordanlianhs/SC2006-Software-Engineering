@@ -69,9 +69,9 @@ def login_view(request):
     password = request.POST.get('password')
 
     # check if user has verified their account
-    if User.objects.filter(username=email).exists():
-        if User.objects.filter(is_active=False):
-            return JsonResponse({'verified_acct': False})
+    if User.objects.filter(username=email, is_active=False):
+        print('return not verified')
+        return JsonResponse({'verified_acct': False})
 
     user = authenticate(request, username=email, password=password)
     # if user exists

@@ -31,18 +31,18 @@ const Form = () => {
     })
       .then((response) => {return response.json();})
       .then((data) => {
+        console.log(data.verified_acct);
         if (data.success) {
           console.log("redirect")
           router.push('/'); // Redirect to home page
         } 
-        else if (!data.verified_acct) {
+        else if (data.verified_acct == false) {
           setError('Please verify your account with the link sent to your email, before trying to log in.');
         }
+        else if (data.success == false) {
+          setError('Invalid username/email or password');
+        }
       })
-      .catch((error) => {
-        console.error(error);
-        setError('Invalid email or password'); // Update error state with an error message
-      });
   }
 
   return (
