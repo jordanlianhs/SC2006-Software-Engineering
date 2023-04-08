@@ -5,7 +5,6 @@ const cookies = new Cookies();
 
 const ChangePassword = ({ uidb64, token }) => {
   const [pwReset, setPwReset] = useState('');
-  const [isUpdated, setIsUpdated] = useState(false);
   const [password, setPassword] = useState('');
   const [checkPassword, setCheckPassword] = useState('');
   const [error, setError] = useState('');
@@ -13,8 +12,10 @@ const ChangePassword = ({ uidb64, token }) => {
   const handleClick = () => {
     
       if (password !== checkPassword) {
+        setPwReset(false);
         setError('Passwords do not match');
       } else if (!isPasswordValid(password)) {
+        setPwReset(false);
         setError('Password does not fulfill requirements.');
       } else {
         const csrftoken = cookies.get('csrftoken')
@@ -71,7 +72,8 @@ const ChangePassword = ({ uidb64, token }) => {
           .then((data) => {
             if (data.success) {
               console.log("redirect");
-              setIsUpdated(true);
+              setPwReset(true);
+              setError();
             } else {
               throw new Error('Change password failed');
             }
@@ -97,19 +99,6 @@ const ChangePassword = ({ uidb64, token }) => {
               <div className="bg-green-100 border border-green-400 text-green-700 px-3 py-1 rounded relative" role="alert">
               <strong className="font-bold ">Success!</strong>
               <span className="block sm:inline"> Password updated successfully. You can login with your new password now.</span>
-              <style jsx>{`
-                  .bg-green-100 {
-                  margin-bottom: 13px;
-                  }
-              `}</style>
-              </div>
-          )}
-      </div>
-      <div>
-          {isUpdated && (
-              <div className="bg-green-100 border border-green-400 text-green-700 px-3 py-1 rounded relative" role="alert">
-              <strong className="font-bold ">Success!</strong>
-              <span className="block sm:inline"> User details updated successfully.</span>
               <style jsx>{`
                   .bg-green-100 {
                   margin-bottom: 13px;
