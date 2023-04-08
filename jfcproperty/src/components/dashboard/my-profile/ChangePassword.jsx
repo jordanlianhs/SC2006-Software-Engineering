@@ -43,19 +43,21 @@ const ChangePassword = ({ uidb64, token }) => {
           })
           .then((response) => {return response.json();})
           .then((data) => {
+            console.log('data.success: ', data.success)
             if (data.success) {
               console.log("redirect");
               console.log('data.link_expired: ', data.link_expired);
               setError();
               setPwReset(true);
             } 
-            else if (!data.success) {
+            else if (data.success == false) {
               setPwReset(false);
-              setError('Something went wrong, redirecting back to homepage');
+              setError('There was an error with the reset password link you clicked. Please go to Login/Sign-up -> Forgot Password? to get a new verification link.');
+
             }
             else {
               setPwReset(false);
-              setError('Your reset password link has expired. Please reset the password again.');
+              setError('The reset password link you clicked is not valid or has expired. Please check your inbox and click on the latest reset password link. If your link has expired, Go to Login/Sign-up -> Forgot Password? to get a new verification link.');
             }
             })
         }

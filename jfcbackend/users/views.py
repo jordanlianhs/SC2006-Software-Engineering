@@ -216,7 +216,7 @@ def activate(request, uidb64, token):
         return HttpResponse('You have successfully verified your JFC account. You may close this window and login with your new account. Thank You.')
     else:
         print("no user")
-        return HttpResponse('The verification link you clicked is not valid or has expired. Please check your inbox and click on the latest verification link.')
+        return HttpResponse('The verification link you clicked is not valid or has expired. Please check your inbox and click on the latest verification link. If your link has expired, Go to Login/Sign-up -> Forgot Password? to get new verification link.')
 
 @require_POST
 @login_required
@@ -398,8 +398,10 @@ def passwordResetConfirm(request, uidb64, token):
             print('returned success true, pw reset')
             return JsonResponse({'success': True})
         else: 
+            print("is not post")
             return JsonResponse({'success': False})
     else:
+        print("link expired")
         return JsonResponse({'link_expired': True})
 
 # # when user clicks on password reset link in their email
