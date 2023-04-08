@@ -186,7 +186,7 @@ AUTHENTICATION_BACKENDS = [
 ]
 
 EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
-EMAIL_HOST = 'smtp-mail.outlook.com.'
+EMAIL_HOST = 'smtp.office365.com'
 DEFAULT_FROM_EMAIL = 'jfc-main@outlook.com'
 EMAIL_HOST_USER = 'jfc-main@outlook.com'
 EMAIL_HOST_PASSWORD = 'jfc-app-password'
