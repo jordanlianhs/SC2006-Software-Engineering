@@ -83,7 +83,11 @@ const FeaturedProperties = () => {
     <div className="item" key={item.id}>
       <div className="feat_property">
         <div className="thumb">
-          <img className="img-whp" src={item.img} alt="fp1.jpg" />
+          <img 
+            src={item.img} 
+            alt="fp1.jpg" 
+            className="img-whp" 
+          />
           <div className="thmb_cntnt">
 
             <Link href={`/listing-details-v1/${item.id}`}>
