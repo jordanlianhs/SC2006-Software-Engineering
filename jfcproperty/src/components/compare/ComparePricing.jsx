@@ -1,5 +1,5 @@
 import { useState, useEffect } from "react";
-import getResaleFlats from "../../data/comparePricing";
+import allResaleFlats from "../../data/properties";
 import Fuse from "fuse.js";
 import Pagination from "../common/blog/Pagination";
 import PredictionChart from "../common/chart/PredictionChart";
@@ -13,7 +13,7 @@ const ComparePricing = () => {
 
   useEffect(() => {
     const fetchFlats = async () => {
-      const data = await getResaleFlats();
+      const data = await allResaleFlats();
       setFlats(data);
     };
     fetchFlats();
@@ -48,7 +48,7 @@ const ComparePricing = () => {
       ? fuse.search(searchQuery).map((result) => result.item)
       : [];
 
-  const flatsPerPage = 10;
+  const flatsPerPage = 12;
   const indexOfLastFlat = currentPage * flatsPerPage;
   const indexOfFirstFlat = indexOfLastFlat - flatsPerPage;
   const currentFlats = filteredFlats.slice(indexOfFirstFlat, indexOfLastFlat);

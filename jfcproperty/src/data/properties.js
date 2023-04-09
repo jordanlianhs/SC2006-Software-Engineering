@@ -2,7 +2,7 @@ const NodeCache = require('node-cache');
 const cache = new NodeCache();
 
 const getRandomImage = () => {
-  const randIndex = Math.floor(Math.random() * 28)+1; 
+  const randIndex = Math.floor(Math.random() * 99)+1; 
   return `/assets/images/property/rand/${randIndex}.jpg`
 };
 
@@ -14,7 +14,7 @@ const allResaleFlats = async () => {
     return cachedData;
   }
 
-  const url = "http://127.0.0.1:8000/all_house_price/?limit=30000";
+  const url = "http://127.0.0.1:8000/all_house_price/?limit=15000";
   let flats = [];
   let nextUrl = url;
 
