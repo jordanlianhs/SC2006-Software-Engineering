@@ -181,7 +181,7 @@ const ComparePricing = () => {
                       className="img-fluid w100"
                       src={flat.img}
                       alt="1.jpg"
-                      style={{ marginBottom: "20px", width: "400px", height: "400px" }}
+                      style={{ marginBottom: "20px", width: "200px", height: "500px" }}
                     />
                     <h4>{flat.streetName}</h4>
                     <p>BLK {flat.blockNumber}</p>
