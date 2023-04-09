@@ -2,7 +2,7 @@ const NodeCache = require('node-cache');
 const cache = new NodeCache();
 
 const getRandomImage = () => {
-  const randIndex = Math.floor(Math.random() * 26)+1; 
+  const randIndex = Math.floor(Math.random() * 28)+1; 
   return `/assets/images/property/rand/${randIndex}.jpg`
 };
 
