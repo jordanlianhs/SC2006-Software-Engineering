@@ -29,14 +29,14 @@ const ComparisonChart = ({ flat1, flat2 }) => {
         labels: labels,
         datasets: [
           {
-            label: "Flat 1",
+            label: flat1.streetName + " BLK " + flat1.blockNumber + " "+ flat1.flatType,
             data: data1,
             fill: false,
             borderColor: "rgb(75, 192, 192)",
             tension: 0.1,
           },
           {
-            label: "Flat 2",
+            label: flat2.streetName + " BLK " + flat2.blockNumber + " "+ flat2.flatType,
             data: data2,
             fill: false,
             borderColor: "rgb(192, 75, 75)",
