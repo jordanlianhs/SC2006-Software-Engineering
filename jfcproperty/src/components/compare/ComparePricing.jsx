@@ -3,6 +3,7 @@ import getResaleFlats from "../../data/comparePricing";
 import Fuse from "fuse.js";
 import Pagination from "../common/blog/Pagination";
 import PredictionChart from "../common/chart/PredictionChart";
+import ComparisonChart from "../common/chart/ComparisonChart";
 
 const ComparePricing = () => {
   const [flats, setFlats] = useState([]);
@@ -87,32 +88,89 @@ const ComparePricing = () => {
           </div>
         ))}
       </div>
-      {searchQuery.length === 0 && selectedFlats.length === 0 ? null : (
-        <div
-          style={{
-            display: "flex",
-            alignItems: "center",
-            justifyContent: "center",
-          }}
-        >
-          {selectedFlats.map((flat) => (
-            <div
-              key={flat.id}
-              style={{ display: "flex", alignItems: "center" }}
-            >
-              <div style={{ marginRight: "20px" }}>
-                <img className="img-fluid w100" src={flat.img} alt="1.jpg" />
-                <h4>{flat.streetName}</h4>
-                <p>BLK {flat.blockNumber}</p>
-                <p>{flat.flatType}</p>
-                <button onClick={() => handleRemove(flat)}>Remove</button>
+      {selectedFlats.length === 2 ? (
+        <>
+        <div className="row">
+          <div className="col-6">
+            <div className="row">
+              <div className="col-6">
+                <div key={selectedFlats[0].id}>
+                  <h4>{selectedFlats[0].streetName}</h4>
+                  <p>BLK {selectedFlats[0].blockNumber}</p>
+                  <p>{selectedFlats[0].flatType}</p>
+                  <button onClick={() => handleRemove(selectedFlats[0])}>
+                    Remove
+                  </button>
+                </div>
               </div>
-              <div>
-                <PredictionChart flat={flat} />
+              <div className="col-6">
+                <img
+                  className="img-fluid w-100"
+                  src={selectedFlats[0].img}
+                  alt="1.jpg"
+                />
               </div>
             </div>
-          ))}
+          </div>
+      
+          <div className="col-6">
+            <div className="row">
+              <div className="col-6">
+                <div key={selectedFlats[1].id}>
+                  <h4>{selectedFlats[1].streetName}</h4>
+                  <p>BLK {selectedFlats[1].blockNumber}</p>
+                  <p>{selectedFlats[1].flatType}</p>
+                  <button onClick={() => handleRemove(selectedFlats[1])}>
+                    Remove
+                  </button>
+                </div>
+              </div>
+              <div className="col-6">
+                <img
+                  className="img-fluid w-100"
+                  src={selectedFlats[1].img}
+                  alt="1.jpg"
+                />
+              </div>
+            </div>
+          </div>
         </div>
+        <ComparisonChart flat1={selectedFlats[0]} flat2={selectedFlats[1]} />
+      </>      
+      ) : (
+        <>
+          {searchQuery.length === 0 && selectedFlats.length === 0 ? null : (
+            <div
+              style={{
+                display: "flex",
+                alignItems: "center",
+                justifyContent: "center",
+              }}
+            >
+              {selectedFlats.map((flat) => (
+                <div
+                  key={flat.id}
+                  style={{ display: "flex", alignItems: "center" }}
+                >
+                  <div style={{ marginRight: "20px" }}>
+                    <img
+                      className="img-fluid w100"
+                      src={flat.img}
+                      alt="1.jpg"
+                    />
+                    <h4>{flat.streetName}</h4>
+                    <p>BLK {flat.blockNumber}</p>
+                    <p>{flat.flatType}</p>
+                    <button onClick={() => handleRemove(flat)}>Remove</button>
+                  </div>
+                  <div>
+                    <PredictionChart flat={flat} />
+                  </div>
+                </div>
+              ))}
+            </div>
+          )}
+        </>
       )}
       <Pagination
         flatsPerPage={flatsPerPage}
