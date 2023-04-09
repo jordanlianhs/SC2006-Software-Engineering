@@ -5,7 +5,6 @@ import Header from "../../components/common/header/DefaultHeader";
 import Footer from "../../components/common/footer/Footer";
 import CopyrightFooter from "../../components/common/footer/CopyrightFooter";
 import PredictionChart from "../../components/common/chart/PredictionChart";
-//import RandomImage from "../../components/common/images/RandomImage";
 
 const ListingDetails = ({ flat }) => {
   if (!flat) {
