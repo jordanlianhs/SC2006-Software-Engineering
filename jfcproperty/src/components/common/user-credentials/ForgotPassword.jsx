@@ -31,10 +31,13 @@ const ForgotPassword = () => {
         if (data.success) {
           console.log("redirect");
           setSuccess(true);
+          setError();
         } else if (data.success == false){
+          setSuccess(false);
           setError('Email could not be sent to the given email address. Please check that you have entered the correct email address.');
         }
         else if (data.user_dont_exist == false){
+          setSuccess(false);
           setError('Email could not be sent to the given email address. Please check that you have entered the correct email address.');
         }
       })
