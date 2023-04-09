@@ -31,10 +31,10 @@ const ForgotPassword = () => {
         if (data.success) {
           console.log("redirect");
           setSuccess(true);
-        } else if (!data.success){
+        } else if (data.success == false){
           setError('Email could not be sent to the given email address. Please check that you have entered the correct email address.');
         }
-        else if (data == 'user_dont_exist'){
+        else if (data.user_dont_exist == false){
           setError('Email could not be sent to the given email address. Please check that you have entered the correct email address.');
         }
       })
@@ -67,6 +67,7 @@ const ForgotPassword = () => {
           <button type="submit" className="btn btn-primary">
             Send Reset Link
           </button>
+          {error && <p style={{ color: 'red', marginTop: '10px' }}>{error}</p>}
         </form>
       </div>
     </>
