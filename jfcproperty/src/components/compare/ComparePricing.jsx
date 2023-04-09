@@ -48,7 +48,7 @@ const ComparePricing = () => {
       ? fuse.search(searchQuery).map((result) => result.item)
       : [];
 
-  const flatsPerPage = 10;
+  const flatsPerPage = 12;
   const indexOfLastFlat = currentPage * flatsPerPage;
   const indexOfFirstFlat = indexOfLastFlat - flatsPerPage;
   const currentFlats = filteredFlats.slice(indexOfFirstFlat, indexOfLastFlat);
