@@ -62,7 +62,7 @@ const ComparisonChart = ({ flat1, flat2 }) => {
 
   return (
     <div>
-      <canvas id="myChart" ref={canvasRef}></canvas>
+      <canvas id="myChart" ref={canvasRef} style={{ width: "100%", height: "400px" }}></canvas>
     </div>
   );
 };

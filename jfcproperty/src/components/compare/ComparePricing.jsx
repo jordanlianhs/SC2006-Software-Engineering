@@ -57,11 +57,17 @@ const ComparePricing = () => {
     <>
       <div>
         <input
+          className="form-control me-2"
           type="text"
           value={searchQuery}
           onChange={handleSearch}
           placeholder="Search by street name or flat type"
-          style={{ width: "300px", height: "30px", fontSize: "16px" }}
+          style={{
+            width: "300px",
+            height: "30px",
+            fontSize: "16px",
+            marginBottom: "20px",
+          }}
         />
       </div>
       <div className="row">
@@ -73,13 +79,13 @@ const ComparePricing = () => {
           >
             <div className="membership_header">
               <div className="thumb">
-                <a href="#">
-                  <span className="flaticon-close"></span>
-                </a>
+                {/* <a href="#">
+                  <span className="flaticon-plus"></span>
+                </a> */}
                 <img className="img-fluid w-100" src={flat.img} alt="1.jpg" />
-                <div className="price">${flat.price}</div>
+                <div className="price" style={{ marginLeft: "15px" }}>${flat.price}</div>
               </div>
-              <div className="flat_type">
+              <div className="flat_type" style={{ marginTop: "10px" }}>
                 <h4>{flat.streetName}</h4>
                 <p>BLK {flat.blockNumber}</p>
                 <p>{flat.flatType}</p>
@@ -89,8 +95,8 @@ const ComparePricing = () => {
         ))}
       </div>
       {selectedFlats.length === 2 ? (
-        <>
-        <div className="row">
+        <div style={{ border: '1px solid #ccc', borderRadius: '10px', padding: '50px' }}>
+        <div className="row" >
           <div className="col-6">
             <div className="row">
               <div className="col-6">
@@ -98,7 +104,16 @@ const ComparePricing = () => {
                   <h4>{selectedFlats[0].streetName}</h4>
                   <p>BLK {selectedFlats[0].blockNumber}</p>
                   <p>{selectedFlats[0].flatType}</p>
-                  <button onClick={() => handleRemove(selectedFlats[0])}>
+                  <button 
+                    onClick={() => handleRemove(selectedFlats[0])}
+                    style={{
+                      backgroundColor: "#ff5a5f",
+                      color: "white",
+                      borderRadius: "10px",
+                      padding: "5px 10px",
+                      marginTop: "10px",
+                      border: "none",
+                    }}>
                     Remove
                   </button>
                 </div>
@@ -120,7 +135,16 @@ const ComparePricing = () => {
                   <h4>{selectedFlats[1].streetName}</h4>
                   <p>BLK {selectedFlats[1].blockNumber}</p>
                   <p>{selectedFlats[1].flatType}</p>
-                  <button onClick={() => handleRemove(selectedFlats[1])}>
+                  <button 
+                    onClick={() => handleRemove(selectedFlats[1])}
+                    style={{
+                      backgroundColor: "#ff5a5f",
+                      color: "white",
+                      borderRadius: "10px",
+                      padding: "5px 10px",
+                      marginTop: "10px",
+                      border: "none",
+                    }}>
                     Remove
                   </button>
                 </div>
@@ -136,9 +160,9 @@ const ComparePricing = () => {
           </div>
         </div>
         <ComparisonChart flat1={selectedFlats[0]} flat2={selectedFlats[1]} />
-      </>      
+      </div >      
       ) : (
-        <>
+        <div>
           {searchQuery.length === 0 && selectedFlats.length === 0 ? null : (
             <div
               style={{
@@ -157,20 +181,31 @@ const ComparePricing = () => {
                       className="img-fluid w100"
                       src={flat.img}
                       alt="1.jpg"
+                      style={{ marginBottom: "20px", width: "400px", height: "400px" }}
                     />
                     <h4>{flat.streetName}</h4>
                     <p>BLK {flat.blockNumber}</p>
                     <p>{flat.flatType}</p>
-                    <button onClick={() => handleRemove(flat)}>Remove</button>
+                    <PredictionChart flat={flat} />
+                    <button 
+                      onClick={() => handleRemove(flat)}
+                      style={{
+                        backgroundColor: "#ff5a5f",
+                        color: "white",
+                        borderRadius: "10px",
+                        padding: "5px 10px",
+                        marginTop: "10px",
+                        border: "none",
+                      }}>Remove</button>
                   </div>
                   <div>
-                    <PredictionChart flat={flat} />
+                    
                   </div>
                 </div>
               ))}
             </div>
           )}
-        </>
+        </div>
       )}
       <Pagination
         flatsPerPage={flatsPerPage}

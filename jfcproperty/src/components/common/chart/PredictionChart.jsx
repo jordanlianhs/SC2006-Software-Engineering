@@ -44,8 +44,8 @@ const PredictionChart = ({ flat }) => {
     });
     }, [flat]);
     return (
-        <div>
-            <canvas id="myChart" ref={canvasRef}></canvas>
+        <div >
+            <canvas id="myChart" ref={canvasRef} style={{ width: "100%", height: "400px" }}></canvas>
         </div>
     );
 };
