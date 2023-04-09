@@ -30,7 +30,7 @@ const index = () => {
   getCsrfToken();
   return (
     <>
-      <Seo pageTitle="Home-1" />
+      <Seo pageTitle="JFC" />
       <HomeMain />
     </>
   );

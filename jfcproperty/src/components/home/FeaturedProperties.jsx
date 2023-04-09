@@ -2,34 +2,31 @@ import React, {useState, useEffect} from "react";
 import Link from "next/link";
 import Slider from "react-slick";
 import properties from "../../data/properties";
+import Cookies from 'universal-cookie'
 
-function getCookie(name) {
-  const cookies = document.cookie.split(';');
-  for (let i = 0; i < cookies.length; i++) {
-    const cookie = cookies[i].trim();
-    if (cookie.startsWith(name + '=')) {
-      return cookie.substring(name.length + 1);
-    }
-  }
-  return null;
-}
+const cookies = new Cookies();
 
 const FeaturedProperties = () => {
   const[flats, setFlats] = useState([]);
   const [favoriteFlats, setFavoriteFlats] = useState([]);
 
+  const username = cookies.get('username');
+
   // Add a function to handle adding/removing favorite flats
   const toggleFavoriteFlat = (flat) => {
-    console.log(getCookie('csrftoken'))
-    // fetch(`http://127.0.0.1:8000/fav/${flat.id}/`, {
-    //   method: 'POST',
-    //   headers: {
-    //     'Content-Type': 'application/json',
-    //     'X-CSRFToken': getCookie('csrftoken'), // Make sure to include CSRF token
-    //   },
-    // })
-      // .then(response => console.log(response))
-      // .catch(error => console.error(error));
+    console.log(cookies.get('csrftoken'))
+    fetch(`http://127.0.0.1:8000/fav/${flat.id}/`, {
+      method: 'POST',
+      credentials: 'include',
+      headers: {
+        'Content-Type': 'application/json',
+        'X-CSRFToken': cookies.get('csrftoken'), // Make sure to include CSRF token
+      },
+    })
+      .then(response => console.log(response))
+      .catch(error => console.error(error));
+
+
     if (favoriteFlats.find((f) => f.id === flat.id)) {
       const updatedFavorites = favoriteFlats.filter((f) => f.id !== flat.id);
       setFavoriteFlats(updatedFavorites);
@@ -114,25 +111,14 @@ const FeaturedProperties = () => {
 
           </div>
           {/* End .tc_content */}
-          {/* <button
+          {username && <button
             className={`favorite-button ${
               favoriteFlats.find((f) => f.id === item.id) ? 'favorited' : ''
             }`}
             onClick={() => toggleFavoriteFlat(item)}
           >
             ♥
-          </button> */}
-          <p>
-            <a
-              //href={`http://127.0.0.1:8000/fav/${item.id}/`}
-              className={`favorite-button ${
-                favoriteFlats.find((f) => f.id === item.id) ? 'favorited' : ''
-              }`}
-              onClick={() => toggleFavoriteFlat(item)}
-              >
-                ♥
-            </a>
-          </p>
+          </button>}
         </div>
         
         {/* End .details */}

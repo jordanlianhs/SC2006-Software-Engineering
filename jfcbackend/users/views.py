@@ -67,12 +67,20 @@ def get_csrf_token(request):
 def login_view(request):
     email = request.POST.get('email')
     password = request.POST.get('password')
+
+    # check if user has verified their account
+    if User.objects.filter(username=email, is_active=False):
+        print('return not verified')
+        return JsonResponse({'verified_acct': False})
+
     user = authenticate(request, username=email, password=password)
+    # if user exists
     if user is not None:
         login(request, user)
         response = JsonResponse({'success': True})
         response.set_cookie('username', user.username)
         response.set_cookie('email', user.email)
+    # if user does not exist
     else:
         response = JsonResponse({'success': False})
     # not sure why here is different token
@@ -208,7 +216,7 @@ def activate(request, uidb64, token):
         return HttpResponse('You have successfully verified your JFC account. You may close this window and login with your new account. Thank You.')
     else:
         print("no user")
-        return HttpResponse('The verification link you clicked is not valid or has expired. Please check your inbox and click on the latest verification link.')
+        return HttpResponse('The verification link you clicked is not valid or has expired. Please check your inbox and click on the latest verification link. If your link has expired, Go to Login/Sign-up -> Forgot Password? to get new verification link.')
 
 @require_POST
 @login_required
@@ -390,8 +398,10 @@ def passwordResetConfirm(request, uidb64, token):
             print('returned success true, pw reset')
             return JsonResponse({'success': True})
         else: 
+            print("is not post")
             return JsonResponse({'success': False})
     else:
+        print("link expired")
         return JsonResponse({'link_expired': True})
 
 # # when user clicks on password reset link in their email
@@ -431,18 +441,54 @@ def passwordResetConfirm(request, uidb64, token):
 @csrf_exempt
 @login_required
 def favourite_add(request, id):
-    house = get_object_or_404(HousePrice, id=id)
-    # checking to see if the house favourite list contains the user's username
-    # if username in house favourite's list, means user favourited before
-    if house.favourites.filter(id=request.user.id).exists():
-        print("exists when adding to favourotes")
-        house.favourites.remove(request.user)
-    else:
-        house.favourites.add(request.user)
-    #return HttpResponse("success")
+    print('running fav add')
+    try:
+        house = get_object_or_404(HousePrice, id=id)
+        # checking to see if the house favourite list contains the user's username
+        # if username in house favourite's list, means user favourited before
+        if house.favourites.filter(id=request.user.id).exists():
+            print("removing house")
+            house.favourites.remove(request.user)
+        else:
+            print("adding house")
+            house.favourites.add(request.user)
+        #return HttpResponse("success")
+        return JsonResponse({'success': True})
+    except Exception as e:
+        return JsonResponse({'success': False})
+
+
     return HttpResponseRedirect(request.META['HTTP_REFERER'])
+
+# @login_required
+# def favourites_list(request, username):
+#     new = HousePrice.objects.filter(favourites=request.user)
+#     return new
 
 @login_required
 def favourites_list(request, username):
-    new = HousePrice.objects.filter(favourites=request.user)
-    return new
+    print('running favourites list')
+    print('user_id: ',request.user.id)
+    fav_list = HousePrice.objects.filter(favourites=request.user.id)
+    print('fav_list: ', fav_list)
+    fav_list_json = []
+    for fav in fav_list:
+        fav_list_json.append({
+            'id': fav.id,
+            'blockNumber': fav.block,
+            'flatModel': fav.flat_model,
+            'flatType': fav.flat_type,
+            'floorArea': fav.floor_area_sqm,
+            'img': "/assets/images/property/fp1.jpg",
+            'leaseCommencementDate': fav.lease_commence_date,
+            'price': fav.resale_price,
+            'price_aft1year': fav.resale_price_aft1year,
+            'price_aft2year': fav.resale_price_aft2year,
+            'price_aft3year': fav.resale_price_aft3year,
+            'price_aft4year': fav.resale_price_aft4year,
+            'price_aft5year': fav.resale_price_aft5year,
+            'storeyRange': fav.storey_range,
+            'streetName': fav.street_name,
+            'town': fav.town,
+        })
+    return JsonResponse({'favList': fav_list_json})
