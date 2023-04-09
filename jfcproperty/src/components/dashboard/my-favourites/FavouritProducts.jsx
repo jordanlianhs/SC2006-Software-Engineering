@@ -58,8 +58,12 @@ const FavoriteFlats = () => {
   return (
     <>
       <Header />
+      
       <section className="our-listing bgc-f7 pb30-991 mt85 md-mt0">
         <div className="container">
+        {favoriteFlats.length === 0 ? (
+          <h3 style={{ color: "grey", textAlign : "center" }}>You have not favourited any houses yet.</h3>
+        ) : (
           <div className="row">
             {favoriteFlats.map((flat) => (
               <div className="col-md-6 col-lg-6" key={flat.id}>
@@ -108,6 +112,7 @@ const FavoriteFlats = () => {
               </div>
             ))}
           </div>
+          )}
         </div>
       </section>
     </>
