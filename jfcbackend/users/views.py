@@ -306,7 +306,7 @@ def password_change(request):
 @require_POST
 def forgot_password_email(request):
     try:
-        print('running user is logged in, change pw')
+        print('forgot pw')
         if request.method == 'POST':
             # Get the updated data from the request
             email = request.POST.get('email')
