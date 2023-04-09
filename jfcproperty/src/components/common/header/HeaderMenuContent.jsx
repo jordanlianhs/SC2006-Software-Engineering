@@ -1,7 +1,21 @@
 import Link from "next/link";
 import { useRouter } from "next/router";
+// import { useState, useEffect } from "react";
+// import Cookies from 'universal-cookie';
+//import Cookie from 'js-cookie'
+
+// const cookies = new Cookies();
 
 const HeaderMenuContent = ({ float = "" }) => {
+  // useEffect(() => {
+  //   const usernameCookie = cookies.get('username');
+  //   if (usernameCookie) {
+  //     setUsername(usernameCookie);
+  //   }
+  // }, []);
+
+  // console.log(username)
+
   const route = useRouter();
 
   const home = [
@@ -18,54 +32,53 @@ const HeaderMenuContent = ({ float = "" }) => {
       routerPath: "/compare",
     }
   ]
-
-  return (
-    <ul
-      id="respMenu"
-      className="ace-responsive-menu text-end d-lg-block d-none"
-      data-menu-style="horizontal"
-    >
-      <li className="dropitem">
-        <Link href="/">
+    return (
+      <ul
+        id="respMenu"
+        className="ace-responsive-menu text-end d-lg-block d-none"
+        data-menu-style="horizontal"
+      >
+        <li className="dropitem">
+          <Link href="/">
+            <a
+              className={
+                home.some((page) => page.routerPath === route.pathname)
+                  ? "ui-active"
+                  : undefined
+              }
+            >
+              <span className="title">Home</span>
+            </a>
+          </Link>
+        </li>
+  
+  
+        <li className="2">
+          <Link href="/compare">
+            <a
+              className={route.pathname === "/compare" ? "ui-active" : undefined}
+            >
+              Compare Flats
+            </a>
+          </Link>
+        </li>
+        {/* End .dropitem */}
+  
+  
+        <li className={`list-inline-item list_s ${float}`}>
           <a
-            className={
-              home.some((page) => page.routerPath === route.pathname)
-                ? "ui-active"
-                : undefined
-            }
+            href="/login"
+            className="btn flaticon-user"
+            // data-bs-toggle="modal"
+            // data-bs-target=".bd-example-modal-lg"
           >
-            <span className="title">Home</span>
+            <span className="dn-lg">Login/Signup</span>
           </a>
-        </Link>
-      </li>
-
-
-      <li className="2">
-        <Link href="/compare">
-          <a
-            className={route.pathname === "/compare" ? "ui-active" : undefined}
-          >
-            Compare Flats
-          </a>
-        </Link>
-      </li>
-      {/* End .dropitem */}
-
-
-      <li className={`list-inline-item list_s ${float}`}>
-        <a
-          href="#"
-          className="btn flaticon-user"
-          data-bs-toggle="modal"
-          data-bs-target=".bd-example-modal-lg"
-        >
-          <span className="dn-lg">Login/Register</span>
-        </a>
-      </li>
-      {/* End .dropitem */}
-
-    </ul>
-  );
+        </li>
+        {/* End .dropitem */}
+  
+      </ul>
+    );
 };
 
 export default HeaderMenuContent;

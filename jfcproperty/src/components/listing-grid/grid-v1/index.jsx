@@ -12,14 +12,21 @@ import {
   selectFlatType,
   selectStreetName,
   selectBlockNumber,
+  selectTown,
+  selectFlatModel,
   storeFilteredFlats, // Make sure this is imported
 } from "../../../features/properties/propertiesSlice";
 
+import Cookies from 'universal-cookie'
+
+const cookies = new Cookies();
 
 const Index = () => {
   const selectedFlatType = useSelector(selectFlatType);
   const selectedStreetName = useSelector(selectStreetName);
   const selectedBlockNumber = useSelector(selectBlockNumber);
+  const selectedTown = useSelector(selectTown);
+  const selectedFlatModel = useSelector(selectFlatModel);
   const filteredFlats = useSelector(storeFilteredFlats);
   
   const[flats,setFlats] = useState([]);
@@ -28,8 +35,23 @@ const Index = () => {
   // Add state for favorite flats
   const [favoriteFlats, setFavoriteFlats] = useState([]);
 
+  const username = cookies.get('username');
+
   // Add a function to handle adding/removing favorite flats
+  // Add save to user favaourites link
+  // Remove 
   const toggleFavoriteFlat = (flat) => {
+    fetch(`http://127.0.0.1:8000/fav/${flat.id}/`, {
+      method: 'POST',
+      credentials: 'include',
+      headers: {
+        'Content-Type': 'application/json',
+        'X-CSRFToken': cookies.get('csrftoken'), // Make sure to include CSRF token
+      },
+    })
+      .then(response => console.log(response))
+      .catch(error => console.error(error));
+
     if (favoriteFlats.find((f) => f.id === flat.id)) {
       const updatedFavorites = favoriteFlats.filter((f) => f.id !== flat.id);
       setFavoriteFlats(updatedFavorites);
@@ -56,14 +78,16 @@ const Index = () => {
           return (
             (!selectedFlatType || flat.flatType === selectedFlatType) &&
             (!selectedStreetName || flat.streetName === selectedStreetName) &&
-            (!selectedBlockNumber || flat.blockNumber === selectedBlockNumber)
+            (!selectedBlockNumber || flat.blockNumber === selectedBlockNumber) &&
+            (!selectedTown || flat.town == selectedTown) &&
+            (!selectedFlatModel || flat.flatModel == selectedFlatModel)
           );
         });
         setFlats(filteredFetchedFlats);
       };
       fetchFlats();
     }
-  }, [filteredFlats, selectedFlatType, selectedStreetName, selectedBlockNumber]);
+  }, [filteredFlats, selectedFlatType, selectedStreetName, selectedBlockNumber, selectedFlatModel, selectedTown]);
 
   const indexOfLastFlat = currentPage * flatsPerPage;
   const indexOfFirstFlat = indexOfLastFlat - flatsPerPage;
@@ -100,7 +124,7 @@ const Index = () => {
                     />
                   </div>
                 </div>
-                {/* End paginaion .col */}
+              
               </div>
               <div className="row">
                 {currentFlats.map((flat)  => (
@@ -137,14 +161,23 @@ const Index = () => {
                         <div className="fp_footer">
                           <div className="fp_pdate float-end">2023</div>
                         </div>
-                        <button
+                        {username && <button
                         className={`favorite-button ${
                           favoriteFlats.find((f) => f.id === flat.id) ? 'favorited' : ''
                         }`}
                         onClick={() => toggleFavoriteFlat(flat)}
                         >
                           ♥
-                        </button>
+                        </button>}
+                        {/* <a
+                        href={`http://localhost:8000/favourite_add/${flat.id}`}
+                        className={`favorite-button ${
+                          favoriteFlats.find((f) => f.id === flat.id) ? 'favorited' : ''
+                        }`}
+                        onClick={() => toggleFavoriteFlat(flat)}
+                        >
+                          ♥
+                        </a> */}
                       </div>
                     </div>
                   </div>

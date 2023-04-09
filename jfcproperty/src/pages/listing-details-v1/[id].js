@@ -4,12 +4,12 @@ import allResaleFlats from "../../data/properties";
 import Header from "../../components/common/header/DefaultHeader";
 import Footer from "../../components/common/footer/Footer";
 import CopyrightFooter from "../../components/common/footer/CopyrightFooter";
+import PredictionChart from "../../components/common/chart/PredictionChart";
 
 const ListingDetails = ({ flat }) => {
   if (!flat) {
     return <div>Loading...</div>;
   }
-
   // Render the listing details using the flat data
   return (
     <>
@@ -25,11 +25,27 @@ const ListingDetails = ({ flat }) => {
           <div className="row">
             <div className="col-md-6">
               <p>
+                <strong>Town:</strong> {flat.town}
+              </p>
+              <p>
                 <strong>Flat Type:</strong> {flat.flatType}
+              </p>
+              <p>
+                <strong>Flat Model:</strong> {flat.flatModel}
               </p>
               <p>
                 <strong>Price:</strong> ${flat.price}
               </p>
+              <p>
+                <strong>Storey Range:</strong> {flat.storeyRange}
+              </p>
+              <p>
+                <strong>Floor Area:</strong> {flat.floorArea}
+              </p>
+              <p>
+                <strong>Remaining Lease:</strong> {flat.leaseCommencementDate}
+              </p>
+              <PredictionChart flat={flat} />
             </div>
             <div className="col-md-6">
               <img
@@ -73,4 +89,3 @@ export async function getServerSideProps({ params }) {
 }
 
 export default ListingDetails;
-

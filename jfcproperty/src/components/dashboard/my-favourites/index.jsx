@@ -1,5 +1,5 @@
 import Header from "../../common/header/dashboard/Header";
-import FavouritProducts from "./FavouritProducts";
+import FavouriteProducts from "./FavouriteProducts";
 import Pagination from "../../common/blog/Pagination";
 import Footer from "../../common/footer/Footer";
 import CopyrightFooter from "../../common/footer/CopyrightFooter";
@@ -21,8 +21,8 @@ const index = () => {
               <div className="favorite_item_list">
                 
                 <h2 className="breadcrumb_title">My Favorites</h2>
-                <FavouritProducts />
-                <Pagination />
+                <FavouriteProducts />
+                {/* <Pagination /> */}
               </div>
             </div>
           </div>

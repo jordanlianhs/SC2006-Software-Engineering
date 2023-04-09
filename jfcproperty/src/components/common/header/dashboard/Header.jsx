@@ -1,6 +1,6 @@
 import Link from "next/link";
 import { useEffect, useState } from "react";
-import HeaderMenuContent from "./HeaderMenuContent";
+import LoggedInHeaderMenuContent from "./LoggedInHeaderMenuContent";
 
 const Header = () => {
   const [navbar, setNavbar] = useState(false);
@@ -43,7 +43,7 @@ const Header = () => {
         {/* site logo brand */}
 
         <nav>
-          <HeaderMenuContent />
+          <LoggedInHeaderMenuContent />
         </nav>
         {/* End .navbar */}
       </div>
