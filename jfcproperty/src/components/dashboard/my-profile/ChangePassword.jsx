@@ -5,7 +5,6 @@ const cookies = new Cookies();
 
 const ChangePassword = ({ uidb64, token }) => {
   const [pwReset, setPwReset] = useState('');
-  const [isUpdated, setIsUpdated] = useState(false);
   const [password, setPassword] = useState('');
   const [checkPassword, setCheckPassword] = useState('');
   const [error, setError] = useState('');
@@ -13,8 +12,10 @@ const ChangePassword = ({ uidb64, token }) => {
   const handleClick = () => {
     
       if (password !== checkPassword) {
+        setPwReset(false);
         setError('Passwords do not match');
       } else if (!isPasswordValid(password)) {
+        setPwReset(false);
         setError('Password does not fulfill requirements.');
       } else {
         const csrftoken = cookies.get('csrftoken')
@@ -42,19 +43,21 @@ const ChangePassword = ({ uidb64, token }) => {
           })
           .then((response) => {return response.json();})
           .then((data) => {
+            console.log('data.success: ', data.success)
             if (data.success) {
               console.log("redirect");
               console.log('data.link_expired: ', data.link_expired);
               setError();
               setPwReset(true);
             } 
-            else if (!data.success) {
+            else if (data.success == false) {
               setPwReset(false);
-              setError('Something went wrong, redirecting back to homepage');
+              setError('There was an error with the reset password link you clicked. Please go to Login/Sign-up -> Forgot Password? to get a new verification link.');
+
             }
             else {
               setPwReset(false);
-              setError('Your reset password link has expired. Please reset the password again.');
+              setError('The reset password link you clicked is not valid or has expired. Please check your inbox and click on the latest reset password link. If your link has expired, Go to Login/Sign-up -> Forgot Password? to get a new verification link.');
             }
             })
         }
@@ -71,7 +74,8 @@ const ChangePassword = ({ uidb64, token }) => {
           .then((data) => {
             if (data.success) {
               console.log("redirect");
-              setIsUpdated(true);
+              setPwReset(true);
+              setError();
             } else {
               throw new Error('Change password failed');
             }
@@ -97,19 +101,6 @@ const ChangePassword = ({ uidb64, token }) => {
               <div className="bg-green-100 border border-green-400 text-green-700 px-3 py-1 rounded relative" role="alert">
               <strong className="font-bold ">Success!</strong>
               <span className="block sm:inline"> Password updated successfully. You can login with your new password now.</span>
-              <style jsx>{`
-                  .bg-green-100 {
-                  margin-bottom: 13px;
-                  }
-              `}</style>
-              </div>
-          )}
-      </div>
-      <div>
-          {isUpdated && (
-              <div className="bg-green-100 border border-green-400 text-green-700 px-3 py-1 rounded relative" role="alert">
-              <strong className="font-bold ">Success!</strong>
-              <span className="block sm:inline"> User details updated successfully.</span>
               <style jsx>{`
                   .bg-green-100 {
                   margin-bottom: 13px;

@@ -32,55 +32,6 @@ const HeaderMenuContent = ({ float = "" }) => {
       routerPath: "/compare",
     }
   ]
-
-  // if (username)
-  //   return (
-  //     <ul
-  //       id="respMenu"
-  //       className="ace-responsive-menu text-end d-lg-block d-none"
-  //       data-menu-style="horizontal"
-  //     >
-  //       <li className="dropitem">
-  //         <Link href="/">
-  //           <a
-  //             className={
-  //               home.some((page) => page.routerPath === route.pathname)
-  //                 ? "ui-active"
-  //                 : undefined
-  //             }
-  //           >
-  //             <span className="title">Home</span>
-  //           </a>
-  //         </Link>
-  //       </li>
-
-
-  //       <li className="2">
-  //         <Link href="/compare">
-  //           <a
-  //             className={route.pathname === "/compare" ? "ui-active" : undefined}
-  //           >
-  //             Compare Flats
-  //           </a>
-  //         </Link>
-  //       </li>
-  //       {/* End .dropitem */}
-
-
-  //       <li className={`list-inline-item list_s ${float}`}>
-  //         <a
-  //           href={c}
-  //           className="btn flaticon-user"
-  //           // data-bs-toggle="modal"
-  //           // data-bs-target=".bd-example-modal-lg"
-  //         >
-  //           <span className="dn-lg">{username}</span>
-  //         </a>
-  //       </li>
-  //       {/* End .dropitem */}
-
-  //     </ul>
-  //   );
     return (
       <ul
         id="respMenu"

@@ -22,7 +22,7 @@ const index = () => {
                 
                 <h2 className="breadcrumb_title">My Favorites</h2>
                 <FavouritProducts />
-                <Pagination />
+                {/* <Pagination /> */}
               </div>
             </div>
           </div>

@@ -87,11 +87,11 @@ const ProfileInfo = () => {
                 <div className="col-lg-6 col-xl-6">
 
                     <div className="my_profile_setting_input form-group">
-                        <label htmlFor="formGroupExampleEmail">Username</label>
+                        <label htmlFor="formGroupExampleUsername">Username</label>
                         <input
                             type="text"
                             className="form-control"
-                            id="formGroupExampleEmail"
+                            id="formGroupExampleUsername"
                             value={username}
                             onChange={(event) => setUsername(event.target.value)}
                         />

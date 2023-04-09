@@ -17,6 +17,9 @@ import {
   storeFilteredFlats, // Make sure this is imported
 } from "../../../features/properties/propertiesSlice";
 
+import Cookies from 'universal-cookie'
+
+const cookies = new Cookies();
 
 const Index = () => {
   const selectedFlatType = useSelector(selectFlatType);
@@ -32,10 +35,23 @@ const Index = () => {
   // Add state for favorite flats
   const [favoriteFlats, setFavoriteFlats] = useState([]);
 
+  const username = cookies.get('username');
+
   // Add a function to handle adding/removing favorite flats
   // Add save to user favaourites link
   // Remove 
   const toggleFavoriteFlat = (flat) => {
+    fetch(`http://127.0.0.1:8000/fav/${flat.id}/`, {
+      method: 'POST',
+      credentials: 'include',
+      headers: {
+        'Content-Type': 'application/json',
+        'X-CSRFToken': cookies.get('csrftoken'), // Make sure to include CSRF token
+      },
+    })
+      .then(response => console.log(response))
+      .catch(error => console.error(error));
+
     if (favoriteFlats.find((f) => f.id === flat.id)) {
       const updatedFavorites = favoriteFlats.filter((f) => f.id !== flat.id);
       setFavoriteFlats(updatedFavorites);
@@ -108,7 +124,7 @@ const Index = () => {
                     />
                   </div>
                 </div>
-                {/* End paginaion .col */}
+              
               </div>
               <div className="row">
                 {currentFlats.map((flat)  => (
@@ -145,14 +161,14 @@ const Index = () => {
                         <div className="fp_footer">
                           <div className="fp_pdate float-end">2023</div>
                         </div>
-                        <button
+                        {username && <button
                         className={`favorite-button ${
                           favoriteFlats.find((f) => f.id === flat.id) ? 'favorited' : ''
                         }`}
                         onClick={() => toggleFavoriteFlat(flat)}
                         >
                           ♥
-                        </button>
+                        </button>}
                         {/* <a
                         href={`http://localhost:8000/favourite_add/${flat.id}`}
                         className={`favorite-button ${

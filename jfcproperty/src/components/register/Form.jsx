@@ -29,7 +29,8 @@ const Form = () => {
       return;
     }
     else if (!isPasswordValid(password)) {
-      setError('Password must contain at least 8 characters, including both upper and lower case alphabets and at least 1 special character.');
+      setError('Password does not fulfill requirements.');
+      //setError('Password must contain at least 8 characters, including both upper and lower case alphabets, at least 1 numeric character and at least 1 special character.');
     }
     else {
       const formData = new FormData();
