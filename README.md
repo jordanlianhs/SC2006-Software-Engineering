@@ -3,6 +3,9 @@
 JFC aims to create an application that predicts future prices of HDB resale flats in Singapore. This would benefit potential house-buyers by providing insights for the best time to buy or sell a resale flat, or if they are interested to compare between future house prices.
 
 <img src="img/main.png" alt="JFC Property Website">
+<img src="img/listingdetails.png" alt="Resale Flat Details">
+<img src="img/compare.png" alt="Compare Resale Flat">
+
 
 # Product Perspective
 Our product is a web application designed for homebuyers and home investors to search, view and track resale flats in the Singapore market. The application fetches data from data.gov.sg and uses machine learning models to predict future resale prices via Multivariate Time Series Forecasting with LSTMs. This application is a standalone product, but it will be integrated with external data sources and may potentially interface with other real estate platforms.
