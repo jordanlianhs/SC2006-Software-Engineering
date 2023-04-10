@@ -21,6 +21,7 @@ const GlobalFilter = ({ className = "" }) => {
   const [blockNumber, setBlockNumber] = useState([]);
   const [town, setTown] = useState([]);
   const [flatModel, setFlatModel] = useState([]);
+  const [loading, setLoading] = useState(false);
 
   useEffect(() => {
     if (router.pathname === "/") {
@@ -62,7 +63,8 @@ const GlobalFilter = ({ className = "" }) => {
   }, []);
   
    // submit handler
-  const submitHandler = () => {
+   const submitHandler = async () => {
+    setLoading(true);
     const selectedFlatType = flatType.filter((type) => type.selected)[0]?.value;
     const selectedStreetName = streetName.filter((name) => name.selected)[0]?.value;
     const selectedBlockNumber = blockNumber.filter((number) => number.selected)[0]?.value;
@@ -83,7 +85,9 @@ const GlobalFilter = ({ className = "" }) => {
     dispatch(storeFilteredFlats(newFilteredFlats));
   
     // Remove the query from the Router.push call
-    Router.push("/listing-grid-v1");
+
+    await Router.push("/listing-grid-v1");
+    setLoading(false);
   };
 
   return (
@@ -172,11 +176,12 @@ const GlobalFilter = ({ className = "" }) => {
         <li className="list-inline-item">
           
           <button
-            onClick={submitHandler}
-            type="submit"
-            className="btn btn-thm"
-          >
-            Search
+          onClick={submitHandler}
+          type="submit"
+          className="btn btn-thm"
+          disabled={loading}
+        >
+          {loading ? "Loading..." : "Search"}
           </button>
           
         </li>
