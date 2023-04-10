@@ -5,7 +5,7 @@ import Cookies from "universal-cookie";
 
 const getRandomImage = () => {
   const randIndex = Math.floor(Math.random() * 99) + 1;
-  return `/assets/images/property/rand/${randIndex}.jpg`;
+  return `/assets/images/property/${randIndex}.jpg`;
 };
 
 const cookies = new Cookies();

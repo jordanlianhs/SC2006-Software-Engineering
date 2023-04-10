@@ -3,7 +3,7 @@ const cache = new NodeCache();
 
 const getRandomImage = () => {
   const randIndex = Math.floor(Math.random() * 99)+1; 
-  return `/assets/images/property/rand/${randIndex}.jpg`
+  return `/assets/images/property/${randIndex}.jpg`
 };
 
 const allResaleFlats = async () => {
