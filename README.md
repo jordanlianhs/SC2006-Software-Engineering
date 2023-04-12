@@ -33,6 +33,34 @@ Our product is a web application designed for homebuyers and home investors to s
 # Dialog Map
 <img src="img/dialogmap.png" alt="Dialog Map">
 
+# To run the code
+Ensure that you have virtual environment on python along with nodejs and yarn installed
+
+There is a need to open two terminal, one for backend one for frontend
+
+For backend:
+1. cd to SC2006
+2. activate virtual environment for your OS 
+2a. For Windows
+> virtualenv env
+> env\scripts\activate
+> cd jfcbackend
+> pip install -r requirements.txt
+> python manage.py runserver
+
+2b. For mac
+> create virtualenv ‘venv'
+> source env/bin/activate
+> cd jfcbackend
+> pip install -r requirements-mac.txt
+> python3 manage.py runserver
+
+For frontend:
+1. cd SC2006
+2. cd jfcproperty
+3. yarn install
+4. yarn dev -H 127.0.0.1
+
 # References
 <ul>
   <li>Data Gov API - https://data.gov.sg/dataset/resale-flat-prices</li>
