@@ -14,16 +14,27 @@ const allResaleFlats = async () => {
     return cachedData;
   }
 
-  const url = "http://127.0.0.1:8000/all_house_price/?limit=15000";
+  const url = "http://127.0.0.1:8000/all_house_price/";
   let flats = [];
-  let nextUrl = url;
+  let nextUrl = url; 
 
-  do {
-    const response = await fetch(nextUrl);
-    const data = await response.json();
-    flats = flats.concat(data.results);
-    nextUrl = data.links.next;
-  } while (nextUrl);
+  while (nextUrl) {
+    // Check if data for this page has already been cached
+    const cachedPageData = cache.get(nextUrl);
+    if (cachedPageData) {
+      flats = flats.concat(cachedPageData);
+      nextUrl = null; // Exit loop if cached data is found
+    } else {
+      // Fetch data for this page
+      const response = await fetch(nextUrl);
+      const data = await response.json();
+      flats = flats.concat(data.results);
+      nextUrl = data.links.next;
+
+      // Cache data for this page
+      cache.set(nextUrl, data.results, 60 * 60); // Cache for 1 hour
+    }
+  }
 
   flats = flats.map((flat, index) => ({
     id: index + 1,

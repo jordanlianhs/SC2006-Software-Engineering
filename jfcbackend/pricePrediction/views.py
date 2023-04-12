@@ -69,9 +69,9 @@ def updating_future_data():
     print('updated')
 
 class CustomPagination(PageNumberPagination):
-    page_size = 5000
+    page_size = 10000
     page_size_query_param = 'page_size'
-    max_page_size = 5000
+    max_page_size = 10000
     def get_page_size(self, request):
         if self.page_size_query_param:
             try:
