@@ -41,25 +41,25 @@ There is a need to open two terminal, one for backend one for frontend
 For backend:
 1. `cd SC2006 `
 2. activate virtual environment for your OS 
-2a. For Windows
+2a. For Windows<br />
 ` virtualenv env`<br />
 ` env\scripts\activate ` <br />
 `cd jfcbackend` <br />
 `pip install -r requirements.txt` <br />
 `python manage.py runserver` <br />
 
-2b. For mac
+2b. For mac<br />
 `create virtualenv ‘venv'` <br />
 `source env/bin/activate` <br />
 `cd jfcbackend` <br />
 `pip install -r requirements-mac.txt` <br />
 `python3 manage.py runserver ` <br />
 
-For frontend:
-1. cd SC2006
-2. cd jfcproperty
-3. yarn install
-4. yarn dev -H 127.0.0.1
+For frontend:<br />
+1. `cd SC2006`
+2. `cd jfcproperty`
+3. `yarn install`
+4. `yarn dev -H 127.0.0.1`
 
 # References
 <ul>
