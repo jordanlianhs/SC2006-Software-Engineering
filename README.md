@@ -39,21 +39,21 @@ Ensure that you have virtual environment on python along with nodejs and yarn in
 There is a need to open two terminal, one for backend one for frontend
 
 For backend:
-1. cd to SC2006
+1. `cd SC2006 `
 2. activate virtual environment for your OS 
 2a. For Windows
-` virtualenv env`
-> env\scripts\activate
-> cd jfcbackend
-> pip install -r requirements.txt
-> python manage.py runserver
+` virtualenv env`<br />
+` env\scripts\activate ` <br />
+`cd jfcbackend` <br />
+`pip install -r requirements.txt` <br />
+`python manage.py runserver` <br />
 
 2b. For mac
-> create virtualenv ‘venv'
-> source env/bin/activate
-> cd jfcbackend
-> pip install -r requirements-mac.txt
-> python3 manage.py runserver
+`create virtualenv ‘venv'` <br />
+`source env/bin/activate` <br />
+`cd jfcbackend` <br />
+`pip install -r requirements-mac.txt` <br />
+`python3 manage.py runserver ` <br />
 
 For frontend:
 1. cd SC2006
