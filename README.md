@@ -42,18 +42,18 @@ For backend:
 1. cd to SC2006
 2. activate virtual environment for your OS 
 2a. For Windows
->>> virtualenv env
->>> env\scripts\activate
->>> cd jfcbackend
->>> pip install -r requirements.txt
->>> python manage.py runserver
+` virtualenv env`
+> env\scripts\activate
+> cd jfcbackend
+> pip install -r requirements.txt
+> python manage.py runserver
 
 2b. For mac
->>> create virtualenv ‘venv'
->>> source env/bin/activate
->>> cd jfcbackend
->>> pip install -r requirements-mac.txt
->>> python3 manage.py runserver
+> create virtualenv ‘venv'
+> source env/bin/activate
+> cd jfcbackend
+> pip install -r requirements-mac.txt
+> python3 manage.py runserver
 
 For frontend:
 1. cd SC2006
